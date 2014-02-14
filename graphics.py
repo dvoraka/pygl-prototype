@@ -235,7 +235,7 @@ class GameWindow(pyglet.window.Window):
 
         self.renderer = renderer
 
-        self.camera = camera.FPSCamera(x_pos=5, y_pos=50)
+        self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
 
         # for testing only
         self.test_obj = TestObject()
