@@ -1,4 +1,4 @@
-pygl-prototype
+Introduction
 ==============
 
 Python OpenGL prototype.
