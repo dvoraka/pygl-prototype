@@ -23,6 +23,7 @@ class FPSCamera:
         self.y_pos = y_pos
         self.z_pos = z_pos
 
+        # camera angles in radians
         self.v_angle = 0.0
         self.h_angle = 0.0
 

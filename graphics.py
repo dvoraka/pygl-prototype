@@ -7,6 +7,8 @@ from pyglet.gl import *
 
 from pyglet.window import key
 
+import math
+
 import shaders
 import camera
 
@@ -302,6 +304,9 @@ class GameWindow(pyglet.window.Window):
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
+
+        # rotate camera - temporary
+        glRotatef((self.camera.v_angle * 180) / math.pi, 0.0, 1.0, 0)
 
         glTranslatef(
             -self.camera.x_pos,
