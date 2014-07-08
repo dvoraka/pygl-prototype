@@ -28,9 +28,7 @@ class FPSCamera:
 
         self.step = 0.2
 
-    def forward(self):
-
-        # self.z_pos += self.step
+    def get_position_vec(self):
 
         pos_vec = matrix([
             [self.x_pos],
@@ -38,6 +36,22 @@ class FPSCamera:
             [self.z_pos],
             [1.0]
         ])
+
+        return pos_vec
+
+    def set_position_vec(self, position):
+
+        pos_list = position.tolist()
+
+        self.x_pos = pos_list[0][0]
+        self.y_pos = pos_list[1][0]
+        self.z_pos = pos_list[2][0]
+
+    def forward(self):
+
+        # self.z_pos += self.step
+
+        pos_vec = self.get_position_vec()
 
         trans_matrix = matrix([
             [1.0, 0, 0, self.step * sin(self.v_angle)],
@@ -47,10 +61,7 @@ class FPSCamera:
         ])
 
         result = trans_matrix * pos_vec
-        pos_list = result.tolist()
-
-        self.x_pos = pos_list[0][0]
-        self.z_pos = pos_list[2][0]
+        self.set_position_vec(result)
 
     def backward(self):
 
