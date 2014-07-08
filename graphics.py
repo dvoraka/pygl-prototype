@@ -316,6 +316,11 @@ class GameWindow(pyglet.window.Window):
         self.test_obj.draw()
         self.renderer.render()
 
+    def on_mouse_motion(self, x, y, dx, dy):
+
+        self.camera.add_h_angle(float(dy))
+        self.camera.add_v_angle(float(dx))
+
     def update(self, dt):
         
         if self.keyboard[key.UP]:

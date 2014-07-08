@@ -28,11 +28,22 @@ class FPSCamera:
         self.v_angle = 0.0
         self.h_angle = 0.0
 
+        self.v_multiplier = 0.05
+        self.h_multiplier = 0.05
+
         self.step = 0.2
 
     def v_angle_deg(self):
 
         return (self.v_angle * 180) / pi
+
+    def add_v_angle(self, delta):
+
+        self.v_angle += self.v_multiplier * delta
+
+    def add_h_angle(self, delta):
+
+        self.h_angle -= self.h_multiplier * delta
 
     def get_position_vec(self):
 
