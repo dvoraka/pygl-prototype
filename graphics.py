@@ -1,4 +1,4 @@
-'''Module for graphic representation.'''
+"""Module for graphic representation."""
 
 import pyglet
 
@@ -14,7 +14,7 @@ import camera
 
 
 class TestObject():
-    '''Test rendering object.'''
+    """Test rendering object."""
 
     def __init__(self):
 
@@ -52,14 +52,14 @@ class TestObject():
 
 
 class GraphicBlock:
-    '''Graphic data representation for block.'''
+    """Graphic data representation for block."""
     
     def __init__(self):
         
         pass
 
     def get_vertexes(self, position):
-        '''Return vertex list from position.'''
+        """Return vertex list from position."""
 
         vertexes = []
         x_pos = float(position[0])
@@ -124,7 +124,7 @@ class GraphicBlock:
 
 
 class Renderer:
-    '''Render world.'''
+    """Render world."""
 
     def __init__(self, world):
         
@@ -134,7 +134,7 @@ class Renderer:
         self.vbos_vert_count = {}
 
     def prepare_world(self):
-        '''Fill buffer objects with data.'''
+        """Fill buffer objects with data."""
         
         for pos, chunk in self.world.chunks.items():
 
@@ -219,7 +219,7 @@ class Renderer:
 
 
 class GameWindow(pyglet.window.Window):
-    '''Show game window.'''
+    """Show game window."""
 
     def __init__(self, renderer):
         
@@ -249,7 +249,7 @@ class GameWindow(pyglet.window.Window):
         print(pyglet.clock.get_fps())
 
     def setup(self):
-        '''Setup OpenGL.'''
+        """Setup OpenGL."""
 
         glClearColor(1.0, 1.0, 1.0, 0.0)
 
@@ -266,7 +266,7 @@ class GameWindow(pyglet.window.Window):
         self.init_test_shader()
 
     def init_test_shader(self):
-        '''Compile and use test shader.'''
+        """Compile and use test shader."""
 
         v_shader = shaders.load_vshader('shaders_data/simple.vs')
         f_shader = shaders.load_fshader('shaders_data/red.fs')
@@ -276,7 +276,7 @@ class GameWindow(pyglet.window.Window):
         glUseProgram(program)
 
     def on_resize(self, width, height):
-        '''Prepare perspective for window size.'''
+        """Prepare perspective for window size."""
         
         print('on resize')
 
@@ -291,12 +291,12 @@ class GameWindow(pyglet.window.Window):
         gluPerspective(75, 1.0 * width / height, 0.001, 1000.0)
 
     def show(self):
-        '''Show window and start app.'''
+        """Show window and start app."""
         
         pyglet.app.run()
 
     def on_draw(self):
-        '''Redraw window.'''
+        """Redraw window."""
 
         self.clear()
 
@@ -305,8 +305,8 @@ class GameWindow(pyglet.window.Window):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
-        # rotate camera - temporary
-        glRotatef((self.camera.v_angle * 180) / math.pi, 0.0, 1.0, 0)
+        # rotate camera
+        glRotatef(self.camera.v_angle_deg(), 0.0, 1.0, 0)
 
         glTranslatef(
             -self.camera.x_pos,

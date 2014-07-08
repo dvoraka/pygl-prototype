@@ -5,6 +5,7 @@
 
 from math import sin
 from math import cos
+from math import pi
 from numpy import matrix
 
 
@@ -28,6 +29,10 @@ class FPSCamera:
         self.h_angle = 0.0
 
         self.step = 0.2
+
+    def v_angle_deg(self):
+
+        return (self.v_angle * 180) / pi
 
     def get_position_vec(self):
 
