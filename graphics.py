@@ -226,6 +226,8 @@ class GameWindow(pyglet.window.Window):
         super(GameWindow, self).__init__()
         self.set_caption('GL prototype')
 
+        self.set_exclusive_mouse(True)
+
         #print(self.config)
         #self.set_fullscreen(True)
 

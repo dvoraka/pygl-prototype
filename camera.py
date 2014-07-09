@@ -7,6 +7,7 @@ from math import sin
 from math import cos
 from math import pi
 from numpy import matrix
+from numpy import linalg
 
 
 class FPSCamera:
@@ -64,11 +65,7 @@ class FPSCamera:
         self.y_pos = pos_list[1][0]
         self.z_pos = pos_list[2][0]
 
-    def forward(self):
-
-        # self.z_pos += self.step
-
-        pos_vec = self.get_position_vec()
+    def fw_matrix(self):
 
         trans_matrix = matrix([
             [1.0, 0, 0, self.step * sin(self.v_angle)],
@@ -77,12 +74,23 @@ class FPSCamera:
             [0, 0, 0, 1.0]
         ])
 
+        return trans_matrix
+
+    def forward(self):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = self.fw_matrix()
+
         result = trans_matrix * pos_vec
         self.set_position_vec(result)
 
     def backward(self):
 
-        self.z_pos -= self.step
+        pos_vec = self.get_position_vec()
+        trans_matrix = linalg.inv(self.fw_matrix())
+
+        result = trans_matrix * pos_vec
+        self.set_position_vec(result)
 
     def left(self):
 
