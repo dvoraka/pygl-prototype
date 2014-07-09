@@ -76,6 +76,17 @@ class FPSCamera:
 
         return trans_matrix
 
+    def right_matrix(self):
+
+        trans_matrix = matrix([
+            [1.0, 0, 0, self.step * sin(self.v_angle + pi / 2)],
+            [0, 1.0, 0, 0],
+            [0, 0, 1.0, self.step * cos(self.v_angle + pi / 2)],
+            [0, 0, 0, 1.0]
+        ])
+
+        return trans_matrix
+
     def forward(self):
 
         pos_vec = self.get_position_vec()
@@ -94,11 +105,21 @@ class FPSCamera:
 
     def left(self):
 
-        self.x_pos -= self.step
+        # self.x_pos -= self.step
+        pos_vec = self.get_position_vec()
+        trans_matrix = linalg.inv(self.right_matrix())
+
+        result = trans_matrix * pos_vec
+        self.set_position_vec(result)
 
     def right(self):
 
-        self.x_pos += self.step
+        # self.x_pos += self.step
+        pos_vec = self.get_position_vec()
+        trans_matrix = self.right_matrix()
+
+        result = trans_matrix * pos_vec
+        self.set_position_vec(result)
 
     def up(self):
         
