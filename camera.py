@@ -32,11 +32,20 @@ class FPSCamera:
         self.v_multiplier = 0.05
         self.h_multiplier = 0.05
 
+        self.inverse_horizontal = False
+
+        self.h_angle_min = - pi / 3
+        self.h_angle_max = pi / 3
+
         self.step = 0.2
 
     def v_angle_deg(self):
 
         return (self.v_angle * 180) / pi
+
+    def h_angle_deg(self):
+
+        return (self.h_angle * 180) / pi
 
     def add_v_angle(self, delta):
 
@@ -44,7 +53,21 @@ class FPSCamera:
 
     def add_h_angle(self, delta):
 
-        self.h_angle -= self.h_multiplier * delta
+        if self.inverse_horizontal:
+
+            self.h_angle += self.h_multiplier * delta
+
+        else:
+
+            self.h_angle -= self.h_multiplier * delta
+
+        if self.h_angle < self.h_angle_min:
+
+            self.h_angle = self.h_angle_min
+
+        elif self.h_angle > self.h_angle_max:
+
+            self.h_angle = self.h_angle_max
 
     def get_position_vec(self):
 

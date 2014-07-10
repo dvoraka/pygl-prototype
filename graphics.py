@@ -308,6 +308,7 @@ class GameWindow(pyglet.window.Window):
         glLoadIdentity()
 
         # rotate camera
+        glRotatef(self.camera.h_angle_deg(), 1.0, 0, 0)
         glRotatef(self.camera.v_angle_deg(), 0.0, 1.0, 0)
 
         glTranslatef(
