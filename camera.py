@@ -80,6 +80,17 @@ class FPSCamera:
 
         return pos_vec
 
+    def get_position_matrix(self):
+
+        pos_matrix = matrix([
+            [1.0, 0, 0, self.x_pos],
+            [0, 1.0, 0, self.y_pos],
+            [0, 0, 1.0, self.z_pos],
+            [0, 0, 0, 1.0]
+        ])
+
+        return pos_matrix
+
     def set_position_vec(self, position):
 
         pos_list = position.tolist()
@@ -110,6 +121,39 @@ class FPSCamera:
 
         return trans_matrix
 
+    def rot_y_matrix(self, angle):
+
+        trans_matrix = matrix([
+            [cos(angle), 0, sin(angle), 0],
+            [0, 1, 0, 0],
+            [- sin(angle), 0, cos(angle), 0],
+            [0, 0, 0, 1]
+        ])
+
+        return trans_matrix
+
+    def scale_matrix(self, ratio):
+
+        trans_matrix = matrix([
+            [ratio, 0, 0, 0],
+            [0, ratio, 0, 0],
+            [0, 0, ratio, 0],
+            [0, 0, 0, 1]
+        ])
+
+        return trans_matrix
+
+    def view_vec(self):
+
+        vec = matrix([
+            [sin(self.v_angle)],
+            [0],
+            [cos(self.v_angle)],
+            [1]
+        ])
+
+        return vec
+
     def forward(self):
 
         pos_vec = self.get_position_vec()
@@ -128,16 +172,21 @@ class FPSCamera:
 
     def left(self):
 
-        # self.x_pos -= self.step
-        pos_vec = self.get_position_vec()
-        trans_matrix = linalg.inv(self.right_matrix())
+        # pos_vec = self.get_position_vec()
+        # trans_matrix = linalg.inv(self.right_matrix())
+        #
+        # result = trans_matrix * pos_vec
+        # self.set_position_vec(result)
 
-        result = trans_matrix * pos_vec
+        rot_m = self.rot_y_matrix(- pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.step) * new_vec
+
+        result = self.get_position_matrix() * new_vec
         self.set_position_vec(result)
 
     def right(self):
 
-        # self.x_pos += self.step
         pos_vec = self.get_position_vec()
         trans_matrix = self.right_matrix()
 
