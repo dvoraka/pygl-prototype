@@ -271,7 +271,7 @@ class GameWindow(pyglet.window.Window):
         """Compile and use test shader."""
 
         v_shader = shaders.load_vshader('shaders_data/simple.vs')
-        f_shader = shaders.load_fshader('shaders_data/red.fs')
+        f_shader = shaders.load_fshader('shaders_data/test1.fs')
 
         program = shaders.compileProg(v_shader, f_shader)
 
