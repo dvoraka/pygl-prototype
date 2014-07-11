@@ -250,8 +250,19 @@ class GameWindow(pyglet.window.Window):
         
         print(pyglet.clock.get_fps())
 
+    def print_gl_info(self):
+
+        print("=" * 30)
+        print("OpenGL info")
+        print("renderer: {}".format(gl_info.get_renderer()))
+        print("version: {}".format(gl_info.get_version()))
+        print("=" * 30)
+        print("")
+
     def setup(self):
         """Setup OpenGL."""
+
+        self.print_gl_info()
 
         glClearColor(1.0, 1.0, 1.0, 0.0)
 
