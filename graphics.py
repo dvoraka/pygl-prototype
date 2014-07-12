@@ -106,7 +106,7 @@ class GraphicBlock:
         points[26] = (x_pos + 0.5, y_pos + 0.5, z_pos - 0.5)
         points[27] = (x_pos - 0.5, y_pos - 0.5, z_pos - 0.5)
         points[28] = (x_pos + 0.5, y_pos + 0.5, z_pos - 0.5)
-        points[29] = (x_pos + 0.5, y_pos + 0.5, z_pos - 0.5)
+        points[29] = (x_pos + 0.5, y_pos - 0.5, z_pos - 0.5)
 
         # bottom
         points[30] = (x_pos - 0.5, y_pos - 0.5, z_pos + 0.5)
