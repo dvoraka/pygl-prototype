@@ -241,7 +241,7 @@ class GameWindow(pyglet.window.Window):
 
         self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
         self.camera.gravity = True
-        self.camera_fall_collision = False
+        self.camera_fall_collision = True
 
         # for testing only
         self.test_obj = TestObject()
