@@ -256,7 +256,15 @@ class GameWindow(pyglet.window.Window):
         print("OpenGL info")
         print("renderer: {}".format(gl_info.get_renderer()))
         print("version: {}".format(gl_info.get_version()))
+        print("+" * 40)
+        print("")
+
+    def print_gl_settins(self):
+
         print("=" * 40)
+        print("OpenGL settings")
+        print("Depth test: {}".format(glIsEnabled(GL_DEPTH_TEST)))
+        print("+" * 40)
         print("")
 
     def setup(self):
@@ -271,12 +279,13 @@ class GameWindow(pyglet.window.Window):
         #glCullFace(GL_BACK)
         #glFrontFace(GL_CCW)
 
-        #glEnable(GL_DEPTH_TEST)
-        ######################################
+        glEnable(GL_DEPTH_TEST)
 
         self.renderer.set_lines()
 
         self.init_test_shader()
+
+        self.print_gl_settins()
 
     def init_test_shader(self):
         """Compile and use test shader."""
