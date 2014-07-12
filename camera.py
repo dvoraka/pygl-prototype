@@ -3,6 +3,8 @@
 
 """Module for cameras."""
 
+import time
+
 from math import sin
 from math import cos
 from math import pi
@@ -20,6 +22,8 @@ class FPSCamera:
             gravity=False):
         
         self.gravity = gravity
+        self.falling = False
+        self.falling_start = None
 
         self.x_pos = x_pos
         self.y_pos = y_pos
@@ -41,6 +45,25 @@ class FPSCamera:
         self.sprint_mp = 1.1
         self.side_step = 0.2
         self.back_step = 0.2
+
+    def fall(self):
+
+        now = time.time()
+
+        if not self.falling:
+
+            self.falling_start = now
+            self.falling = True
+
+        else:
+
+            pass
+
+        self.y_pos -= 3 * (now - self.falling_start) * (now - self.falling_start)
+
+    def stop_falling(self):
+
+        self.falling = False
 
     def v_angle_deg(self):
 

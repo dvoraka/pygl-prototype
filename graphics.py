@@ -240,6 +240,7 @@ class GameWindow(pyglet.window.Window):
         self.renderer = renderer
 
         self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
+        self.camera.gravity = True
 
         # for testing only
         self.test_obj = TestObject()
@@ -345,7 +346,11 @@ class GameWindow(pyglet.window.Window):
         self.camera.add_v_angle(float(dx))
 
     def update(self, dt):
-        
+
+        if self.camera.gravity:
+
+            self.camera.fall()
+
         if self.keyboard[key.UP]:
 
             self.camera.forward()
