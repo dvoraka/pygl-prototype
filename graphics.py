@@ -252,11 +252,11 @@ class GameWindow(pyglet.window.Window):
 
     def print_gl_info(self):
 
-        print("=" * 30)
+        print("=" * 40)
         print("OpenGL info")
         print("renderer: {}".format(gl_info.get_renderer()))
         print("version: {}".format(gl_info.get_version()))
-        print("=" * 30)
+        print("=" * 40)
         print("")
 
     def setup(self):
