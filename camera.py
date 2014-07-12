@@ -38,6 +38,9 @@ class FPSCamera:
         self.h_angle_max = pi / 3
 
         self.step = 0.2
+        self.sprint_mp = 1.1
+        self.side_step = 0.2
+        self.back_step = 0.2
 
     def v_angle_deg(self):
 
@@ -154,13 +157,17 @@ class FPSCamera:
 
         return vec
 
-    def forward(self):
+    def forward(self, sprint=False):
 
         pos_vec = self.get_position_vec()
         trans_matrix = self.fw_matrix()
 
         result = trans_matrix * pos_vec
         self.set_position_vec(result)
+
+    def sprint(self):
+
+        self.forward(sprint=True)
 
     def backward(self):
 
@@ -180,7 +187,7 @@ class FPSCamera:
 
         rot_m = self.rot_y_matrix(- pi / 2)
         new_vec = rot_m * self.view_vec()
-        new_vec = self.scale_matrix(self.step) * new_vec
+        new_vec = self.scale_matrix(self.side_step) * new_vec
 
         result = self.get_position_matrix() * new_vec
         self.set_position_vec(result)
