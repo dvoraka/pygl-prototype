@@ -3,6 +3,8 @@
 
 '''Module for data representation.'''
 
+import random
+
 
 class Block:
     '''Data representation for block.'''
@@ -40,14 +42,39 @@ class Chunk(object):
         '''Generate chunk data.'''
         
         blocks = {}
-        
+
+        last = False
         for x in range(self.size):
             for y in range(self.height):
                 for z in range(self.size):
 
                     if y < 50:
 
-                        blocks[(x, y, z)] = Block()
+                        if last:
+                            if random.randint(0, 2) in (0, 1):
+
+                                blocks[(x, y, z)] = Block()
+                                last = True
+
+                            else:
+
+                                blocks[(x, y, z)] = None
+                                last = False
+
+                        else:
+
+                            if random.randint(0, 3) in (0,):
+
+                                blocks[(x, y, z)] = Block()
+                                last = True
+
+                            else:
+
+                                blocks[(x, y, z)] = None
+                                last = False
+
+                        # blocks[(x, y, z)] = Block()
+                        # last = True
 
                     else:
 
