@@ -24,6 +24,7 @@ class FPSCamera:
         self.gravity = gravity
         self.falling = False
         self.falling_start = None
+        self.fall_mp = 0.1
 
         self.x_pos = x_pos
         self.y_pos = y_pos
@@ -59,7 +60,7 @@ class FPSCamera:
 
             pass
 
-        self.y_pos -= 3 * (now - self.falling_start) * (now - self.falling_start)
+        self.y_pos -= self.fall_mp * 5 * pow(now - self.falling_start, 2)
 
     def stop_falling(self):
 
