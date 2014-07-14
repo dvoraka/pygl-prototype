@@ -1,13 +1,27 @@
 # -*- coding: utf-8 -*-
 #
 
-'''Module for data representation.'''
+"""Module for data representation."""
 
 import random
 
 
-class Block:
-    '''Data representation for block.'''
+class Point(object):
+    """Data for point."""
+
+    def __init__(self, x, y, z):
+
+        self.set_position(x, y, z)
+
+    def set_position(self, x, y, z):
+
+        self.x = x
+        self.y = y
+        self.z = z
+
+
+class Block(object):
+    """Data representation for block."""
 
     def __init__(self):
 
