@@ -107,6 +107,22 @@ class Chunk(object):
 
         return blocks
 
+    def collision(self, point):
+
+        for block in self.blocks:
+
+            if abs(block[0] + self.position.x - point.x) < 0.5:
+                if abs(block[1] + self.position.y - point.y) < 0.5:
+                    if abs(block[2] + self.position.z - point.z) < 0.5:
+
+                        if self.blocks[block] is not None:
+
+                            # print("Collision: {}".format(block))
+
+                            return True
+
+        return False
+
     def __str__(self):
         """String representation of chunk."""
         
@@ -170,9 +186,17 @@ class BlockWorld:
 
     def collision(self, point):
 
+        point.z = -point.z
+
         for chunk in self.chunks:
 
-            pass
+            #NOTE: problem with borders
+            if chunk[0] < point.x and point.x < chunk[0] + self.chunk_size:
+                if chunk[1] < point.z and point.z < chunk[1] + self.chunk_size:
+
+                    if self.chunks[chunk].collision(point):
+
+                        return True
 
         return False
 

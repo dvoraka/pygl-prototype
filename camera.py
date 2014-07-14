@@ -26,7 +26,7 @@ class FPSCamera:
         self.gravity = gravity
         self.falling = False
         self.falling_start = None
-        self.fall_mp = 0.1
+        self.fall_mp = 0.04
 
         self.x_pos = x_pos
         self.y_pos = y_pos
@@ -44,10 +44,11 @@ class FPSCamera:
         self.h_angle_min = - pi / 3
         self.h_angle_max = pi / 3
 
-        self.step = 0.2
+        self.step = 0.05
         self.sprint_mp = 1.1
-        self.side_step = 0.2
+        self.side_step = 0.05
         self.back_step = 0.2
+        self.fly_step = 0.5
 
     def position(self):
 
@@ -233,8 +234,8 @@ class FPSCamera:
 
     def up(self):
         
-        self.y_pos += self.step
+        self.y_pos += self.fly_step
 
     def down(self):
         
-        self.y_pos -= self.step
+        self.y_pos -= self.fly_step
