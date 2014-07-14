@@ -11,6 +11,7 @@ import math
 
 import shaders
 import camera
+import data
 
 
 class TestObject():
@@ -351,6 +352,11 @@ class GameWindow(pyglet.window.Window):
         self.camera.add_v_angle(float(dx))
 
     def update(self, dt):
+
+        position = data.Point(self.camera.x_pos, self.camera.y_pos, self.camera.z_pos)
+        if self.renderer.ground_collision(position):
+
+            print("Ground collision")
 
         if self.camera.gravity and not self.camera_fall_collision:
 
