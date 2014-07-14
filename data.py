@@ -139,7 +139,7 @@ class NormalChunk(Chunk):
 
 
 class BlockWorld:
-    '''World encapsulates blocks in chunks.'''
+    """World encapsulates blocks in chunks."""
 
     def __init__(self, chunk_type, width, depth):
         
@@ -153,13 +153,17 @@ class BlockWorld:
 
         self.generate_world()
 
+    def collision(self, point):
+
+        return False
+
     def __str__(self):
-        '''String representation for world.'''
+        """String representation for world."""
         
         return 'BlockWorld: ' + str(self.chunks)
 
     def generate_world(self):
-        '''Generate world from chunks.'''
+        """Generate world from chunks."""
         
         for x in range(0, self.width, self.chunk_size):
             for z in range(0, self.depth, self.chunk_size):

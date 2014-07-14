@@ -133,6 +133,10 @@ class Renderer:
         self.vbos = []
         self.vbos_vert_count = {}
 
+    def ground_collision(self, point):
+
+        return False
+
     def prepare_world(self):
         """Fill buffer objects with data."""
         
