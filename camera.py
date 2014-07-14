@@ -11,6 +11,8 @@ from math import pi
 from numpy import matrix
 from numpy import linalg
 
+import data
+
 
 class FPSCamera:
     
@@ -46,6 +48,11 @@ class FPSCamera:
         self.sprint_mp = 1.1
         self.side_step = 0.2
         self.back_step = 0.2
+
+    def position(self):
+
+        #TODO: used cached object
+        return data.Point(self.x_pos, self.y_pos, self.z_pos)
 
     def fall(self):
 

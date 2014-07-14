@@ -136,7 +136,7 @@ class Renderer:
 
     def ground_collision(self, point):
 
-        return False
+        return self.world.collision(point)
 
     def prepare_world(self):
         """Fill buffer objects with data."""
@@ -236,7 +236,7 @@ class GameWindow(pyglet.window.Window):
         #print(self.config)
         #self.set_fullscreen(True)
 
-        pyglet.clock.schedule_interval(self.print_fps, 2.0 / 1.0)
+        pyglet.clock.schedule_interval(self.print_info, 2.0 / 1.0)
         pyglet.clock.schedule_interval(self.update, 1.0 / 30.0)
 
         self.keyboard = pyglet.window.key.KeyStateHandler()
@@ -256,6 +256,11 @@ class GameWindow(pyglet.window.Window):
     def print_fps(self, dt):
         
         print(pyglet.clock.get_fps())
+
+    def print_info(self, dt):
+
+        print("FPS: {}".format(pyglet.clock.get_fps()))
+        print(self.camera.position())
 
     def print_gl_info(self):
 

@@ -5,6 +5,8 @@
 
 import random
 
+import data
+
 
 class Point(object):
     """Data for point."""
@@ -13,6 +15,9 @@ class Point(object):
 
         self.set_position(x, y, z)
 
+    def __str__(self):
+
+        return "Position: x={}, y={}, z={}".format(self.x, self.y, self.z)
     def set_position(self, x, y, z):
 
         self.x = x
@@ -43,17 +48,23 @@ class Block(object):
 
 
 class Chunk(object):
-    '''Base class for chunks.'''
+    """Base class for chunks."""
 
     size = None
     height = None
 
-    def __init__(self):
+    # chunk position in world
+    position = None
+
+    def __init__(self, position):
 
         self.blocks = None
+        self.position = position
+
+        self.blocks = self.generate_chunk()
 
     def generate_chunk(self):
-        '''Generate chunk data.'''
+        """Generate chunk data."""
         
         blocks = {}
 
@@ -97,7 +108,7 @@ class Chunk(object):
         return blocks
 
     def __str__(self):
-        '''String representation of chunk.'''
+        """String representation of chunk."""
         
         return 'Chunk: ' + str(self.blocks)
 
@@ -107,21 +118,21 @@ class Chunk(object):
 
 
 class SmallChunk(Chunk):
-    '''Small chunk of blocks - 2x2x128.'''
+    """Small chunk of blocks - 2x2x128."""
 
     # size of chunk side
     size = 2
     # chunk height
     height = 128
 
-    def __init__(self):
-        '''Initialize small chunk.'''
-
-        # blocks in chunk
-        self.blocks = self.generate_chunk()
+    # def __init__(self):
+    #     """Initialize small chunk."""
+    #
+    #     # blocks in chunk
+    #     self.blocks = self.generate_chunk()
 
     def __str__(self):
-        '''String representation of chunk.'''
+        """String representation of chunk."""
         
         return 'SmallChunk: ' + str(self.blocks)
 
@@ -133,9 +144,9 @@ class NormalChunk(Chunk):
     # chunk height
     height = 128
    
-    def __init__(self):
-      
-        self.blocks = self.generate_chunk()
+    # def __init__(self):
+    #
+    #     self.blocks = self.generate_chunk()
 
 
 class BlockWorld:
@@ -153,7 +164,15 @@ class BlockWorld:
 
         self.generate_world()
 
+    def in_chunk(self, point):
+
+        pass
+
     def collision(self, point):
+
+        for chunk in self.chunks:
+
+            pass
 
         return False
 
@@ -168,4 +187,4 @@ class BlockWorld:
         for x in range(0, self.width, self.chunk_size):
             for z in range(0, self.depth, self.chunk_size):
 
-                self.chunks[(x, z)] = self.chunk_type()
+                self.chunks[(x, z)] = self.chunk_type(data.Point(x, 0, z))
