@@ -293,7 +293,7 @@ class GameWindow(pyglet.window.Window):
 
         glEnable(GL_DEPTH_TEST)
 
-        self.renderer.set_lines()
+        self.renderer.set_fill()
 
         self.init_test_shader()
 

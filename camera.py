@@ -44,9 +44,9 @@ class FPSCamera:
         self.h_angle_min = - pi / 3
         self.h_angle_max = pi / 3
 
-        self.step = 0.05
+        self.step = 0.02
         self.sprint_mp = 1.1
-        self.side_step = 0.05
+        self.side_step = self.step
         self.back_step = 0.2
         self.fly_step = 0.5
 
