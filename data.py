@@ -188,13 +188,13 @@ class BlockWorld:
 
         point.z = -point.z
 
+        offset = 0.5
+
         counter = 0
         for chunk in self.chunks:
 
-
-            #NOTE: problem with borders
-            if chunk[0] < point.x and point.x < chunk[0] + self.chunk_size:
-                if chunk[1] < point.z and point.z < chunk[1] + self.chunk_size:
+            if chunk[0] < point.x + offset and point.x - offset < chunk[0] + self.chunk_size:
+                if chunk[1] < point.z + offset and point.z - offset < chunk[1] + self.chunk_size:
 
                     if self.chunks[chunk].collision(point):
 
