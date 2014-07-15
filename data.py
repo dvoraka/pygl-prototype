@@ -109,7 +109,28 @@ class Chunk(object):
 
     def collision(self, point):
 
-        for block in self.blocks:
+        counter = 0
+
+        selected_blocks = []  # (x, y, z)
+
+        for x in range(int(point.x - 2 - self.position.x), int(point.x + 2 - self.position.x)):
+            for y in range(int(point.y - 2 - self.position.y), int(point.y + 2 - self.position.y)):
+                for z in range(int(point.z - 2 - self.position.z), int(point.z + 2 - self.position.z)):
+
+                    if x < 0 or x >= self.size:
+
+                        pass
+
+                    elif z < 0 or z >= self.size:
+
+                        pass
+
+                    else:
+
+                        selected_blocks.append((x, y, z))
+
+        # for block in self.blocks:
+        for block in selected_blocks:
 
             if abs(block[0] + self.position.x - point.x) < 0.5:
                 if abs(block[1] + self.position.y - point.y) < 0.5:
@@ -118,8 +139,11 @@ class Chunk(object):
                         if self.blocks[block] is not None:
 
                             # print("Collision: {}".format(block))
+                            # print(counter)
 
                             return True
+
+            counter += 1
 
         return False
 
@@ -198,6 +222,7 @@ class BlockWorld:
 
                     if self.chunks[chunk].collision(point):
 
+                        # print(counter)
                         return True
 
             counter += 1
