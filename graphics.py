@@ -271,7 +271,7 @@ class GameWindow(pyglet.window.Window):
         print("+" * 40)
         print("")
 
-    def print_gl_settins(self):
+    def print_gl_settings(self):
 
         print("=" * 40)
         print("OpenGL settings")
@@ -297,7 +297,7 @@ class GameWindow(pyglet.window.Window):
 
         self.init_test_shader()
 
-        self.print_gl_settins()
+        self.print_gl_settings()
 
     def init_test_shader(self):
         """Compile and use test shader."""
@@ -348,7 +348,6 @@ class GameWindow(pyglet.window.Window):
             -self.camera.y_pos,
             self.camera.z_pos)
 
-        self.test_obj.draw()
         self.renderer.render()
 
     def on_mouse_motion(self, x, y, dx, dy):

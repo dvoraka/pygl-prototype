@@ -121,6 +121,10 @@ class Chunk(object):
 
                         pass
 
+                    elif y < 0 or y >= self.height:
+
+                        pass
+
                     elif z < 0 or z >= self.size:
 
                         pass

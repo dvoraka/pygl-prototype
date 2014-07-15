@@ -48,7 +48,7 @@ class FPSCamera:
         self.sprint_mp = 1.1
         self.side_step = self.step
         self.back_step = 0.2
-        self.fly_step = 0.5
+        self.fly_step = 1.0
 
     def position(self):
 
