@@ -36,8 +36,8 @@ class FPSCamera:
         self.v_angle = 0.0
         self.h_angle = 0.0
 
-        self.v_multiplier = 0.05
-        self.h_multiplier = 0.05
+        self.v_multiplier = 0.01
+        self.h_multiplier = 0.02
 
         self.inverse_horizontal = False
 
