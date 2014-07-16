@@ -160,6 +160,12 @@ class FPSCamera:
         self.y_pos = pos_list[1][0]
         self.z_pos = pos_list[2][0]
 
+    def set_position(self, point):
+
+        self.x_pos = point.x
+        self.y_pos = point.y
+        self.z_pos = point.z
+
     def fw_matrix(self):
 
         trans_matrix = matrix([
@@ -233,6 +239,32 @@ class FPSCamera:
 
         result = trans_matrix * pos_vec
         self.set_position_vec(result)
+
+    def forward_x(self):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = self.fw_matrix()
+
+        result = trans_matrix * pos_vec
+
+        pos_list = result.tolist()
+
+        x_pos = pos_list[0][0]
+
+        self.set_position(data.Point(x_pos, self.y_pos, self.z_pos))
+
+    def forward_z(self):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = self.fw_matrix()
+
+        result = trans_matrix * pos_vec
+
+        pos_list = result.tolist()
+
+        z_pos = pos_list[2][0]
+
+        self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
 
     def sprint(self):
 
