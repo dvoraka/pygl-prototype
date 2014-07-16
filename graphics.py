@@ -215,10 +215,12 @@ class Renderer:
     def set_lines(self):
         
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        glDisable(GL_CULL_FACE)
 
     def set_fill(self):
         
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+        glEnable(GL_CULL_FACE)
 
     def set_points(self):
 
@@ -236,7 +238,7 @@ class GameWindow(pyglet.window.Window):
         self.set_exclusive_mouse(True)
 
         #print(self.config)
-        #self.set_fullscreen(True)
+        # self.set_fullscreen(True)
 
         pyglet.clock.schedule_interval(self.print_info, 2.0 / 1.0)
         pyglet.clock.schedule_interval(self.update, 1.0 / 30.0)
@@ -249,9 +251,6 @@ class GameWindow(pyglet.window.Window):
         self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
         self.camera.gravity = True
         self.camera_fall_collision = True
-
-        # for testing only
-        self.test_obj = TestObject()
         
         self.setup()
 
@@ -278,6 +277,7 @@ class GameWindow(pyglet.window.Window):
         print("=" * 40)
         print("OpenGL settings")
         print("Depth test: {}".format(glIsEnabled(GL_DEPTH_TEST)))
+        print("Culling: {}".format(glIsEnabled(GL_CULL_FACE)))
         print("+" * 40)
         print("")
 
@@ -288,12 +288,8 @@ class GameWindow(pyglet.window.Window):
 
         glClearColor(1.0, 1.0, 1.0, 0.0)
 
-        # performance tests
-        #glEnable(GL_CULL_FACE)
-        #glCullFace(GL_BACK)
-        #glFrontFace(GL_CCW)
-
         glEnable(GL_DEPTH_TEST)
+        glEnable(GL_CULL_FACE)
 
         self.renderer.set_fill()
 
