@@ -142,7 +142,8 @@ class Renderer:
 
     def prepare_world(self):
         """Fill buffer objects with data."""
-        
+
+        block_counter = 0
         for pos, chunk in self.world.chunks.items():
 
             b_positions = []
@@ -163,6 +164,7 @@ class Renderer:
                 if block is not None:
 
                     b_positions.append(block_position)
+                    block_counter += 1
 
             chunk_vertexes = []
 
@@ -185,12 +187,17 @@ class Renderer:
 
             self.vbos.append(chunk_vbo)
 
-        print('Chunks: {}'.format(len(self.vbos)))
-        print('Blocks: {}'.format(
+        print("=" * 40)
+        print("World info")
+        print("Chunks: {}".format(len(self.vbos)))
+        print("Blocks: {}".format(
             len(self.vbos) *
             self.world.chunk_type.size *
             self.world.chunk_type.size *
             self.world.chunk_type.height))
+        print("Rendered blocks: {}".format(block_counter))
+        print("+" * 40)
+        print("")
 
     def render(self):
         
