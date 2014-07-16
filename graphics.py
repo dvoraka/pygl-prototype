@@ -334,7 +334,7 @@ class GameWindow(pyglet.window.Window):
     def on_draw(self):
         """Redraw window."""
 
-        self.clear()
+        #self.clear()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
