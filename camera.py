@@ -52,8 +52,34 @@ class FPSCamera:
 
     def position(self):
 
-        #TODO: used cached object
+        #TODO: use cached object
         return data.Point(self.x_pos, self.y_pos, self.z_pos)
+
+    def next_fw_x_point(self):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = self.fw_coll_matrix(0.2)
+
+        result = trans_matrix * pos_vec
+
+        pos_list = result.tolist()
+
+        next_x = pos_list[0][0]
+
+        return data.Point(next_x, self.y_pos, self.z_pos)
+
+    def next_fw_z_point(self):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = self.fw_coll_matrix(0.2)
+
+        result = trans_matrix * pos_vec
+
+        pos_list = result.tolist()
+
+        next_z = pos_list[2][0]
+
+        return data.Point(self.x_pos, self.y_pos, next_z)
 
     def fall(self):
 
@@ -140,6 +166,17 @@ class FPSCamera:
             [1.0, 0, 0, self.step * sin(self.v_angle)],
             [0, 1.0, 0, 0],
             [0, 0, 1.0, self.step * cos(self.v_angle)],
+            [0, 0, 0, 1.0]
+        ])
+
+        return trans_matrix
+
+    def fw_coll_matrix(self, offset=0.0):
+
+        trans_matrix = matrix([
+            [1.0, 0, 0, (self.step + offset) * sin(self.v_angle)],
+            [0, 1.0, 0, 0],
+            [0, 0, 1.0, (self.step + offset) * cos(self.v_angle)],
             [0, 0, 0, 1.0]
         ])
 
