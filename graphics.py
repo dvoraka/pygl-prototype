@@ -2,9 +2,11 @@
 
 import pyglet
 
-#from OpenGL.GL import * # Some pyopengl problems
-from pyglet.gl import *
+from OpenGL.GL import *
+from OpenGL.GLU import *
+#from pyglet.gl import *
 
+from pyglet.gl import gl_info
 from pyglet.window import key
 
 import math
