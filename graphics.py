@@ -363,9 +363,17 @@ class GameWindow(pyglet.window.Window):
     def update(self, dt):
 
         position = data.Point(self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
+        position2 = data.Point(self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
         collision_offset = 0.1
 
-        if self.renderer.ground_collision(position):
+        if self.renderer.ground_collision(position2):
+
+            print("helper")
+            self.camera.collision_helper()
+            self.camera.stop_falling()
+            self.camera_fall_collision = True
+
+        elif self.renderer.ground_collision(position):
 
             # print("Ground collision")
             self.camera.stop_falling()

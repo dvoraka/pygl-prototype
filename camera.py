@@ -50,6 +50,8 @@ class FPSCamera:
         self.back_step = 0.2
         self.fly_step = 1.0
 
+        self.helper_step = 0.1
+
     def position(self):
 
         #TODO: use cached object
@@ -386,3 +388,7 @@ class FPSCamera:
     def down(self):
         
         self.y_pos -= self.fly_step
+
+    def collision_helper(self):
+
+        self.y_pos += self.helper_step
