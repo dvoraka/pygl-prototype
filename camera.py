@@ -135,6 +135,32 @@ class FPSCamera:
 
         return data.Point(self.x_pos, self.y_pos, next_z)
 
+    def next_right_x_point(self, offset=0.0):
+
+        rot_m = self.rot_y_matrix(pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.side_step + offset) * new_vec
+
+        result = self.get_position_matrix() * new_vec
+
+        pos_list = result.tolist()
+        next_x = pos_list[0][0]
+
+        return data.Point(next_x, self.y_pos, self.z_pos)
+
+    def next_right_z_point(self, offset=0.0):
+
+        rot_m = self.rot_y_matrix(pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.side_step + offset) * new_vec
+
+        result = self.get_position_matrix() * new_vec
+
+        pos_list = result.tolist()
+        next_z = pos_list[2][0]
+
+        return data.Point(self.x_pos, self.y_pos, next_z)
+
     def fall(self):
 
         now = time.time()
@@ -406,6 +432,32 @@ class FPSCamera:
 
         result = trans_matrix * pos_vec
         self.set_position_vec(result)
+
+    def right_x(self):
+
+        rot_m = self.rot_y_matrix(pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.side_step) * new_vec
+
+        result = self.get_position_matrix() * new_vec
+
+        pos_list = result.tolist()
+        x_pos = pos_list[0][0]
+
+        self.set_position(data.Point(x_pos, self.y_pos, self.z_pos))
+
+    def right_z(self):
+
+        rot_m = self.rot_y_matrix(pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.side_step) * new_vec
+
+        result = self.get_position_matrix() * new_vec
+
+        pos_list = result.tolist()
+        z_pos = pos_list[2][0]
+
+        self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
 
     def up(self):
         
