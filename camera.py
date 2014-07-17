@@ -81,6 +81,32 @@ class FPSCamera:
 
         return data.Point(self.x_pos, self.y_pos, next_z)
 
+    def next_bw_x_point(self, offset=0.0):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = linalg.inv(self.fw_coll_matrix(offset))
+
+        result = trans_matrix * pos_vec
+
+        pos_list = result.tolist()
+
+        next_x = pos_list[0][0]
+
+        return data.Point(next_x, self.y_pos, self.z_pos)
+
+    def next_bw_z_point(self, offset=0.0):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = linalg.inv(self.fw_coll_matrix(offset))
+
+        result = trans_matrix * pos_vec
+
+        pos_list = result.tolist()
+
+        next_z = pos_list[2][0]
+
+        return data.Point(self.x_pos, self.y_pos, next_z)
+
     def fall(self):
 
         now = time.time()
@@ -257,6 +283,32 @@ class FPSCamera:
 
         pos_vec = self.get_position_vec()
         trans_matrix = self.fw_matrix()
+
+        result = trans_matrix * pos_vec
+
+        pos_list = result.tolist()
+
+        z_pos = pos_list[2][0]
+
+        self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
+
+    def backward_x(self):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = linalg.inv(self.fw_matrix())
+
+        result = trans_matrix * pos_vec
+
+        pos_list = result.tolist()
+
+        x_pos = pos_list[0][0]
+
+        self.set_position(data.Point(x_pos, self.y_pos, self.z_pos))
+
+    def backward_z(self):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = linalg.inv(self.fw_matrix())
 
         result = trans_matrix * pos_vec
 
