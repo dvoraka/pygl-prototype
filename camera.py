@@ -55,10 +55,10 @@ class FPSCamera:
         #TODO: use cached object
         return data.Point(self.x_pos, self.y_pos, self.z_pos)
 
-    def next_fw_x_point(self):
+    def next_fw_x_point(self, offset=0.0):
 
         pos_vec = self.get_position_vec()
-        trans_matrix = self.fw_coll_matrix(0.2)
+        trans_matrix = self.fw_coll_matrix(offset)
 
         result = trans_matrix * pos_vec
 
@@ -68,10 +68,10 @@ class FPSCamera:
 
         return data.Point(next_x, self.y_pos, self.z_pos)
 
-    def next_fw_z_point(self):
+    def next_fw_z_point(self, offset=0.0):
 
         pos_vec = self.get_position_vec()
-        trans_matrix = self.fw_coll_matrix(0.2)
+        trans_matrix = self.fw_coll_matrix(offset)
 
         result = trans_matrix * pos_vec
 

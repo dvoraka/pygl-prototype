@@ -363,6 +363,8 @@ class GameWindow(pyglet.window.Window):
     def update(self, dt):
 
         position = data.Point(self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
+        collision_offset = 0.1
+
         if self.renderer.ground_collision(position):
 
             # print("Ground collision")
@@ -390,8 +392,9 @@ class GameWindow(pyglet.window.Window):
 
         if self.keyboard[key.UP]:
 
-            next_x = self.camera.next_fw_x_point()
-            next_z = self.camera.next_fw_z_point()
+            next_x = self.camera.next_fw_x_point(collision_offset)
+            next_z = self.camera.next_fw_z_point(collision_offset)
+
             if self.renderer.ground_collision(next_x):
 
                 pass
