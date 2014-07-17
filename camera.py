@@ -292,6 +292,18 @@ class FPSCamera:
 
         self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
 
+    def sprint(self):
+
+        self.forward(sprint=True)
+
+    def backward(self):
+
+        pos_vec = self.get_position_vec()
+        trans_matrix = linalg.inv(self.fw_matrix())
+
+        result = trans_matrix * pos_vec
+        self.set_position_vec(result)
+
     def backward_x(self):
 
         pos_vec = self.get_position_vec()
@@ -318,18 +330,6 @@ class FPSCamera:
 
         self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
 
-    def sprint(self):
-
-        self.forward(sprint=True)
-
-    def backward(self):
-
-        pos_vec = self.get_position_vec()
-        trans_matrix = linalg.inv(self.fw_matrix())
-
-        result = trans_matrix * pos_vec
-        self.set_position_vec(result)
-
     def left(self):
 
         # pos_vec = self.get_position_vec()
@@ -344,6 +344,32 @@ class FPSCamera:
 
         result = self.get_position_matrix() * new_vec
         self.set_position_vec(result)
+
+    def left_x(self):
+
+        rot_m = self.rot_y_matrix(- pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.side_step) * new_vec
+
+        result = self.get_position_matrix() * new_vec
+
+        pos_list = result.tolist()
+        x_pos = pos_list[0][0]
+
+        self.set_position(data.Point(x_pos, self.y_pos, self.z_pos))
+
+    def left_z(self):
+
+        rot_m = self.rot_y_matrix(- pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.side_step) * new_vec
+
+        result = self.get_position_matrix() * new_vec
+
+        pos_list = result.tolist()
+        z_pos = pos_list[2][0]
+
+        self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
 
     def right(self):
 

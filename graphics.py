@@ -444,7 +444,10 @@ class GameWindow(pyglet.window.Window):
         
         if self.keyboard[key.LEFT]:
 
-            self.camera.left()
+            # self.camera.left()
+
+            self.camera.left_x()
+            self.camera.left_z()
 
         elif self.keyboard[key.RIGHT]:
             
