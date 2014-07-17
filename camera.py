@@ -109,6 +109,32 @@ class FPSCamera:
 
         return data.Point(self.x_pos, self.y_pos, next_z)
 
+    def next_left_x_point(self, offset=0.0):
+
+        rot_m = self.rot_y_matrix(- pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.side_step + offset) * new_vec
+
+        result = self.get_position_matrix() * new_vec
+
+        pos_list = result.tolist()
+        next_x = pos_list[0][0]
+
+        return data.Point(next_x, self.y_pos, self.z_pos)
+
+    def next_left_z_point(self, offset=0.0):
+
+        rot_m = self.rot_y_matrix(- pi / 2)
+        new_vec = rot_m * self.view_vec()
+        new_vec = self.scale_matrix(self.side_step + offset) * new_vec
+
+        result = self.get_position_matrix() * new_vec
+
+        pos_list = result.tolist()
+        next_z = pos_list[2][0]
+
+        return data.Point(self.x_pos, self.y_pos, next_z)
+
     def fall(self):
 
         now = time.time()

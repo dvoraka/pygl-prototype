@@ -454,8 +454,24 @@ class GameWindow(pyglet.window.Window):
 
             # self.camera.left()
 
-            self.camera.left_x()
-            self.camera.left_z()
+            next_x = self.camera.next_left_x_point(collision_offset)
+            next_z = self.camera.next_left_z_point(collision_offset)
+
+            if self.renderer.ground_collision(next_x):
+
+                pass
+
+            else:
+
+                self.camera.left_x()
+
+            if self.renderer.ground_collision(next_z):
+
+                pass
+
+            else:
+
+                self.camera.left_z()
 
         elif self.keyboard[key.RIGHT]:
             
