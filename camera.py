@@ -65,6 +65,8 @@ class FPSCamera:
             Point: the camera position
         """
 
+        self.position.set_position(self.x_pos, self.y_pos, self.z_pos)
+
         return self.position
 
     def next_fw_x_point(self, offset=0.0):

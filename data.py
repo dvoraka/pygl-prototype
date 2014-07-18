@@ -13,12 +13,18 @@ class Point(object):
 
     def __init__(self, x, y, z):
 
+        self.x = 0
+        self.y = 0
+        self.z = 0
+
         self.set_position(x, y, z)
 
     def __str__(self):
 
         return "Position: x={}, y={}, z={}".format(self.x, self.y, self.z)
+
     def set_position(self, x, y, z):
+        """Set point position."""
 
         self.x = x
         self.y = y
