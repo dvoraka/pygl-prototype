@@ -53,6 +53,11 @@ class FPSCamera:
         self.helper_step = 0.1
 
     def position(self):
+        """Return camera position as a Point.
+
+        Returns:
+            Point: the camera position
+        """
 
         #TODO: use cached object
         return data.Point(self.x_pos, self.y_pos, self.z_pos)
@@ -162,6 +167,7 @@ class FPSCamera:
         return data.Point(self.x_pos, self.y_pos, next_z)
 
     def fall(self):
+        """Simulate camera falling."""
 
         now = time.time()
 
@@ -177,14 +183,17 @@ class FPSCamera:
         self.y_pos -= self.fall_mp * 5 * pow(now - self.falling_start, 2)
 
     def stop_falling(self):
+        """Stop camera falling."""
 
         self.falling = False
 
     def v_angle_deg(self):
+        """Return camera vertical angle in degrees."""
 
         return (self.v_angle * 180) / pi
 
     def h_angle_deg(self):
+        """Return camera horizontal angle in degrees."""
 
         return (self.h_angle * 180) / pi
 
