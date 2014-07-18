@@ -22,25 +22,31 @@ class FPSCamera:
             y_pos=0.0,
             z_pos=0.0,
             gravity=False):
-        
+
+        # gravity attributes
         self.gravity = gravity
         self.falling = False
+        # falling start time
         self.falling_start = None
         self.fall_mp = 0.04
 
+        # camera position
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.z_pos = z_pos
+        self.position = data.Point(self.x_pos, self.y_pos, self.z_pos)
 
         # camera angles in radians
         self.v_angle = 0.0
         self.h_angle = 0.0
 
+        # camera rotating sensitivity multipliers
         self.v_multiplier = 0.01
         self.h_multiplier = 0.02
 
         self.inverse_horizontal = False
 
+        # camera min and max horizontal angles
         self.h_angle_min = - pi / 3
         self.h_angle_max = pi / 3
 
@@ -52,15 +58,14 @@ class FPSCamera:
 
         self.helper_step = 0.1
 
-    def position(self):
+    def get_position(self):
         """Return camera position as a Point.
 
         Returns:
             Point: the camera position
         """
 
-        #TODO: use cached object
-        return data.Point(self.x_pos, self.y_pos, self.z_pos)
+        return self.position
 
     def next_fw_x_point(self, offset=0.0):
 
@@ -469,13 +474,16 @@ class FPSCamera:
         self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
 
     def up(self):
+        """Move camera up."""
         
         self.y_pos += self.fly_step
 
     def down(self):
+        """Move camera down."""
         
         self.y_pos -= self.fly_step
 
     def collision_helper(self):
+        """Help camera with in-block collisions."""
 
         self.y_pos += self.helper_step

@@ -268,7 +268,7 @@ class GameWindow(pyglet.window.Window):
     def print_info(self, dt):
 
         print("FPS: {}".format(pyglet.clock.get_fps()))
-        print(self.camera.position())
+        print(self.camera.get_position())
 
     def print_gl_info(self):
 
