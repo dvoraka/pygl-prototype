@@ -15,6 +15,7 @@ Page Up | go up
 Page Down | go down
 L | lines rendering
 F | full rendering
+S | toggle fullscreen
 
 
 ### Screenshots
