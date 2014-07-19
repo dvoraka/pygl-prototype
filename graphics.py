@@ -244,6 +244,10 @@ class GameWindow(pyglet.window.Window):
 
         self.set_exclusive_mouse(True)
 
+        # detect OpenGL capabilities
+        self.capabilities = None
+        self.detect_capabilities()
+
         #print(self.config)
         # self.set_fullscreen(True)
 
@@ -276,6 +280,7 @@ class GameWindow(pyglet.window.Window):
         print("OpenGL info")
         print("renderer: {}".format(gl_info.get_renderer()))
         print("version: {}".format(gl_info.get_version()))
+        print("capabilities: {}".format(self.capabilities))
         print("+" * 40)
         print("")
 
@@ -287,6 +292,20 @@ class GameWindow(pyglet.window.Window):
         print("Culling: {}".format(glIsEnabled(GL_CULL_FACE)))
         print("+" * 40)
         print("")
+
+    def detect_capabilities(self):
+
+        if gl_info.have_version(3, 3):
+
+            self.capabilities = "normal"
+
+        elif gl_info.have_version(3, 1):
+
+            self.capabilities = "old"
+
+        elif gl_info.have_version(2, 1):
+
+            self.capabilities = "legacy"
 
     def setup(self):
         """Setup OpenGL."""
