@@ -307,6 +307,10 @@ class GameWindow(pyglet.window.Window):
 
             self.capabilities = "legacy"
 
+        else:
+
+            self.capabilities = "unsupported"
+
     def setup(self):
         """Setup OpenGL."""
 
