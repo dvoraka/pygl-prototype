@@ -1,6 +1,7 @@
 """Module for graphic representation."""
 
 import pyglet
+import sys
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -8,8 +9,6 @@ from OpenGL.GLU import *
 
 from pyglet.gl import gl_info
 from pyglet.window import key
-
-import math
 
 import shaders
 import camera
@@ -247,6 +246,11 @@ class GameWindow(pyglet.window.Window):
         # detect OpenGL capabilities
         self.capabilities = None
         self.detect_capabilities()
+
+        if self.capabilities == "unsupported":
+
+            print("Unsupported OpenGL version.")
+            sys.exit()
 
         #print(self.config)
         # self.set_fullscreen(True)
@@ -526,3 +530,19 @@ class GameWindow(pyglet.window.Window):
         elif self.keyboard[key.F]:
             
             self.renderer.set_fill()
+
+        elif self.keyboard[key.S]:
+
+            self.keyboard[key.S] = False
+
+            if self.fullscreen:
+
+                self.set_fullscreen(False)
+                self.set_exclusive_mouse(True)
+                self.set_mouse_visible(False)
+
+            else:
+
+                self.set_fullscreen(True)
+                self.set_exclusive_mouse(True)
+                self.set_mouse_visible(False)
