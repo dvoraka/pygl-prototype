@@ -5,6 +5,8 @@
 
 import random
 
+from math import sqrt
+
 import data
 
 
@@ -30,6 +32,15 @@ class Point(object):
         self.y = y
         self.z = z
 
+    def chunk_distance(self, chunk_pos):
+
+        x_dist = chunk_pos.x - self.x
+        z_dist = chunk_pos.z - self.z
+
+        distance = sqrt(pow(x_dist, 2) + pow(z_dist, 2))
+
+        return distance
+
 
 class Block(object):
     """Data representation for block."""
@@ -44,7 +55,7 @@ class Block(object):
         self.children = None
 
     def __str__(self):
-        '''Return string representation.'''
+        """Return string representation."""
         
         return 'Block'
 
@@ -66,8 +77,16 @@ class Chunk(object):
 
         self.blocks = None
         self.position = position
+        self.centre = Point(position.x + self.size / 2, 0, position.z + self.size / 2)
+
+        # chunk change flag
+        self.dirty = False
 
         self.blocks = self.generate_chunk()
+
+    def get_centre(self):
+
+        return self.centre
 
     def generate_chunk(self):
         """Generate chunk data."""
