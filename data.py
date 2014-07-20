@@ -70,18 +70,17 @@ class Chunk(object):
     size = None
     height = None
 
-    # chunk position in world
-    position = None
-
     def __init__(self, position):
 
-        self.blocks = None
+        # chunk position in world
         self.position = position
+        # chunk ID
+        self.chunk_id = 1
+        # chunk centre
         self.centre = Point(position.x + self.size / 2, 0, position.z + self.size / 2)
-
         # chunk change flag
         self.dirty = False
-
+        # chunk Blocks dict
         self.blocks = self.generate_chunk()
 
     def get_centre(self):
