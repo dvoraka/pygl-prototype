@@ -125,6 +125,13 @@ class GraphicBlock:
         return vertexes
 
 
+class VboData:
+
+    def __init__(self, vbo):
+
+        self.vbo = vbo
+
+
 class Renderer:
     """Render world."""
 
@@ -138,6 +145,12 @@ class Renderer:
     def ground_collision(self, point):
 
         return self.world.collision(point)
+
+    def check_visibility(self):
+
+        for position, chunk in self.world.chunks.items():
+
+            pass
 
     def prepare_world(self):
         """Fill buffer objects with data."""
