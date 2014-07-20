@@ -7,8 +7,6 @@ import random
 
 from math import sqrt
 
-import data
-
 
 class Point(object):
     """Data for point."""
@@ -33,6 +31,7 @@ class Point(object):
         self.z = z
 
     def chunk_distance(self, chunk_pos):
+        """Return chunk distance."""
 
         x_dist = chunk_pos.x - self.x
         z_dist = chunk_pos.z - self.z
@@ -77,13 +76,16 @@ class Chunk(object):
         # chunk ID
         self.chunk_id = 1
         # chunk centre
-        self.centre = Point(position.x + self.size / 2, 0, position.z + self.size / 2)
+        self.centre = Point(position.x + self.size / 2,
+                            0,
+                            position.z + self.size / 2)
         # chunk change flag
         self.dirty = False
         # chunk Blocks dict
         self.blocks = self.generate_chunk()
 
     def get_centre(self):
+        """Return chunk center as Point."""
 
         return self.centre
 
@@ -129,15 +131,19 @@ class Chunk(object):
         return blocks
 
     def collision(self, point):
+        """Return boolean value of collision for the point."""
 
         # debug info
         counter = 0
 
         selected_blocks = []  # (x, y, z)
 
-        for x in range(int(point.x - 2 - self.position.x), int(point.x + 2 - self.position.x)):
-            for y in range(int(point.y - 2 - self.position.y), int(point.y + 2 - self.position.y)):
-                for z in range(int(point.z - 2 - self.position.z), int(point.z + 2 - self.position.z)):
+        for x in range(int(point.x - 2 - self.position.x),
+                       int(point.x + 2 - self.position.x)):
+            for y in range(int(point.y - 2 - self.position.y),
+                           int(point.y + 2 - self.position.y)):
+                for z in range(int(point.z - 2 - self.position.z),
+                               int(point.z + 2 - self.position.z)):
 
                     if x < 0 or x >= self.size:
 
@@ -238,8 +244,10 @@ class BlockWorld:
         counter = 0
         for chunk in self.chunks:
 
-            if chunk[0] < point.x + offset and point.x - offset < chunk[0] + self.chunk_size:
-                if chunk[1] < point.z + offset and point.z - offset < chunk[1] + self.chunk_size:
+            if (chunk[0] < point.x + offset and
+                            point.x - offset < chunk[0] + self.chunk_size):
+                if (chunk[1] < point.z + offset and
+                                point.z - offset < chunk[1] + self.chunk_size):
 
                     if self.chunks[chunk].collision(point):
 
@@ -261,4 +269,4 @@ class BlockWorld:
         for x in range(0, self.width, self.chunk_size):
             for z in range(0, self.depth, self.chunk_size):
 
-                self.chunks[(x, z)] = self.chunk_type(data.Point(x, 0, z))
+                self.chunks[(x, z)] = self.chunk_type(Point(x, 0, z))
