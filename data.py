@@ -122,9 +122,6 @@ class Chunk(object):
                                 blocks[(x, y, z)] = None
                                 last = False
 
-                        # blocks[(x, y, z)] = Block()
-                        # last = True
-
                     else:
 
                         blocks[(x, y, z)] = None
@@ -133,6 +130,7 @@ class Chunk(object):
 
     def collision(self, point):
 
+        # debug info
         counter = 0
 
         selected_blocks = []  # (x, y, z)
@@ -157,7 +155,6 @@ class Chunk(object):
 
                         selected_blocks.append((x, y, z))
 
-        # for block in self.blocks:
         for block in selected_blocks:
 
             if abs(block[0] + self.position.x - point.x) < 0.5:
@@ -193,12 +190,6 @@ class SmallChunk(Chunk):
     # chunk height
     height = 128
 
-    # def __init__(self):
-    #     """Initialize small chunk."""
-    #
-    #     # blocks in chunk
-    #     self.blocks = self.generate_chunk()
-
     def __str__(self):
         """String representation of chunk."""
         
@@ -206,15 +197,17 @@ class SmallChunk(Chunk):
 
 
 class NormalChunk(Chunk):
+    """Normal chunk of blocks - 8x8x128."""
 
     # size of chunk side
     size = 8
     # chunk height
     height = 128
-   
-    # def __init__(self):
-    #
-    #     self.blocks = self.generate_chunk()
+
+    def __str__(self):
+        """String representation of chunk."""
+
+        return 'NormalChunk: ' + str(self.blocks)
 
 
 class BlockWorld:
