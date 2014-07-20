@@ -126,10 +126,14 @@ class GraphicBlock:
 
 
 class VboData:
+    """VBO data structure."""
 
-    def __init__(self, vbo):
+    def __init__(self, chunk_id):
 
-        self.vbo = vbo
+        self.name = GLuint
+        glGenBuffers(1, self.name)
+
+        self.chunk_id = chunk_id
 
 
 class Renderer:

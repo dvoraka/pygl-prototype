@@ -4,6 +4,7 @@
 """Module for data representation."""
 
 import random
+import uuid
 
 from math import sqrt
 
@@ -74,7 +75,7 @@ class Chunk(object):
         # chunk position in world
         self.position = position
         # chunk ID
-        self.chunk_id = 1
+        self.chunk_id = str(uuid.uuid4())
         # chunk centre
         self.centre = Point(position.x + self.size / 2,
                             0,
