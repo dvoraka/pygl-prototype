@@ -356,7 +356,7 @@ class GameWindow(pyglet.window.Window):
         v_shader = shaders.load_vshader('shaders_data/simple.vs')
         f_shader = shaders.load_fshader('shaders_data/test1.fs')
 
-        program = shaders.compileProg(v_shader, f_shader)
+        program = shaders.compile_program(v_shader, f_shader)
 
         glUseProgram(program)
 
