@@ -217,7 +217,7 @@ class NormalChunk(Chunk):
         return 'NormalChunk: ' + str(self.blocks)
 
 
-class BlockWorld:
+class BlockWorld(object):
     """World encapsulates blocks in chunks."""
 
     def __init__(self, chunk_type, width, depth):

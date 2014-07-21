@@ -14,7 +14,7 @@ from numpy import linalg
 import data
 
 
-class FPSCamera:
+class FPSCamera(object):
     
     def __init__(
             self,

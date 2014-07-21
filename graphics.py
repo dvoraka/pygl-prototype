@@ -1,5 +1,7 @@
 """Module for graphic representation."""
 
+from __future__ import print_function
+
 import pyglet
 import sys
 
@@ -15,7 +17,7 @@ import camera
 import data
 
 
-class TestObject():
+class TestObject(object):
     """Test rendering object."""
 
     def __init__(self):
@@ -44,7 +46,7 @@ class TestObject():
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     def draw(self):
-        
+
         glBindBuffer(GL_ARRAY_BUFFER, self.bo)
         glEnableVertexAttribArray(0)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, None)
@@ -53,11 +55,11 @@ class TestObject():
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 
-class GraphicBlock:
+class GraphicBlock(object):
     """Graphic data representation for block."""
-    
+
     def __init__(self):
-        
+
         pass
 
     def get_vertexes(self, position):
@@ -125,7 +127,7 @@ class GraphicBlock:
         return vertexes
 
 
-class VboData:
+class VboData(object):
     """VBO data structure."""
 
     def __init__(self, chunk_id):
@@ -136,11 +138,11 @@ class VboData:
         self.chunk_id = chunk_id
 
 
-class Renderer:
+class Renderer(object):
     """Render world."""
 
     def __init__(self, world):
-        
+
         self.world = world
         # GLuint list for vertex buffer objects
         self.vbos = []
@@ -216,7 +218,7 @@ class Renderer:
         print("")
 
     def render(self):
-        
+
         for vbo in self.vbos:
 
             glBindBuffer(GL_ARRAY_BUFFER, vbo)
@@ -236,12 +238,12 @@ class Renderer:
             glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     def set_lines(self):
-        
+
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         glDisable(GL_CULL_FACE)
 
     def set_fill(self):
-        
+
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glEnable(GL_CULL_FACE)
 
@@ -254,7 +256,7 @@ class GameWindow(pyglet.window.Window):
     """Show game window."""
 
     def __init__(self, renderer):
-        
+
         super(GameWindow, self).__init__()
         self.set_caption('GL prototype')
 
@@ -406,8 +408,10 @@ class GameWindow(pyglet.window.Window):
 
     def update(self, dt):
 
-        position = data.Point(self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
-        position2 = data.Point(self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
+        position = data.Point(
+            self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
+        position2 = data.Point(
+            self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
         collision_offset = 0.1
 
         if self.renderer.ground_collision(position2):
