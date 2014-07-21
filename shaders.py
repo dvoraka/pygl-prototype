@@ -4,6 +4,7 @@
 """Module for shaders."""
 
 
+# PyOpenGL imports
 from OpenGL.GL import GL_VERTEX_SHADER
 from OpenGL.GL import GL_FRAGMENT_SHADER
 from OpenGL.GL.shaders import compileShader
@@ -15,12 +16,12 @@ def read_shader(filename):
 
     with open(filename) as fh:
 
-        shader = ''
+        shader = []
         for line in fh:
 
-            shader += line
+            shader.append(line)
 
-    return shader
+    return "".join(shader)
 
 
 def load_vshader(filename):
