@@ -15,7 +15,7 @@ import data
 
 
 class FPSCamera(object):
-    
+
     def __init__(
             self,
             x_pos=0.0,
@@ -51,7 +51,7 @@ class FPSCamera(object):
         self.h_angle_max = pi / 3
 
         self.step = 0.02
-        self.sprint_mp = 1.1
+        self.sprint_mp = 1.8
         self.side_step = self.step
         self.back_step = 0.2
         self.fly_step = 1.0
@@ -262,14 +262,25 @@ class FPSCamera(object):
         self.y_pos = point.y
         self.z_pos = point.z
 
-    def fw_matrix(self):
+    def fw_matrix(self, sprint=False):
 
-        trans_matrix = matrix([
-            [1.0, 0, 0, self.step * sin(self.v_angle)],
-            [0, 1.0, 0, 0],
-            [0, 0, 1.0, self.step * cos(self.v_angle)],
-            [0, 0, 0, 1.0]
-        ])
+        if sprint:
+            # use sprint multiplier
+            trans_matrix = matrix([
+                [1.0, 0, 0, (self.step * self.sprint_mp) * sin(self.v_angle)],
+                [0, 1.0, 0, 0],
+                [0, 0, 1.0, (self.step * self.sprint_mp) * cos(self.v_angle)],
+                [0, 0, 0, 1.0]
+            ])
+
+        else:
+
+            trans_matrix = matrix([
+                [1.0, 0, 0, self.step * sin(self.v_angle)],
+                [0, 1.0, 0, 0],
+                [0, 0, 1.0, self.step * cos(self.v_angle)],
+                [0, 0, 0, 1.0]
+            ])
 
         return trans_matrix
 
@@ -295,7 +306,8 @@ class FPSCamera(object):
 
         return trans_matrix
 
-    def rot_y_matrix(self, angle):
+    @staticmethod
+    def rot_y_matrix(angle):
 
         trans_matrix = matrix([
             [cos(angle), 0, sin(angle), 0],
@@ -306,7 +318,8 @@ class FPSCamera(object):
 
         return trans_matrix
 
-    def scale_matrix(self, ratio):
+    @staticmethod
+    def scale_matrix(ratio):
 
         trans_matrix = matrix([
             [ratio, 0, 0, 0],
@@ -331,7 +344,7 @@ class FPSCamera(object):
     def forward(self, sprint=False):
 
         pos_vec = self.get_position_vec()
-        trans_matrix = self.fw_matrix()
+        trans_matrix = self.fw_matrix(sprint)
 
         result = trans_matrix * pos_vec
         self.set_position_vec(result)
@@ -477,12 +490,12 @@ class FPSCamera(object):
 
     def up(self):
         """Move camera up."""
-        
+
         self.y_pos += self.fly_step
 
     def down(self):
         """Move camera down."""
-        
+
         self.y_pos -= self.fly_step
 
     def collision_helper(self):
