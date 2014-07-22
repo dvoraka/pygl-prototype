@@ -70,6 +70,7 @@ class FPSCamera(object):
         return self.position
 
     def next_fw_x_point(self, offset=0.0):
+        """Return next forward x axis Point."""
 
         pos_vec = self.get_position_vec()
         trans_matrix = self.fw_coll_matrix(offset)
@@ -83,6 +84,7 @@ class FPSCamera(object):
         return data.Point(next_x, self.y_pos, self.z_pos)
 
     def next_fw_z_point(self, offset=0.0):
+        """Return next forward z axis Point."""
 
         pos_vec = self.get_position_vec()
         trans_matrix = self.fw_coll_matrix(offset)
@@ -96,6 +98,7 @@ class FPSCamera(object):
         return data.Point(self.x_pos, self.y_pos, next_z)
 
     def next_bw_x_point(self, offset=0.0):
+        """Return next backward x axis Point."""
 
         pos_vec = self.get_position_vec()
         trans_matrix = linalg.inv(self.fw_coll_matrix(offset))
@@ -109,6 +112,7 @@ class FPSCamera(object):
         return data.Point(next_x, self.y_pos, self.z_pos)
 
     def next_bw_z_point(self, offset=0.0):
+        """Return next backward z axis Point."""
 
         pos_vec = self.get_position_vec()
         trans_matrix = linalg.inv(self.fw_coll_matrix(offset))
@@ -122,6 +126,7 @@ class FPSCamera(object):
         return data.Point(self.x_pos, self.y_pos, next_z)
 
     def next_left_x_point(self, offset=0.0):
+        """Return next left x axis Point."""
 
         rot_m = self.rot_y_matrix(- pi / 2)
         new_vec = rot_m * self.view_vec()
@@ -135,6 +140,7 @@ class FPSCamera(object):
         return data.Point(next_x, self.y_pos, self.z_pos)
 
     def next_left_z_point(self, offset=0.0):
+        """Return next left z axis Point."""
 
         rot_m = self.rot_y_matrix(- pi / 2)
         new_vec = rot_m * self.view_vec()
@@ -205,10 +211,12 @@ class FPSCamera(object):
         return (self.h_angle * 180) / pi
 
     def add_v_angle(self, delta):
+        """Add delta value to vertical angle."""
 
         self.v_angle += self.v_multiplier * delta
 
     def add_h_angle(self, delta):
+        """Add delta value to horizontal angle."""
 
         if self.inverse_horizontal:
 
@@ -227,6 +235,7 @@ class FPSCamera(object):
             self.h_angle = self.h_angle_max
 
     def get_position_vec(self):
+        """Return position vector."""
 
         pos_vec = matrix([
             [self.x_pos],
@@ -414,6 +423,7 @@ class FPSCamera(object):
         self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
 
     def left(self):
+        """Move camera left."""
 
         # pos_vec = self.get_position_vec()
         # trans_matrix = linalg.inv(self.right_matrix())
@@ -455,6 +465,7 @@ class FPSCamera(object):
         self.set_position(data.Point(self.x_pos, self.y_pos, z_pos))
 
     def right(self):
+        """Move camera right."""
 
         pos_vec = self.get_position_vec()
         trans_matrix = self.right_matrix()
@@ -463,6 +474,7 @@ class FPSCamera(object):
         self.set_position_vec(result)
 
     def right_x(self):
+        """Move camera right in x axis."""
 
         rot_m = self.rot_y_matrix(pi / 2)
         new_vec = rot_m * self.view_vec()
@@ -476,6 +488,7 @@ class FPSCamera(object):
         self.set_position(data.Point(x_pos, self.y_pos, self.z_pos))
 
     def right_z(self):
+        """Move camera right in z axis."""
 
         rot_m = self.rot_y_matrix(pi / 2)
         new_vec = rot_m * self.view_vec()
