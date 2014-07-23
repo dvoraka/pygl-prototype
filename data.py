@@ -56,11 +56,11 @@ class Block(object):
 
     def __str__(self):
         """Return string representation."""
-        
+
         return 'Block'
 
     def __repr__(self):
-        
+
         return self.__str__()
 
 
@@ -92,7 +92,7 @@ class Chunk(object):
 
     def generate_chunk(self):
         """Generate chunk data."""
-        
+
         blocks = {}
 
         last = False
@@ -135,7 +135,7 @@ class Chunk(object):
         """Return boolean value of collision for the point."""
 
         # debug info
-        counter = 0
+        # counter = 0
 
         selected_blocks = []  # (x, y, z)
 
@@ -175,17 +175,17 @@ class Chunk(object):
 
                             return True
 
-            counter += 1
+            # counter += 1
 
         return False
 
     def __str__(self):
         """String representation of chunk."""
-        
+
         return 'Chunk: ' + str(self.blocks)
 
     def __repr__(self):
-        
+
         return self.__str__()
 
 
@@ -199,7 +199,7 @@ class SmallChunk(Chunk):
 
     def __str__(self):
         """String representation of chunk."""
-        
+
         return 'SmallChunk: ' + str(self.blocks)
 
 
@@ -221,7 +221,7 @@ class BlockWorld(object):
     """World encapsulates blocks in chunks."""
 
     def __init__(self, chunk_type, width, depth):
-        
+
         self.chunk_type = chunk_type
         self.chunk_size = self.chunk_type.size
 
@@ -233,16 +233,18 @@ class BlockWorld(object):
         self.generate_world()
 
     def in_chunk(self, point):
+        """???"""
 
         pass
 
     def collision(self, point):
+        """Return collision with world as bool."""
 
         point.z = -point.z
 
         offset = 0.5
 
-        counter = 0
+        # counter = 0
         for chunk in self.chunks:
 
             if (chunk[0] < point.x + offset and
@@ -255,18 +257,18 @@ class BlockWorld(object):
                         # print(counter)
                         return True
 
-            counter += 1
+            # counter += 1
 
         return False
 
     def __str__(self):
         """String representation for world."""
-        
+
         return 'BlockWorld: ' + str(self.chunks)
 
     def generate_world(self):
         """Generate world from chunks."""
-        
+
         for x in range(0, self.width, self.chunk_size):
             for z in range(0, self.depth, self.chunk_size):
 
