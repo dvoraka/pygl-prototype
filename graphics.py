@@ -59,7 +59,7 @@ class TestObject(object):
 
     def __init__(self):
 
-        self.bo = GLuint()
+        self.vbo = GLuint()
 
         self.vertexes = (
             0, 0, 0,
@@ -73,8 +73,8 @@ class TestObject(object):
         self.vertexes_GL = (GLfloat * len(
             self.vertexes))(*self.vertexes)
 
-        glGenBuffers(1, self.bo)
-        glBindBuffer(GL_ARRAY_BUFFER, self.bo)
+        glGenBuffers(1, self.vbo)
+        glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
         glBufferData(
             GL_ARRAY_BUFFER,
             len(self.vertexes_GL) * 4,
@@ -83,8 +83,9 @@ class TestObject(object):
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     def draw(self):
+        """Draw test object."""
 
-        glBindBuffer(GL_ARRAY_BUFFER, self.bo)
+        glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
         glEnableVertexAttribArray(0)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, None)
         glDrawArrays(GL_TRIANGLES, 0, 6)
@@ -99,7 +100,8 @@ class GraphicBlock(object):
 
         pass
 
-    def get_vertexes(self, position):
+    @staticmethod
+    def get_vertexes(position):
         """Return vertex list from position."""
 
         vertexes = []
@@ -186,10 +188,12 @@ class Renderer(object):
         self.vbos_vert_count = {}
 
     def ground_collision(self, point):
+        """Return ground collision value as bool."""
 
         return self.world.collision(point)
 
     def check_visibility(self):
+        """Check and set visibility for chunks."""
 
         for position, chunk in self.world.chunks.items():
 
@@ -255,6 +259,7 @@ class Renderer(object):
         print("")
 
     def render(self):
+        """Render game world."""
 
         for vbo in self.vbos:
 
@@ -274,17 +279,20 @@ class Renderer(object):
             glDisableVertexAttribArray(0)
             glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-    def set_lines(self):
+    @staticmethod
+    def set_lines():
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         glDisable(GL_CULL_FACE)
 
-    def set_fill(self):
+    @staticmethod
+    def set_fill():
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glEnable(GL_CULL_FACE)
 
-    def set_points(self):
+    @staticmethod
+    def set_points():
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS)
 
