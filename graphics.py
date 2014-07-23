@@ -5,9 +5,46 @@ from __future__ import print_function
 import pyglet
 import sys
 
-from OpenGL.GL import *
-from OpenGL.GLU import *
-#from pyglet.gl import *
+# PyOpenGL imports
+from OpenGL.GL import GL_ARRAY_BUFFER
+from OpenGL.GL import GL_STATIC_DRAW
+from OpenGL.GL import GL_TRIANGLES
+from OpenGL.GL import GL_FLOAT
+from OpenGL.GL import GL_FALSE
+from OpenGL.GL import GL_FRONT_AND_BACK
+from OpenGL.GL import GL_FILL
+from OpenGL.GL import GL_LINE
+from OpenGL.GL import GL_POINTS
+from OpenGL.GL import GL_CULL_FACE
+from OpenGL.GL import GL_DEPTH_TEST
+from OpenGL.GL import GL_PROJECTION
+from OpenGL.GL import GL_COLOR_BUFFER_BIT
+from OpenGL.GL import GL_DEPTH_BUFFER_BIT
+from OpenGL.GL import GL_MODELVIEW
+
+from OpenGL.GL import GLuint
+from OpenGL.GL import GLfloat
+from OpenGL.GL import glBindBuffer
+from OpenGL.GL import glBufferData
+from OpenGL.GL import glGenBuffers
+from OpenGL.GL import glEnableVertexAttribArray
+from OpenGL.GL import glVertexAttribPointer
+from OpenGL.GL import glDrawArrays
+from OpenGL.GL import glDisableVertexAttribArray
+from OpenGL.GL import glPolygonMode
+from OpenGL.GL import glIsEnabled
+from OpenGL.GL import glEnable
+from OpenGL.GL import glDisable
+from OpenGL.GL import glClearColor
+from OpenGL.GL import glUseProgram
+from OpenGL.GL import glViewport
+from OpenGL.GL import glMatrixMode
+from OpenGL.GL import glLoadIdentity
+from OpenGL.GL import glClear
+from OpenGL.GL import glRotatef
+from OpenGL.GL import glTranslatef
+
+from OpenGL.GLU import gluPerspective
 
 from pyglet.gl import gl_info
 from pyglet.window import key
@@ -285,11 +322,11 @@ class GameWindow(pyglet.window.Window):
         self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
         self.camera.gravity = True
         self.camera_fall_collision = True
-        
+
         self.setup()
 
     def print_fps(self, dt):
-        
+
         print(pyglet.clock.get_fps())
 
     def print_info(self, dt):
@@ -362,7 +399,7 @@ class GameWindow(pyglet.window.Window):
 
     def on_resize(self, width, height):
         """Prepare perspective for window size."""
-        
+
         print('on resize')
 
         if height == 0:
@@ -377,7 +414,7 @@ class GameWindow(pyglet.window.Window):
 
     def show(self):
         """Show window and start app."""
-        
+
         pyglet.app.run()
 
     def on_draw(self):
@@ -472,7 +509,7 @@ class GameWindow(pyglet.window.Window):
                 self.camera.forward_z()
 
         elif self.keyboard[key.DOWN]:
-            
+
             # self.camera.backward()
 
             next_x = self.camera.next_bw_x_point(collision_offset)
@@ -493,15 +530,15 @@ class GameWindow(pyglet.window.Window):
             else:
 
                 self.camera.backward_z()
-         
+
         if self.keyboard[key.PAGEUP]:
 
             self.camera.up()
 
         elif self.keyboard[key.PAGEDOWN]:
-            
+
             self.camera.down()
-        
+
         if self.keyboard[key.LEFT]:
 
             # self.camera.left()
@@ -526,7 +563,7 @@ class GameWindow(pyglet.window.Window):
                 self.camera.left_z()
 
         elif self.keyboard[key.RIGHT]:
-            
+
             # self.camera.right()
 
             next_x = self.camera.next_right_x_point(collision_offset)
@@ -553,7 +590,7 @@ class GameWindow(pyglet.window.Window):
             self.renderer.set_lines()
 
         elif self.keyboard[key.F]:
-            
+
             self.renderer.set_fill()
 
         elif self.keyboard[key.S]:
