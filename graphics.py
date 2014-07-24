@@ -171,10 +171,11 @@ class VboData(object):
 
     def __init__(self, chunk_id):
 
-        self.name = GLuint
+        self.name = GLuint()
         glGenBuffers(1, self.name)
 
         self.chunk_id = chunk_id
+        self.vertexes_count = 0
 
 
 class Renderer(object):
@@ -183,7 +184,7 @@ class Renderer(object):
     def __init__(self, world):
 
         self.world = world
-        # GLuint list for vertex buffer objects
+        # VboData list for vertex buffer objects
         self.vbos = []
         self.vbos_vert_count = {}
 
@@ -206,11 +207,13 @@ class Renderer(object):
         for pos, chunk in self.world.chunks.items():
 
             b_positions = []
-            chunk_vertexes = []
+            # chunk_vertexes = []
 
-            chunk_vbo = GLuint()
-            glGenBuffers(1, chunk_vbo)
-            glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo)
+            # chunk_vbo = GLuint()
+            # glGenBuffers(1, chunk_vbo)
+            # glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo)
+            chunk_vbo = VboData(chunk.chunk_id)
+            glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
 
             for rel_pos, block in chunk.blocks.items():
 
@@ -226,14 +229,14 @@ class Renderer(object):
                     block_counter += 1
 
             chunk_vertexes = []
-
             for position in b_positions:
 
                 chunk_vertexes.extend(GraphicBlock().get_vertexes(position))
 
             vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
 
-            self.vbos_vert_count[chunk_vbo.value] = len(vertexes_GL)
+            # self.vbos_vert_count[chunk_vbo.value] = len(vertexes_GL)
+            chunk_vbo.vertexes_count = len(vertexes_GL)
 
             #print(len(vertexes_GL))
 
@@ -263,7 +266,7 @@ class Renderer(object):
 
         for vbo in self.vbos:
 
-            glBindBuffer(GL_ARRAY_BUFFER, vbo)
+            glBindBuffer(GL_ARRAY_BUFFER, vbo.name)
             glEnableVertexAttribArray(0)
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, None)
             # block count * vertex parts * vertex count
@@ -275,7 +278,8 @@ class Renderer(object):
             glDrawArrays(
                 GL_TRIANGLES,
                 0,
-                self.vbos_vert_count[vbo.value])
+                # self.vbos_vert_count[vbo.value])
+                vbo.vertexes_count)
             glDisableVertexAttribArray(0)
             glBindBuffer(GL_ARRAY_BUFFER, 0)
 
