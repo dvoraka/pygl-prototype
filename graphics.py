@@ -184,9 +184,9 @@ class Renderer(object):
     def __init__(self, world):
 
         self.world = world
+
         # VboData list for vertex buffer objects
         self.vbos = []
-        self.vbos_vert_count = {}
 
     def ground_collision(self, point):
         """Return ground collision value as bool."""
@@ -207,11 +207,7 @@ class Renderer(object):
         for pos, chunk in self.world.chunks.items():
 
             b_positions = []
-            # chunk_vertexes = []
 
-            # chunk_vbo = GLuint()
-            # glGenBuffers(1, chunk_vbo)
-            # glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo)
             chunk_vbo = VboData(chunk.chunk_id)
             glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
 
@@ -235,10 +231,7 @@ class Renderer(object):
 
             vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
 
-            # self.vbos_vert_count[chunk_vbo.value] = len(vertexes_GL)
             chunk_vbo.vertexes_count = len(vertexes_GL)
-
-            #print(len(vertexes_GL))
 
             glBufferData(
                 GL_ARRAY_BUFFER,
@@ -269,16 +262,10 @@ class Renderer(object):
             glBindBuffer(GL_ARRAY_BUFFER, vbo.name)
             glEnableVertexAttribArray(0)
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, None)
-            # block count * vertex parts * vertex count
-#            glDrawArrays(GL_TRIANGLES, 0,
-#                self.world.chunk_type.size *
-#                self.world.chunk_type.size *
-#                self.world.chunk_type.height *
-#                3 * 36)
+
             glDrawArrays(
                 GL_TRIANGLES,
                 0,
-                # self.vbos_vert_count[vbo.value])
                 vbo.vertexes_count)
             glDisableVertexAttribArray(0)
             glBindBuffer(GL_ARRAY_BUFFER, 0)
