@@ -82,6 +82,8 @@ class Chunk(object):
                             position.z + self.size / 2)
         # chunk change flag
         self.dirty = False
+        # chunk visibility
+        self.visible = True
         # chunk Blocks dict
         self.blocks = self.generate_chunk()
 

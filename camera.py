@@ -69,6 +69,18 @@ class FPSCamera(object):
 
         return self.position
 
+    def get_position_inverse_z(self):
+        """Return camera position as a Point.
+
+        Returns:
+            Point: the camera position with inverse z axis
+        """
+
+        position = self.get_position()
+        position.z = - position.z
+
+        return position
+
     def next_fw_x_point(self, offset=0.0):
         """Return next forward x axis Point."""
 

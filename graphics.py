@@ -184,6 +184,7 @@ class Renderer(object):
     def __init__(self, world):
 
         self.world = world
+        self.visibility = 20
 
         # VboData list for vertex buffer objects
         self.vbos = []
@@ -193,12 +194,22 @@ class Renderer(object):
 
         return self.world.collision(point)
 
-    def check_visibility(self):
+    def print_visibility(self):
+
+        for position, chunk in self.world.chunks.items():
+
+            print(position, chunk.visible)
+
+    def check_visibility(self, point):
         """Check and set visibility for chunks."""
 
         for position, chunk in self.world.chunks.items():
 
-            pass
+            #print(point.chunk_distance(chunk.get_centre()))
+            if (point.chunk_distance(chunk.get_centre()) > self.visibility):
+
+                print(position)
+                chunk.visible = False
 
     def prepare_world(self):
         """Fill buffer objects with data."""
@@ -322,6 +333,8 @@ class GameWindow(pyglet.window.Window):
         self.camera.gravity = True
         self.camera_fall_collision = True
 
+        self.counter = 0
+
         self.setup()
 
     def print_fps(self, dt):
@@ -443,6 +456,10 @@ class GameWindow(pyglet.window.Window):
         self.camera.add_v_angle(float(dx))
 
     def update(self, dt):
+
+        if self.counter % 120 == 0:
+            self.renderer.check_visibility(self.camera.get_position_inverse_z())
+            self.renderer.print_visibility()
 
         position = data.Point(
             self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
@@ -607,3 +624,5 @@ class GameWindow(pyglet.window.Window):
                 self.set_fullscreen(True)
                 self.set_exclusive_mouse(True)
                 self.set_mouse_visible(False)
+
+        self.counter += 1
