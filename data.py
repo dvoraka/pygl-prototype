@@ -83,7 +83,7 @@ class Chunk(object):
         # chunk change flag
         self.dirty = False
         # chunk visibility
-        self.visible = True
+        self.visible = False
         # chunk Blocks dict
         self.blocks = self.generate_chunk()
 

@@ -3,7 +3,7 @@
 import graphics
 import data
 
-cw = data.BlockWorld(data.NormalChunk, 20, 60)
+cw = data.BlockWorld(data.NormalChunk, 60, 80)
 renderer = graphics.Renderer(cw)
 renderer.prepare_world()
 

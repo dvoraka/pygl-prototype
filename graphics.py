@@ -208,8 +208,12 @@ class Renderer(object):
             #print(point.chunk_distance(chunk.get_centre()))
             if (point.chunk_distance(chunk.get_centre()) > self.visibility):
 
-                print(position)
+                # print(position)
                 chunk.visible = False
+
+            else:
+
+                chunk.visible = True
 
     def prepare_world(self):
         """Fill buffer objects with data."""
@@ -270,16 +274,31 @@ class Renderer(object):
 
         for vbo in self.vbos:
 
-            glBindBuffer(GL_ARRAY_BUFFER, vbo.name)
-            glEnableVertexAttribArray(0)
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, None)
+            skip_vbo = False
+            for chunk in self.world.chunks.values():
 
-            glDrawArrays(
-                GL_TRIANGLES,
-                0,
-                vbo.vertexes_count)
-            glDisableVertexAttribArray(0)
-            glBindBuffer(GL_ARRAY_BUFFER, 0)
+                if vbo.chunk_id == chunk.chunk_id:
+
+                    if not chunk.visible:
+
+                        skip_vbo = True
+
+            if skip_vbo:
+
+                pass
+
+            else:
+
+                glBindBuffer(GL_ARRAY_BUFFER, vbo.name)
+                glEnableVertexAttribArray(0)
+                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, None)
+
+                glDrawArrays(
+                    GL_TRIANGLES,
+                    0,
+                    vbo.vertexes_count)
+                glDisableVertexAttribArray(0)
+                glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     @staticmethod
     def set_lines():
@@ -459,7 +478,7 @@ class GameWindow(pyglet.window.Window):
 
         if self.counter % 120 == 0:
             self.renderer.check_visibility(self.camera.get_position_inverse_z())
-            self.renderer.print_visibility()
+            # self.renderer.print_visibility()
 
         position = data.Point(
             self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
