@@ -171,6 +171,9 @@ class VboData(object):
         self.chunk_id = chunk_id
         self.vertexes_count = 0
 
+        # render flag
+        self.render = False
+
 
 class GameWindow(pyglet.window.Window):
     """Show game window."""
@@ -223,8 +226,8 @@ class GameWindow(pyglet.window.Window):
 
         print("=" * 40)
         print("OpenGL info")
-        print("renderer: {}".format(pyglet.gl_info.get_renderer()))
-        print("version: {}".format(pyglet.gl_info.get_version()))
+        print("renderer: {}".format(pyglet.gl.gl_info.get_renderer()))
+        print("version: {}".format(pyglet.gl.gl_info.get_version()))
         print("capabilities: {}".format(self.capabilities))
         print("+" * 40)
         print("")
@@ -240,15 +243,15 @@ class GameWindow(pyglet.window.Window):
 
     def detect_capabilities(self):
 
-        if pyglet.gl_info.have_version(3, 3):
+        if pyglet.gl.gl_info.have_version(3, 3):
 
             self.capabilities = "normal"
 
-        elif pyglet.gl_info.have_version(3, 1):
+        elif pyglet.gl.gl_info.have_version(3, 1):
 
             self.capabilities = "old"
 
-        elif pyglet.gl_info.have_version(2, 1):
+        elif pyglet.gl.gl_info.have_version(2, 1):
 
             self.capabilities = "legacy"
 
@@ -331,7 +334,9 @@ class GameWindow(pyglet.window.Window):
     def update(self, dt):
 
         if self.counter % 120 == 0:
+
             self.renderer.check_visibility(self.camera.get_position_inverse_z())
+            self.renderer.set_visibility()
             # self.renderer.print_visibility()
 
         position = data.Point(

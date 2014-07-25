@@ -52,15 +52,23 @@ class Renderer(object):
 
         for position, chunk in self.world.chunks.items():
 
-            #print(point.chunk_distance(chunk.get_centre()))
             if (point.chunk_distance(chunk.get_centre()) > self.visibility):
 
-                # print(position)
                 chunk.visible = False
 
             else:
 
                 chunk.visible = True
+
+    def set_visibility(self):
+
+        for position, chunk in self.world.chunks.items():
+
+            for vbo in self.vbos:
+
+                if vbo.chunk_id == chunk.chunk_id:
+
+                    vbo.render = chunk.visible
 
     def prepare_world(self):
         """Fill buffer objects with data."""
@@ -121,20 +129,7 @@ class Renderer(object):
 
         for vbo in self.vbos:
 
-            skip_vbo = False
-            for chunk in self.world.chunks.values():
-
-                if vbo.chunk_id == chunk.chunk_id:
-
-                    if not chunk.visible:
-
-                        skip_vbo = True
-
-            if skip_vbo:
-
-                pass
-
-            else:
+            if vbo.render:
 
                 glBindBuffer(GL_ARRAY_BUFFER, vbo.name)
                 glEnableVertexAttribArray(0)
