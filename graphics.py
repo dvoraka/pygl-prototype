@@ -3,8 +3,9 @@
 from __future__ import print_function
 
 import sys
-
 import pyglet
+
+from pyglet.window import key
 
 # PyOpenGL imports
 from OpenGL.GL import GL_ARRAY_BUFFER
@@ -41,9 +42,7 @@ from OpenGL.GL import glTranslatef
 
 from OpenGL.GLU import gluPerspective
 
-from pyglet.gl import gl_info
-from pyglet.window import key
-
+# project imports
 import shaders
 import camera
 import data
@@ -224,8 +223,8 @@ class GameWindow(pyglet.window.Window):
 
         print("=" * 40)
         print("OpenGL info")
-        print("renderer: {}".format(gl_info.get_renderer()))
-        print("version: {}".format(gl_info.get_version()))
+        print("renderer: {}".format(pyglet.gl_info.get_renderer()))
+        print("version: {}".format(pyglet.gl_info.get_version()))
         print("capabilities: {}".format(self.capabilities))
         print("+" * 40)
         print("")
@@ -241,15 +240,15 @@ class GameWindow(pyglet.window.Window):
 
     def detect_capabilities(self):
 
-        if gl_info.have_version(3, 3):
+        if pyglet.gl_info.have_version(3, 3):
 
             self.capabilities = "normal"
 
-        elif gl_info.have_version(3, 1):
+        elif pyglet.gl_info.have_version(3, 1):
 
             self.capabilities = "old"
 
-        elif gl_info.have_version(2, 1):
+        elif pyglet.gl_info.have_version(2, 1):
 
             self.capabilities = "legacy"
 
