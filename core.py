@@ -50,15 +50,7 @@ class Renderer(object):
     def check_visibility(self, point):
         """Check and set visibility for chunks."""
 
-        for position, chunk in self.world.chunks.items():
-
-            if (point.chunk_distance(chunk.get_centre()) > self.visibility):
-
-                chunk.visible = False
-
-            else:
-
-                chunk.visible = True
+        self.world.set_visibility(point, self.visibility)
 
     def set_visibility(self):
 

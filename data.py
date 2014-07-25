@@ -268,6 +268,23 @@ class BlockWorld(object):
 
         return 'BlockWorld: ' + str(self.chunks)
 
+    def chunk_exists(self, position):
+        """Return chunk existence on the position."""
+
+        pass
+
+    def set_visibility(self, point, distance):
+
+        for position, chunk in self.chunks.items():
+
+            if point.chunk_distance(chunk.get_centre()) > distance:
+
+                chunk.visible = False
+
+            else:
+
+                chunk.visible = True
+
     def generate_world(self):
         """Generate world from chunks."""
 
