@@ -209,6 +209,8 @@ class GameWindow(pyglet.window.Window):
         self.camera.gravity = True
         self.camera_fall_collision = True
 
+        self.collision_offset = 0.1
+
         self.counter = 0
 
         self.setup()
@@ -331,6 +333,56 @@ class GameWindow(pyglet.window.Window):
         self.camera.add_h_angle(float(dy))
         self.camera.add_v_angle(float(dx))
 
+    def go_forward(self):
+
+        next_x = self.camera.next_fw_x_point(self.collision_offset)
+        next_z = self.camera.next_fw_z_point(self.collision_offset)
+
+        if self.renderer.ground_collision(next_x):
+
+            pass
+
+        else:
+
+            self.camera.forward_x()
+
+        if self.renderer.ground_collision(next_z):
+
+            pass
+
+        else:
+
+            self.camera.forward_z()
+
+    def go_backward(self):
+
+        next_x = self.camera.next_bw_x_point(self.collision_offset)
+        next_z = self.camera.next_bw_z_point(self.collision_offset)
+
+        if self.renderer.ground_collision(next_x):
+
+            pass
+
+        else:
+
+            self.camera.backward_x()
+
+        if self.renderer.ground_collision(next_z):
+
+            pass
+
+        else:
+
+            self.camera.backward_z()
+
+    def go_left(self):
+
+        pass
+
+    def go_right(self):
+
+        pass
+
     def update(self, dt):
 
         if self.counter % 120 == 0:
@@ -383,47 +435,11 @@ class GameWindow(pyglet.window.Window):
 
         if self.keyboard[key.UP]:
 
-            next_x = self.camera.next_fw_x_point(collision_offset)
-            next_z = self.camera.next_fw_z_point(collision_offset)
-
-            if self.renderer.ground_collision(next_x):
-
-                pass
-
-            else:
-
-                self.camera.forward_x()
-
-            if self.renderer.ground_collision(next_z):
-
-                pass
-
-            else:
-
-                self.camera.forward_z()
+            self.go_forward()
 
         elif self.keyboard[key.DOWN]:
 
-            # self.camera.backward()
-
-            next_x = self.camera.next_bw_x_point(collision_offset)
-            next_z = self.camera.next_bw_z_point(collision_offset)
-
-            if self.renderer.ground_collision(next_x):
-
-                pass
-
-            else:
-
-                self.camera.backward_x()
-
-            if self.renderer.ground_collision(next_z):
-
-                pass
-
-            else:
-
-                self.camera.backward_z()
+            self.go_backward()
 
         if self.keyboard[key.PAGEUP]:
 
