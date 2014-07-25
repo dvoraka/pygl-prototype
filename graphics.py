@@ -377,11 +377,59 @@ class GameWindow(pyglet.window.Window):
 
     def go_left(self):
 
-        pass
+        next_x = self.camera.next_left_x_point(self.collision_offset)
+        next_z = self.camera.next_left_z_point(self.collision_offset)
+
+        if self.renderer.ground_collision(next_x):
+
+            pass
+
+        else:
+
+            self.camera.left_x()
+
+        if self.renderer.ground_collision(next_z):
+
+            pass
+
+        else:
+
+            self.camera.left_z()
 
     def go_right(self):
 
-        pass
+        next_x = self.camera.next_right_x_point(self.collision_offset)
+        next_z = self.camera.next_right_z_point(self.collision_offset)
+
+        if self.renderer.ground_collision(next_x):
+
+            pass
+
+        else:
+
+            self.camera.right_x()
+
+        if self.renderer.ground_collision(next_z):
+
+            pass
+
+        else:
+
+            self.camera.right_z()
+
+    def toggle_fullscreen(self):
+
+        if self.fullscreen:
+
+            self.set_fullscreen(False)
+            self.set_exclusive_mouse(True)
+            self.set_mouse_visible(False)
+
+        else:
+
+            self.set_fullscreen(True)
+            self.set_exclusive_mouse(True)
+            self.set_mouse_visible(False)
 
     def update(self, dt):
 
@@ -389,13 +437,11 @@ class GameWindow(pyglet.window.Window):
 
             self.renderer.check_visibility(self.camera.get_position_inverse_z())
             self.renderer.set_visibility()
-            # self.renderer.print_visibility()
 
         position = data.Point(
             self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
         position2 = data.Point(
             self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
-        collision_offset = 0.1
 
         if self.renderer.ground_collision(position2):
 
@@ -406,7 +452,6 @@ class GameWindow(pyglet.window.Window):
 
         elif self.renderer.ground_collision(position):
 
-            # print("Ground collision")
             self.camera.stop_falling()
             self.camera_fall_collision = True
 
@@ -451,49 +496,11 @@ class GameWindow(pyglet.window.Window):
 
         if self.keyboard[key.LEFT]:
 
-            # self.camera.left()
-
-            next_x = self.camera.next_left_x_point(collision_offset)
-            next_z = self.camera.next_left_z_point(collision_offset)
-
-            if self.renderer.ground_collision(next_x):
-
-                pass
-
-            else:
-
-                self.camera.left_x()
-
-            if self.renderer.ground_collision(next_z):
-
-                pass
-
-            else:
-
-                self.camera.left_z()
+            self.go_left()
 
         elif self.keyboard[key.RIGHT]:
 
-            # self.camera.right()
-
-            next_x = self.camera.next_right_x_point(collision_offset)
-            next_z = self.camera.next_right_z_point(collision_offset)
-
-            if self.renderer.ground_collision(next_x):
-
-                pass
-
-            else:
-
-                self.camera.right_x()
-
-            if self.renderer.ground_collision(next_z):
-
-                pass
-
-            else:
-
-                self.camera.right_z()
+            self.go_right()
 
         if self.keyboard[key.L]:
 
@@ -507,16 +514,6 @@ class GameWindow(pyglet.window.Window):
 
             self.keyboard[key.S] = False
 
-            if self.fullscreen:
-
-                self.set_fullscreen(False)
-                self.set_exclusive_mouse(True)
-                self.set_mouse_visible(False)
-
-            else:
-
-                self.set_fullscreen(True)
-                self.set_exclusive_mouse(True)
-                self.set_mouse_visible(False)
+            self.toggle_fullscreen()
 
         self.counter += 1
