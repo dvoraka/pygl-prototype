@@ -240,7 +240,7 @@ class BlockWorld(object):
         pass
 
     def collision(self, point):
-        """Return collision with world as bool."""
+        """Return collision with world as a boolean."""
 
         point.z = -point.z
 
@@ -269,8 +269,24 @@ class BlockWorld(object):
         return 'BlockWorld: ' + str(self.chunks)
 
     def chunk_exists(self, position):
-        """Return chunk existence on the position."""
+        """Return chunk existence on the position.
 
+        Args:
+            position ((int, int)): Chunk position.
+        """
+
+        return position in self.chunks
+
+    def find_necessary_chunks(self, point, distance):
+        """Find necessary chunks in the distance.
+
+        Args:
+            point (Point): Centre point.
+            distance (int): Distance.
+
+        Returns:
+            list: List of necessary chunks positions.
+        """
         pass
 
     def set_visibility(self, point, distance):
