@@ -22,8 +22,7 @@ from OpenGL.GL import GL_LINE
 from OpenGL.GL import GL_FILL
 from OpenGL.GL import GL_POINTS
 
-from graphics import VboData
-from graphics import GraphicBlock
+import graphics
 
 
 class Renderer(object):
@@ -71,7 +70,7 @@ class Renderer(object):
 
             b_positions = []
 
-            chunk_vbo = VboData(chunk.chunk_id)
+            chunk_vbo = graphics.VboData(chunk.chunk_id)
             glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
 
             for rel_pos, block in chunk.blocks.items():
@@ -90,7 +89,7 @@ class Renderer(object):
             chunk_vertexes = []
             for position in b_positions:
 
-                chunk_vertexes.extend(GraphicBlock().get_vertexes(position))
+                chunk_vertexes.extend(graphics.GraphicBlock().get_vertexes(position))
 
             vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
 
