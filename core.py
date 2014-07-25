@@ -36,6 +36,11 @@ class Renderer(object):
         # VboData list for vertex buffer objects
         self.vbos = []
 
+    def print_info(self, point):
+        """Development info method."""
+
+        print(self.world.find_necessary_chunks(point, 10))
+
     def ground_collision(self, point):
         """Return ground collision value as bool."""
 

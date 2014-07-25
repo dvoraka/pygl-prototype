@@ -438,6 +438,8 @@ class GameWindow(pyglet.window.Window):
             self.renderer.check_visibility(self.camera.get_position_inverse_z())
             self.renderer.set_visibility()
 
+            self.renderer.print_info(self.camera.get_position_inverse_z())
+
         position = data.Point(
             self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
         position2 = data.Point(

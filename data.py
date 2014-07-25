@@ -268,6 +268,13 @@ class BlockWorld(object):
 
         return 'BlockWorld: ' + str(self.chunks)
 
+    def generate_chunk(self, position):
+
+        if not self.chunk_exists(position):
+
+            self.chunks[position] = self.chunk_type(
+                Point(position[0], 0, position[1]))
+
     def chunk_exists(self, position):
         """Return chunk existence on the position.
 
@@ -287,7 +294,23 @@ class BlockWorld(object):
         Returns:
             list: List of necessary chunks positions.
         """
-        pass
+
+        offset = self.chunk_size / 2
+
+        min_x = int(point.x - distance) - offset
+        min_z = int(point.z - distance) - offset
+        max_x = int(point.x + distance) - offset
+        max_z = int(point.z + distance) - offset
+
+        positions = []
+        for x_pos in range(min_x, max_x):
+            for z_pos in range(min_z, max_z):
+
+                if x_pos % self.chunk_size == 0 and z_pos % self.chunk_size == 0:
+
+                    positions.append((x_pos, z_pos))
+
+        return positions
 
     def set_visibility(self, point, distance):
 
