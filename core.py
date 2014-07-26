@@ -32,6 +32,7 @@ class Renderer(object):
 
         self.world = world
         self.visibility = 20
+        self.chunk_gen_distance = self.visibility * 1.5
 
         # VboData list for vertex buffer objects
         self.vbos = []
@@ -67,45 +68,107 @@ class Renderer(object):
 
                     vbo.render = chunk.visible
 
+    def create_vbos(self):
+
+        for position, chunk in self.world.chunks.items():
+
+            if self.vbo_exists(chunk.chunk_id):
+
+                pass
+
+            else:
+
+                new_vbo = self.generate_vbo(chunk)
+                self.vbos.append(new_vbo)
+
+    def vbo_exists(self, chunk_id):
+
+        for vbo in self.vbos:
+
+            if vbo.chunk_id == chunk_id:
+
+                return True
+
+        return False
+
+    def generate_vbo(self, chunk_data):
+
+        blocks_positions = []
+
+        chunk_vbo = graphics.VboData(chunk_data.chunk_id)
+        glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
+
+        for rel_pos, block in chunk_data.blocks.items():
+
+            block_position = (
+                chunk_data.position.x + rel_pos[0],
+                rel_pos[1],
+                chunk_data.position.z + rel_pos[2]
+            )
+
+            if block is not None:
+
+                blocks_positions.append(block_position)
+
+        chunk_vertexes = []
+        for position in blocks_positions:
+
+            chunk_vertexes.extend(graphics.GraphicBlock().get_vertexes(position))
+
+        vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
+
+        chunk_vbo.vertexes_count = len(vertexes_GL)
+
+        glBufferData(
+            GL_ARRAY_BUFFER,
+            len(vertexes_GL) * 4,
+            vertexes_GL,
+            GL_STATIC_DRAW)
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+        return chunk_vbo
+
     def prepare_world(self):
         """Fill buffer objects with data."""
 
         block_counter = 0
         for pos, chunk in self.world.chunks.items():
 
-            b_positions = []
+            # b_positions = []
+            #
+            # chunk_vbo = graphics.VboData(chunk.chunk_id)
+            # glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
+            #
+            # for rel_pos, block in chunk.blocks.items():
+            #
+            #     block_position = (
+            #         pos[0] + rel_pos[0],
+            #         rel_pos[1],
+            #         pos[1] + rel_pos[2]
+            #     )
+            #
+            #     if block is not None:
+            #
+            #         b_positions.append(block_position)
+            #         block_counter += 1
+            #
+            # chunk_vertexes = []
+            # for position in b_positions:
+            #
+            #     chunk_vertexes.extend(graphics.GraphicBlock().get_vertexes(position))
+            #
+            # vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
+            #
+            # chunk_vbo.vertexes_count = len(vertexes_GL)
+            #
+            # glBufferData(
+            #     GL_ARRAY_BUFFER,
+            #     len(vertexes_GL) * 4,
+            #     vertexes_GL,
+            #     GL_STATIC_DRAW)
+            # glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-            chunk_vbo = graphics.VboData(chunk.chunk_id)
-            glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
-
-            for rel_pos, block in chunk.blocks.items():
-
-                block_position = (
-                    pos[0] + rel_pos[0],
-                    rel_pos[1],
-                    pos[1] + rel_pos[2]
-                )
-
-                if block is not None:
-
-                    b_positions.append(block_position)
-                    block_counter += 1
-
-            chunk_vertexes = []
-            for position in b_positions:
-
-                chunk_vertexes.extend(graphics.GraphicBlock().get_vertexes(position))
-
-            vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
-
-            chunk_vbo.vertexes_count = len(vertexes_GL)
-
-            glBufferData(
-                GL_ARRAY_BUFFER,
-                len(vertexes_GL) * 4,
-                vertexes_GL,
-                GL_STATIC_DRAW)
-            glBindBuffer(GL_ARRAY_BUFFER, 0)
+            chunk_vbo = self.generate_vbo(chunk)
 
             self.vbos.append(chunk_vbo)
 

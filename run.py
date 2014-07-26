@@ -4,7 +4,7 @@ import core
 import graphics
 import data
 
-cw = data.BlockWorld(data.NormalChunk, 60, 80)
+cw = data.BlockWorld(data.NormalChunk, 20, 20)
 renderer = core.Renderer(cw)
 renderer.prepare_world()
 

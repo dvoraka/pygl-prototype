@@ -443,6 +443,8 @@ class GameWindow(pyglet.window.Window):
             self.renderer.world.regenerate_chunks(
                 self.camera.get_position_inverse_z(), 10)
 
+            self.renderer.create_vbos()
+
         ### end testing zone
 
         position = data.Point(
