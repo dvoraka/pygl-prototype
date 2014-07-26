@@ -433,12 +433,17 @@ class GameWindow(pyglet.window.Window):
 
     def update(self, dt):
 
+        ### testing zone
         if self.counter % 120 == 0:
 
             self.renderer.check_visibility(self.camera.get_position_inverse_z())
             self.renderer.set_visibility()
 
             self.renderer.print_info(self.camera.get_position_inverse_z())
+            self.renderer.world.regenerate_chunks(
+                self.camera.get_position_inverse_z(), 10)
+
+        ### end testing zone
 
         position = data.Point(
             self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)

@@ -284,6 +284,8 @@ class BlockWorld(object):
 
         if not self.chunk_exists(position):
 
+            print("Creating new chunk: {}".format(position))
+
             self.chunks[position] = self.chunk_type(
                 Point(position[0], 0, position[1]))
 
@@ -323,6 +325,14 @@ class BlockWorld(object):
                     positions.append((x_pos, z_pos))
 
         return positions
+
+    def regenerate_chunks(self, point, distance):
+
+        necessary_chunks = self.find_necessary_chunks(point, distance)
+
+        for position in necessary_chunks:
+
+            self.generate_chunk(position)
 
     def set_visibility(self, point, distance):
         """Set chunk visibility.
