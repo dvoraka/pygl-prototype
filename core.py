@@ -40,7 +40,8 @@ class Renderer(object):
     def print_info(self, point):
         """Development info method."""
 
-        print(self.world.find_necessary_chunks(point, 10))
+        # print(self.world.find_necessary_chunks(point, 10))
+        pass
 
     def ground_collision(self, point):
         """Return ground collision value as bool."""

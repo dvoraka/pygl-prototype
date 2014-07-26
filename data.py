@@ -235,9 +235,15 @@ class BlockWorld(object):
         self.generate_world()
 
     def in_chunk(self, point):
-        """???"""
+        """Return chunk according the point."""
 
-        pass
+        for position, chunk in self.chunks.items():
+
+            x_dist = point.x - position[0]
+            z_dist = point.z - position[1]
+            if (0 < x_dist < chunk.size) and (0 < z_dist < chunk.size):
+
+                return chunk
 
     def collision(self, point):
         """Return collision with world as a boolean.
@@ -284,7 +290,7 @@ class BlockWorld(object):
 
         if not self.chunk_exists(position):
 
-            print("Creating new chunk: {}".format(position))
+            # print("Creating new chunk: {}".format(position))
 
             self.chunks[position] = self.chunk_type(
                 Point(position[0], 0, position[1]))
