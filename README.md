@@ -1,7 +1,14 @@
 Introduction
 ==============
 
-Python OpenGL prototype. It has prepared structure for future development.
+Game engine prototype using Python, PyOpenGL and Pyglet.
+
+#### Features
+* controllable FPS camera
+* full ground collisions and gravity
+* dynamic rendering distance
+* dynamic world generation
+
 
 ### Controls
 
