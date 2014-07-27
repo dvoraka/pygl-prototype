@@ -19,7 +19,7 @@ Game engine prototype using Python, PyOpenGL, Pyglet and NumPy.
 System supports OpenGL 2.1 and above.
 
 #### Installing dependencies
-```$ pip install -r requirements```
+```$ pip install -r requirements.txt```
 
 
 ### Controls
