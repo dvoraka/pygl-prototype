@@ -3,7 +3,7 @@ Introduction
 
 Game engine prototype using Python, PyOpenGL and Pyglet.
 
-#### Features
+### Features
 * controllable FPS camera
 * full ground collisions and gravity
 * dynamic rendering distance
