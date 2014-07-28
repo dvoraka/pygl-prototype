@@ -226,6 +226,7 @@ class BlockWorld(object):
 
         self.chunk_type = chunk_type
         self.chunk_size = self.chunk_type.size
+        self.chunk_offset = 0.5
 
         self.width = width
         self.depth = depth
@@ -239,8 +240,8 @@ class BlockWorld(object):
 
         for position, chunk in self.chunks.items():
 
-            x_dist = point.x - position[0]
-            z_dist = point.z - position[1]
+            x_dist = point.x - position[0] + self.chunk_offset
+            z_dist = point.z - position[1] + self.chunk_offset
             if (0 < x_dist < chunk.size) and (0 < z_dist < chunk.size):
 
                 return position
