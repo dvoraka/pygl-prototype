@@ -333,7 +333,7 @@ class BlockWorld(object):
 
         return positions
 
-    def regenerate_chunks(self, point, distance):
+    def generate_chunks(self, point, distance):
 
         necessary_chunks = self.find_necessary_chunks(point, distance)
 

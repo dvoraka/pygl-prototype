@@ -32,7 +32,7 @@ class Renderer(object):
 
         self.world = world
         self.visibility = 20
-        self.chunk_gen_distance = self.visibility * 1.5
+        self.chunk_gen_distance = self.visibility * 1.1
 
         # VboData list for vertex buffer objects
         self.vbos = []
@@ -47,6 +47,10 @@ class Renderer(object):
         """Return ground collision value as bool."""
 
         return self.world.collision(point)
+
+    def prepare_new_chunks(self, position):
+
+        self.world.generate_chunks(position, self.chunk_gen_distance)
 
     def print_visibility(self):
 

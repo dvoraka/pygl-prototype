@@ -440,8 +440,7 @@ class GameWindow(pyglet.window.Window):
             self.renderer.set_visibility()
 
             self.renderer.print_info(self.camera.get_position_inverse_z())
-            self.renderer.world.regenerate_chunks(
-                self.camera.get_position_inverse_z(), 10)
+            self.renderer.prepare_new_chunks(self.camera.get_position_inverse_z())
 
             self.renderer.create_vbos()
             print(self.renderer.world.in_chunk(self.camera.get_position_inverse_z()))
