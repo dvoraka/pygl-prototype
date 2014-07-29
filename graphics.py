@@ -219,9 +219,14 @@ class GameWindow(pyglet.window.Window):
         self.test_label = pyglet.text.Label(
             'TEST Label',
             font_size=36,
-            x=100, y=100,
-            anchor_x='center', anchor_y='center'
+            x=self.width / 2,
+            y=self.height,
+            anchor_x='center',
+            anchor_y='top'
         )
+
+        self.hud_shader = None
+        self.test_shader = None
 
         self.setup()
 
@@ -283,7 +288,10 @@ class GameWindow(pyglet.window.Window):
 
         self.renderer.set_fill()
 
-        self.init_test_shader()
+        # self.init_test_shader()
+
+        self.hud_shader = self.init_hud_shader()
+        self.test_shader = self.init_test_shader()
 
         self.print_gl_settings()
 
@@ -295,7 +303,16 @@ class GameWindow(pyglet.window.Window):
 
         program = shaders.compile_program(v_shader, f_shader)
 
-        glUseProgram(program)
+        return program
+
+    def init_hud_shader(self):
+
+        v_shader = shaders.load_vshader('shaders_data/test.vs')
+        f_shader = shaders.load_fshader('shaders_data/hud.fs')
+
+        program = shaders.compile_program(v_shader, f_shader)
+
+        return program
 
     def on_resize(self, width, height):
         """Prepare perspective for window size."""
@@ -343,6 +360,8 @@ class GameWindow(pyglet.window.Window):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
+        glUseProgram(self.test_shader)
+
     def on_draw(self):
         """Redraw window."""
 
@@ -367,6 +386,9 @@ class GameWindow(pyglet.window.Window):
 
     def draw_hud(self):
 
+        # glUseProgram(self.hud_shader)
+        # temporary solution
+        glUseProgram(0)
         self.test_label.draw()
 
     def on_mouse_motion(self, x, y, dx, dy):
