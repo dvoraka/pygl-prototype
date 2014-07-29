@@ -198,6 +198,7 @@ class GameWindow(pyglet.window.Window):
         # self.set_fullscreen(True)
 
         pyglet.clock.schedule_interval(self.print_info, 2.0 / 1.0)
+        pyglet.clock.schedule_interval(self.less_frequent_tasks, 1.0)
         pyglet.clock.schedule_interval(self.update, 1.0 / 30.0)
 
         self.keyboard = pyglet.window.key.KeyStateHandler()
@@ -431,18 +432,19 @@ class GameWindow(pyglet.window.Window):
             self.set_exclusive_mouse(True)
             self.set_mouse_visible(False)
 
+    def less_frequent_tasks(self, dt):
+
+        self.renderer.check_visibility(self.camera.get_position_inverse_z())
+        self.renderer.set_visibility()
+
+        self.renderer.prepare_new_chunks(self.camera.get_position_inverse_z())
+        self.renderer.create_vbos()
+
     def update(self, dt):
 
         ### testing zone
         if self.counter % 120 == 0:
 
-            self.renderer.check_visibility(self.camera.get_position_inverse_z())
-            self.renderer.set_visibility()
-
-            self.renderer.print_info(self.camera.get_position_inverse_z())
-            self.renderer.prepare_new_chunks(self.camera.get_position_inverse_z())
-
-            self.renderer.create_vbos()
             print(self.renderer.world.in_chunk(self.camera.get_position_inverse_z()))
 
         ### end testing zone
