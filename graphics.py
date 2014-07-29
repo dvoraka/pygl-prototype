@@ -31,6 +31,7 @@ from OpenGL.GL import glDrawArrays
 from OpenGL.GL import glDisableVertexAttribArray
 from OpenGL.GL import glIsEnabled
 from OpenGL.GL import glEnable
+from OpenGL.GL import glDisable
 from OpenGL.GL import glClearColor
 from OpenGL.GL import glUseProgram
 from OpenGL.GL import glViewport
@@ -39,6 +40,7 @@ from OpenGL.GL import glLoadIdentity
 from OpenGL.GL import glClear
 from OpenGL.GL import glRotatef
 from OpenGL.GL import glTranslatef
+from OpenGL.GL import glOrtho
 
 from OpenGL.GLU import gluPerspective
 
@@ -214,6 +216,13 @@ class GameWindow(pyglet.window.Window):
 
         self.counter = 0
 
+        self.test_label = pyglet.text.Label(
+            'TEST Label',
+            font_size=36,
+            x=100, y=100,
+            anchor_x='center', anchor_y='center'
+        )
+
         self.setup()
 
     def print_fps(self, dt):
@@ -308,15 +317,38 @@ class GameWindow(pyglet.window.Window):
 
         pyglet.app.run()
 
-    def on_draw(self):
-        """Redraw window."""
+    def set_2d(self):
 
-        #self.clear()
+        glDisable(GL_DEPTH_TEST)
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glViewport(0, 0, self.width, self.height)
+
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        glOrtho(0, self.width, 0, self.height, -1, 1)
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
+
+    def set_3d(self):
+
+        glEnable(GL_DEPTH_TEST)
+
+        glViewport(0, 0, self.width, self.height)
+
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(75.0, 1.0 * self.width / self.height, 0.001, 1000.0)
+
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+
+    def on_draw(self):
+        """Redraw window."""
+
+        self.set_3d()
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         # rotate camera
         glRotatef(self.camera.h_angle_deg(), 1.0, 0, 0)
@@ -328,6 +360,14 @@ class GameWindow(pyglet.window.Window):
             self.camera.z_pos)
 
         self.renderer.render()
+
+        # draw HUD
+        self.set_2d()
+        self.draw_hud()
+
+    def draw_hud(self):
+
+        self.test_label.draw()
 
     def on_mouse_motion(self, x, y, dx, dy):
 
