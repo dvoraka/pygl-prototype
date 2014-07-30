@@ -44,11 +44,23 @@ class Renderer(object):
         pass
 
     def ground_collision(self, point):
-        """Return ground collision value as bool."""
+        """Return ground collision value as boolean.
+
+        Args:
+            point (Point): Point for collision check.
+
+        Returns:
+            boolean
+        """
 
         return self.world.collision(point)
 
     def prepare_new_chunks(self, position):
+        """Generate new chunks around the position.
+
+        Args:
+            position (Point): Centre.
+        """
 
         self.world.generate_chunks(position, self.chunk_gen_distance)
 
@@ -59,7 +71,11 @@ class Renderer(object):
             print(position, chunk.visible)
 
     def check_visibility(self, point):
-        """Check and set visibility for chunks."""
+        """Check and set visibility for chunks.
+
+        Args:
+            point (Point): Centre.
+        """
 
         self.world.set_visibility(point, self.visibility)
 
@@ -87,6 +103,14 @@ class Renderer(object):
                 self.vbos.append(new_vbo)
 
     def vbo_exists(self, chunk_id):
+        """Check VBO existence for the chunk ID.
+
+        Args:
+            chunk_id (str): Chunk ID.
+
+        Returns:
+            boolean: True if VBO data exists.
+        """
 
         for vbo in self.vbos:
 
@@ -97,6 +121,14 @@ class Renderer(object):
         return False
 
     def generate_vbo(self, chunk_data):
+        """Generate VBO object.
+
+        Args:
+            chunk_data (Chunk): Chunk data.
+
+        Returns:
+            VboData: VBO data object.
+        """
 
         blocks_positions = []
 
@@ -209,17 +241,20 @@ class Renderer(object):
 
     @staticmethod
     def set_lines():
+        """Set OpenGL lines rendering."""
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         glDisable(GL_CULL_FACE)
 
     @staticmethod
     def set_fill():
+        """Set OpenGL fill rendering."""
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glEnable(GL_CULL_FACE)
 
     @staticmethod
     def set_points():
+        """Set OpenGL points rendering."""
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS)
