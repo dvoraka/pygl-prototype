@@ -296,7 +296,7 @@ class GameWindow(pyglet.window.Window):
         self.print_gl_settings()
 
     def init_test_shader(self):
-        """Compile and use test shader."""
+        """Return compiled test shader."""
 
         v_shader = shaders.load_vshader('shaders_data/simple.vs')
         f_shader = shaders.load_fshader('shaders_data/test1.fs')
@@ -306,6 +306,7 @@ class GameWindow(pyglet.window.Window):
         return program
 
     def init_hud_shader(self):
+        """Return compiled HUD shader."""
 
         v_shader = shaders.load_vshader('shaders_data/test.vs')
         f_shader = shaders.load_fshader('shaders_data/hud.fs')
