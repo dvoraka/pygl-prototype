@@ -141,7 +141,7 @@ class FPSCamera(object):
         """Return next left x axis Point."""
 
         rot_m = self.rot_y_matrix(- pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step + offset) * new_vec
 
         result = self.get_position_matrix() * new_vec
@@ -155,7 +155,7 @@ class FPSCamera(object):
         """Return next left z axis Point."""
 
         rot_m = self.rot_y_matrix(- pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step + offset) * new_vec
 
         result = self.get_position_matrix() * new_vec
@@ -168,7 +168,7 @@ class FPSCamera(object):
     def next_right_x_point(self, offset=0.0):
 
         rot_m = self.rot_y_matrix(pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step + offset) * new_vec
 
         result = self.get_position_matrix() * new_vec
@@ -181,7 +181,7 @@ class FPSCamera(object):
     def next_right_z_point(self, offset=0.0):
 
         rot_m = self.rot_y_matrix(pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step + offset) * new_vec
 
         result = self.get_position_matrix() * new_vec
@@ -369,6 +369,16 @@ class FPSCamera(object):
         return trans_matrix
 
     def view_vec(self):
+        """Return view vector."""
+
+        pass
+
+    def horizontal_view_vec(self):
+        """Return horizontal view vector.
+
+        Return:
+            matrix: view vector
+        """
 
         vec = matrix([
             [sin(self.h_angle)],
@@ -461,7 +471,7 @@ class FPSCamera(object):
         # self.set_position_vec(result)
 
         rot_m = self.rot_y_matrix(- pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step) * new_vec
 
         result = self.get_position_matrix() * new_vec
@@ -470,7 +480,7 @@ class FPSCamera(object):
     def left_x(self):
 
         rot_m = self.rot_y_matrix(- pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step) * new_vec
 
         result = self.get_position_matrix() * new_vec
@@ -483,7 +493,7 @@ class FPSCamera(object):
     def left_z(self):
 
         rot_m = self.rot_y_matrix(- pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step) * new_vec
 
         result = self.get_position_matrix() * new_vec
@@ -506,7 +516,7 @@ class FPSCamera(object):
         """Move camera right in x axis."""
 
         rot_m = self.rot_y_matrix(pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step) * new_vec
 
         result = self.get_position_matrix() * new_vec
@@ -520,7 +530,7 @@ class FPSCamera(object):
         """Move camera right in z axis."""
 
         rot_m = self.rot_y_matrix(pi / 2)
-        new_vec = rot_m * self.view_vec()
+        new_vec = rot_m * self.horizontal_view_vec()
         new_vec = self.scale_matrix(self.side_step) * new_vec
 
         result = self.get_position_matrix() * new_vec
