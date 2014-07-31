@@ -36,19 +36,19 @@ class FPSCamera(object):
         self.z_pos = z_pos
         self.position = data.Point(self.x_pos, self.y_pos, self.z_pos)
 
-        # camera angles in radians
-        self.v_angle = 0.0
+        # camera horizontal and vertical angles in radians
         self.h_angle = 0.0
+        self.v_angle = 0.0
 
         # camera rotating sensitivity multipliers
-        self.v_multiplier = 0.01
-        self.h_multiplier = 0.02
+        self.h_multiplier = 0.01
+        self.v_multiplier = 0.02
 
         self.inverse_horizontal = False
 
         # camera min and max horizontal angles
-        self.h_angle_min = - pi / 3
-        self.h_angle_max = pi / 3
+        self.v_angle_min = - pi / 3
+        self.v_angle_max = pi / 3
 
         self.step = 0.02
         self.sprint_mp = 1.8
@@ -215,36 +215,36 @@ class FPSCamera(object):
     def v_angle_deg(self):
         """Return camera vertical angle in degrees."""
 
-        return (self.v_angle * 180) / pi
+        return (self.h_angle * 180) / pi
 
     def h_angle_deg(self):
         """Return camera horizontal angle in degrees."""
 
-        return (self.h_angle * 180) / pi
+        return (self.v_angle * 180) / pi
 
     def add_v_angle(self, delta):
         """Add delta value to vertical angle."""
 
-        self.v_angle += self.v_multiplier * delta
+        self.h_angle += self.h_multiplier * delta
 
     def add_h_angle(self, delta):
         """Add delta value to horizontal angle."""
 
         if self.inverse_horizontal:
 
-            self.h_angle += self.h_multiplier * delta
+            self.v_angle += self.v_multiplier * delta
 
         else:
 
-            self.h_angle -= self.h_multiplier * delta
+            self.v_angle -= self.v_multiplier * delta
 
-        if self.h_angle < self.h_angle_min:
+        if self.v_angle < self.v_angle_min:
 
-            self.h_angle = self.h_angle_min
+            self.v_angle = self.v_angle_min
 
-        elif self.h_angle > self.h_angle_max:
+        elif self.v_angle > self.v_angle_max:
 
-            self.h_angle = self.h_angle_max
+            self.v_angle = self.v_angle_max
 
     def get_position_vec(self):
         """Return position vector."""
@@ -288,18 +288,18 @@ class FPSCamera(object):
         if sprint:
             # use sprint multiplier
             trans_matrix = matrix([
-                [1.0, 0, 0, (self.step * self.sprint_mp) * sin(self.v_angle)],
+                [1.0, 0, 0, (self.step * self.sprint_mp) * sin(self.h_angle)],
                 [0, 1.0, 0, 0],
-                [0, 0, 1.0, (self.step * self.sprint_mp) * cos(self.v_angle)],
+                [0, 0, 1.0, (self.step * self.sprint_mp) * cos(self.h_angle)],
                 [0, 0, 0, 1.0]
             ])
 
         else:
 
             trans_matrix = matrix([
-                [1.0, 0, 0, self.step * sin(self.v_angle)],
+                [1.0, 0, 0, self.step * sin(self.h_angle)],
                 [0, 1.0, 0, 0],
-                [0, 0, 1.0, self.step * cos(self.v_angle)],
+                [0, 0, 1.0, self.step * cos(self.h_angle)],
                 [0, 0, 0, 1.0]
             ])
 
@@ -308,9 +308,9 @@ class FPSCamera(object):
     def fw_coll_matrix(self, offset=0.0):
 
         trans_matrix = matrix([
-            [1.0, 0, 0, (self.step + offset) * sin(self.v_angle)],
+            [1.0, 0, 0, (self.step + offset) * sin(self.h_angle)],
             [0, 1.0, 0, 0],
-            [0, 0, 1.0, (self.step + offset) * cos(self.v_angle)],
+            [0, 0, 1.0, (self.step + offset) * cos(self.h_angle)],
             [0, 0, 0, 1.0]
         ])
 
@@ -319,9 +319,9 @@ class FPSCamera(object):
     def right_matrix(self):
 
         trans_matrix = matrix([
-            [1.0, 0, 0, self.step * sin(self.v_angle + pi / 2)],
+            [1.0, 0, 0, self.step * sin(self.h_angle + pi / 2)],
             [0, 1.0, 0, 0],
-            [0, 0, 1.0, self.step * cos(self.v_angle + pi / 2)],
+            [0, 0, 1.0, self.step * cos(self.h_angle + pi / 2)],
             [0, 0, 0, 1.0]
         ])
 
@@ -354,9 +354,9 @@ class FPSCamera(object):
     def view_vec(self):
 
         vec = matrix([
-            [sin(self.v_angle)],
+            [sin(self.h_angle)],
             [0],
-            [cos(self.v_angle)],
+            [cos(self.h_angle)],
             [1]
         ])
 
