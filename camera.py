@@ -223,7 +223,7 @@ class FPSCamera(object):
         return (self.v_angle * 180) / pi
 
     def add_h_angle(self, delta):
-        """Add delta value to vertical angle.
+        """Add delta value to horizontal angle.
 
         Args:
             delta (float): delta value
@@ -232,7 +232,7 @@ class FPSCamera(object):
         self.h_angle += self.h_multiplier * delta
 
     def add_v_angle(self, delta):
-        """Add delta value to horizontal angle.
+        """Add delta value to vertical angle.
 
         Args:
             delta (float): delta value
@@ -255,7 +255,11 @@ class FPSCamera(object):
             self.v_angle = self.v_angle_max
 
     def get_position_vec(self):
-        """Return position vector."""
+        """Return position vector.
+
+        Return:
+            matrix: position vector
+        """
 
         pos_vec = matrix([
             [self.x_pos],
@@ -267,6 +271,11 @@ class FPSCamera(object):
         return pos_vec
 
     def get_position_matrix(self):
+        """Return position matrix.
+
+        Return:
+            matrix: translation position matrix
+        """
 
         pos_matrix = matrix([
             [1.0, 0, 0, self.x_pos],
