@@ -370,8 +370,8 @@ class GameWindow(pyglet.window.Window):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         # rotate camera
-        glRotatef(self.camera.h_angle_deg(), 1.0, 0, 0)
-        glRotatef(self.camera.v_angle_deg(), 0.0, 1.0, 0)
+        glRotatef(self.camera.v_angle_deg(), 1.0, 0, 0)
+        glRotatef(self.camera.h_angle_deg(), 0.0, 1.0, 0)
 
         glTranslatef(
             -self.camera.x_pos,
@@ -393,8 +393,8 @@ class GameWindow(pyglet.window.Window):
 
     def on_mouse_motion(self, x, y, dx, dy):
 
-        self.camera.add_h_angle(float(dy))
-        self.camera.add_v_angle(float(dx))
+        self.camera.add_v_angle(float(dy))
+        self.camera.add_h_angle(float(dx))
 
     def go_forward(self):
 

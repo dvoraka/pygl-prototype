@@ -61,7 +61,7 @@ class FPSCamera(object):
     def get_position(self):
         """Return camera position as a Point.
 
-        Returns:
+        Return:
             Point: the camera position
         """
 
@@ -72,7 +72,7 @@ class FPSCamera(object):
     def get_position_inverse_z(self):
         """Return camera position as a Point.
 
-        Returns:
+        Return:
             Point: the camera position with inverse z axis
         """
 
@@ -212,23 +212,31 @@ class FPSCamera(object):
 
         self.falling = False
 
-    def v_angle_deg(self):
-        """Return camera vertical angle in degrees."""
-
-        return (self.h_angle * 180) / pi
-
     def h_angle_deg(self):
         """Return camera horizontal angle in degrees."""
 
+        return (self.h_angle * 180) / pi
+
+    def v_angle_deg(self):
+        """Return camera vertical angle in degrees."""
+
         return (self.v_angle * 180) / pi
 
-    def add_v_angle(self, delta):
-        """Add delta value to vertical angle."""
+    def add_h_angle(self, delta):
+        """Add delta value to vertical angle.
+
+        Args:
+            delta (float): delta value
+        """
 
         self.h_angle += self.h_multiplier * delta
 
-    def add_h_angle(self, delta):
-        """Add delta value to horizontal angle."""
+    def add_v_angle(self, delta):
+        """Add delta value to horizontal angle.
+
+        Args:
+            delta (float): delta value
+        """
 
         if self.inverse_horizontal:
 
