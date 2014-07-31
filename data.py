@@ -64,6 +64,13 @@ class Block(object):
         return self.__str__()
 
 
+class BlockInfo(object):
+    """Auxiliary mapping class."""
+
+    #TODO: implementation
+    pass
+
+
 class Chunk(object):
     """Base class for chunks."""
 
@@ -132,6 +139,19 @@ class Chunk(object):
                         blocks[(x, y, z)] = None
 
         return blocks
+
+    def block_collision(self, point):
+        """Return collision block info.
+
+        Args:
+            point (Point): the collision point
+
+        Return:
+            BlockInfo or None: info about block
+        """
+
+        #TODO: implementation
+        raise NotImplementedError
 
     def collision(self, point):
         """Return boolean value of collision for the point."""

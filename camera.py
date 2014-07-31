@@ -371,7 +371,8 @@ class FPSCamera(object):
     def view_vec(self):
         """Return view vector."""
 
-        pass
+        #TODO: implementation
+        raise NotImplementedError
 
     def horizontal_view_vec(self):
         """Return horizontal view vector.

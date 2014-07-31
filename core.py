@@ -49,7 +49,7 @@ class Renderer(object):
         Args:
             point (Point): Point for collision check.
 
-        Returns:
+        Return:
             boolean
         """
 
@@ -108,7 +108,7 @@ class Renderer(object):
         Args:
             chunk_id (str): Chunk ID.
 
-        Returns:
+        Return:
             boolean: True if VBO data exists.
         """
 
@@ -126,7 +126,7 @@ class Renderer(object):
         Args:
             chunk_data (Chunk): Chunk data.
 
-        Returns:
+        Return:
             VboData: VBO data object.
         """
 
