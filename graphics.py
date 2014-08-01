@@ -225,6 +225,8 @@ class GameWindow(pyglet.window.Window):
             anchor_y='top'
         )
 
+        self.shader_programs = self.init_shaders()
+
         self.hud_shader = None
         self.test_shader = None
 
@@ -295,6 +297,12 @@ class GameWindow(pyglet.window.Window):
 
         self.print_gl_settings()
 
+    def init_shaders(self):
+
+        shaders = {}
+
+        return shaders
+
     def init_test_shader(self):
         """Return compiled test shader."""
 
@@ -362,6 +370,16 @@ class GameWindow(pyglet.window.Window):
         glLoadIdentity()
 
         glUseProgram(self.test_shader)
+
+    def use_shader(self, shader_name):
+
+        if shader_name in self.shader_programs:
+
+            glUseProgram(self.shader_programs[shader_name])
+
+        else:
+
+            glUseProgram(0)
 
     def on_draw(self):
         """Redraw window."""
