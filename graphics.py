@@ -227,6 +227,9 @@ class GameWindow(pyglet.window.Window):
 
         self.shader_programs = self.init_shaders()
 
+        # fill, lines, points
+        self.rendering_type = "fill"
+
         self.hud_shader = None
         self.test_shader = None
 
@@ -300,6 +303,9 @@ class GameWindow(pyglet.window.Window):
     def init_shaders(self):
 
         shaders = {}
+        shaders["test"] = self.init_test_shader()
+        shaders["hud"] = self.init_hud_shader()
+        shaders["lines"] = self.init_line_shader()
 
         return shaders
 
@@ -318,6 +324,16 @@ class GameWindow(pyglet.window.Window):
 
         v_shader = shaders.load_vshader('shaders_data/test.vs')
         f_shader = shaders.load_fshader('shaders_data/hud.fs')
+
+        program = shaders.compile_program(v_shader, f_shader)
+
+        return program
+
+    def init_line_shader(self):
+        """Return compiled line shader."""
+
+        v_shader = shaders.load_vshader('shaders_data/test.vs')
+        f_shader = shaders.load_fshader('shaders_data/black.fs')
 
         program = shaders.compile_program(v_shader, f_shader)
 
@@ -369,7 +385,7 @@ class GameWindow(pyglet.window.Window):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
-        glUseProgram(self.test_shader)
+        # glUseProgram(self.test_shader)
 
     def use_shader(self, shader_name):
 
@@ -396,6 +412,14 @@ class GameWindow(pyglet.window.Window):
             -self.camera.x_pos,
             -self.camera.y_pos,
             self.camera.z_pos)
+
+        if self.rendering_type == "fill":
+
+            self.use_shader("test")
+
+        elif self.rendering_type == "lines":
+
+            self.use_shader("lines")
 
         self.renderer.render()
 
@@ -499,6 +523,16 @@ class GameWindow(pyglet.window.Window):
 
             self.camera.right_z()
 
+    def fill_rendering(self):
+
+        self.rendering_type = "fill"
+        self.renderer.set_fill()
+
+    def lines_rendering(self):
+
+        self.rendering_type = "lines"
+        self.renderer.set_lines()
+
     def toggle_fullscreen(self):
 
         if self.fullscreen:
@@ -596,11 +630,13 @@ class GameWindow(pyglet.window.Window):
 
         if self.keyboard[key.L]:
 
-            self.renderer.set_lines()
+            # self.renderer.set_lines()
+            self.lines_rendering()
 
         elif self.keyboard[key.F]:
 
-            self.renderer.set_fill()
+            # self.renderer.set_fill()
+            self.fill_rendering()
 
         elif self.keyboard[key.S]:
 
