@@ -46,3 +46,9 @@ def compile_program(*shaders):
     """Return compiled shader program."""
 
     return compileProgram(*shaders)
+
+
+class ShaderPool(object):
+    """Shader programs manager."""
+
+    pass
