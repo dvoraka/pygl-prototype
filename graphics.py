@@ -225,7 +225,10 @@ class GameWindow(pyglet.window.Window):
             anchor_y='top'
         )
 
-        self.shader_programs = self.init_shaders()
+        shader_pool = shaders.ShaderPool(self.capabilities)
+
+        self.shader_programs = shader_pool.get_shaders()
+        # self.shader_programs = self.init_shaders()
 
         # fill, lines, points
         self.rendering_type = "fill"
@@ -295,49 +298,49 @@ class GameWindow(pyglet.window.Window):
 
         # self.init_test_shader()
 
-        self.hud_shader = self.init_hud_shader()
-        self.test_shader = self.init_test_shader()
+        # self.hud_shader = self.init_hud_shader()
+        # self.test_shader = self.init_test_shader()
 
         self.print_gl_settings()
 
-    def init_shaders(self):
+    # def init_shaders(self):
+    #
+    #     shaders = {}
+    #     shaders["test"] = self.init_test_shader()
+    #     shaders["hud"] = self.init_hud_shader()
+    #     shaders["lines"] = self.init_line_shader()
+    #
+    #     return shaders
 
-        shaders = {}
-        shaders["test"] = self.init_test_shader()
-        shaders["hud"] = self.init_hud_shader()
-        shaders["lines"] = self.init_line_shader()
-
-        return shaders
-
-    def init_test_shader(self):
-        """Return compiled test shader."""
-
-        v_shader = shaders.load_vshader('shaders_data/simple.vs')
-        f_shader = shaders.load_fshader('shaders_data/test1.fs')
-
-        program = shaders.compile_program(v_shader, f_shader)
-
-        return program
-
-    def init_hud_shader(self):
-        """Return compiled HUD shader."""
-
-        v_shader = shaders.load_vshader('shaders_data/test.vs')
-        f_shader = shaders.load_fshader('shaders_data/hud.fs')
-
-        program = shaders.compile_program(v_shader, f_shader)
-
-        return program
-
-    def init_line_shader(self):
-        """Return compiled line shader."""
-
-        v_shader = shaders.load_vshader('shaders_data/test.vs')
-        f_shader = shaders.load_fshader('shaders_data/black.fs')
-
-        program = shaders.compile_program(v_shader, f_shader)
-
-        return program
+    # def init_test_shader(self):
+    #     """Return compiled test shader."""
+    #
+    #     v_shader = shaders.load_vshader('shaders_data/simple.vs')
+    #     f_shader = shaders.load_fshader('shaders_data/test1.fs')
+    #
+    #     program = shaders.compile_program(v_shader, f_shader)
+    #
+    #     return program
+    #
+    # def init_hud_shader(self):
+    #     """Return compiled HUD shader."""
+    #
+    #     v_shader = shaders.load_vshader('shaders_data/test.vs')
+    #     f_shader = shaders.load_fshader('shaders_data/hud.fs')
+    #
+    #     program = shaders.compile_program(v_shader, f_shader)
+    #
+    #     return program
+    #
+    # def init_line_shader(self):
+    #     """Return compiled line shader."""
+    #
+    #     v_shader = shaders.load_vshader('shaders_data/test.vs')
+    #     f_shader = shaders.load_fshader('shaders_data/black.fs')
+    #
+    #     program = shaders.compile_program(v_shader, f_shader)
+    #
+    #     return program
 
     def on_resize(self, width, height):
         """Prepare perspective for window size."""
@@ -429,6 +432,7 @@ class GameWindow(pyglet.window.Window):
 
     def draw_hud(self):
 
+        #TODO: add resize changes
         # glUseProgram(self.hud_shader)
         # temporary solution
         glUseProgram(0)

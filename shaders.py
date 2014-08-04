@@ -51,4 +51,44 @@ def compile_program(*shaders):
 class ShaderPool(object):
     """Shader programs manager."""
 
-    pass
+    def __init__(self, capabilities):
+
+        self.pool = {}
+
+        self.pool["test"] = self.init_test_shader()
+        self.pool["hud"] = self.init_hud_shader()
+        self.pool["lines"] = self.init_line_shader()
+
+    def get_shaders(self):
+
+        return self.pool
+
+    def init_test_shader(self):
+        """Return compiled test shader."""
+
+        v_shader = load_vshader('shaders_data/simple.vs')
+        f_shader = load_fshader('shaders_data/test1.fs')
+
+        program = compile_program(v_shader, f_shader)
+
+        return program
+
+    def init_hud_shader(self):
+        """Return compiled HUD shader."""
+
+        v_shader = load_vshader('shaders_data/test.vs')
+        f_shader = load_fshader('shaders_data/hud.fs')
+
+        program = compile_program(v_shader, f_shader)
+
+        return program
+
+    def init_line_shader(self):
+        """Return compiled line shader."""
+
+        v_shader = load_vshader('shaders_data/test.vs')
+        f_shader = load_fshader('shaders_data/black.fs')
+
+        program = compile_program(v_shader, f_shader)
+
+        return program
