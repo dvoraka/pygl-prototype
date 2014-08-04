@@ -54,14 +54,33 @@ class ShaderPool(object):
     def __init__(self, capabilities):
 
         self.pool = {}
+        self.capabilities = capabilities
 
-        self.pool["test"] = self.init_test_shader()
-        self.pool["hud"] = self.init_hud_shader()
-        self.pool["lines"] = self.init_line_shader()
+        inits = {
+            "legacy": self.init_legacy,
+        }
+
+        if capabilities in inits:
+
+            inits[capabilities]()
+
+        else:
+
+            inits["legacy"]()
 
     def get_shaders(self):
 
         return self.pool
+
+    def capabilities(self):
+
+        return self.capabilities
+
+    def init_legacy(self):
+
+        self.pool["test"] = self.init_test_shader()
+        self.pool["hud"] = self.init_hud_shader()
+        self.pool["lines"] = self.init_line_shader()
 
     def init_test_shader(self):
         """Return compiled test shader."""
