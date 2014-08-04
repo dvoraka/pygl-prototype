@@ -65,10 +65,23 @@ class Block(object):
 
 
 class BlockInfo(object):
-    """Auxiliary mapping class."""
+    """Auxiliary mapping class.
 
-    #TODO: implementation
-    pass
+    Args:
+        chunk (Chunk): chunk object
+        position ((x, y, z)): block position
+
+    Attributes:
+        position ((x, y, z)): block position
+        chunk_id (str): chunk ID
+        chunk_position (Point): chunk position
+    """
+
+    def __init__(self, chunk, position):
+
+        self.position = position
+        self.chunk_id = chunk.chunk_id
+        self.chunk_position = chunk.position
 
 
 class Chunk(object):
