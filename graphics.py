@@ -185,6 +185,8 @@ class GameWindow(pyglet.window.Window):
         super(GameWindow, self).__init__()
         self.set_caption('GL prototype')
 
+        self.renderer = renderer
+
         self.set_exclusive_mouse(True)
 
         # detect OpenGL capabilities
@@ -196,17 +198,13 @@ class GameWindow(pyglet.window.Window):
             print("Unsupported OpenGL version.")
             sys.exit()
 
-        #print(self.config)
-        # self.set_fullscreen(True)
-
+        # schedule tasks
         pyglet.clock.schedule_interval(self.print_info, 2.0 / 1.0)
         pyglet.clock.schedule_interval(self.less_frequent_tasks, 1.0)
         pyglet.clock.schedule_interval(self.update, 1.0 / 30.0)
 
         self.keyboard = pyglet.window.key.KeyStateHandler()
         self.push_handlers(self.keyboard)
-
-        self.renderer = renderer
 
         self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
         self.camera.gravity = True
@@ -225,16 +223,15 @@ class GameWindow(pyglet.window.Window):
             anchor_y='top'
         )
 
+        # init shaders
         shader_pool = shaders.ShaderPool(self.capabilities)
-
         self.shader_programs = shader_pool.get_shaders()
-        # self.shader_programs = self.init_shaders()
 
         # fill, lines, points
         self.rendering_type = "fill"
 
-        self.hud_shader = None
-        self.test_shader = None
+        # self.hud_shader = None
+        # self.test_shader = None
 
         self.setup()
 
@@ -254,6 +251,7 @@ class GameWindow(pyglet.window.Window):
         print("renderer: {}".format(pyglet.gl.gl_info.get_renderer()))
         print("version: {}".format(pyglet.gl.gl_info.get_version()))
         print("capabilities: {}".format(self.capabilities))
+        #print(self.config)
         print("+" * 40)
         print("")
 
@@ -294,12 +292,7 @@ class GameWindow(pyglet.window.Window):
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
 
-        self.renderer.set_fill()
-
-        # self.init_test_shader()
-
-        # self.hud_shader = self.init_hud_shader()
-        # self.test_shader = self.init_test_shader()
+        # self.renderer.set_fill()
 
         self.print_gl_settings()
 
@@ -387,8 +380,6 @@ class GameWindow(pyglet.window.Window):
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-
-        # glUseProgram(self.test_shader)
 
     def use_shader(self, shader_name):
 
