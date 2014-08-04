@@ -10,7 +10,13 @@ from math import sqrt
 
 
 class Point(object):
-    """Data for point."""
+    """Data for point.
+
+    Args:
+        x (float): x position
+        y (float): y position
+        z (float): z position
+    """
 
     def __init__(self, x, y, z):
 
@@ -43,7 +49,13 @@ class Point(object):
 
 
 class Block(object):
-    """Data representation for block."""
+    """Data representation for block.
+
+    Attributes:
+        structure: block structure
+        parents (list): block's parents
+        children (list): block's children
+    """
 
     def __init__(self):
 
@@ -85,7 +97,11 @@ class BlockInfo(object):
 
 
 class Chunk(object):
-    """Base class for chunks."""
+    """Base class for chunks.
+
+    Args:
+        position (Point): chunk position
+    """
 
     size = None
     height = None
