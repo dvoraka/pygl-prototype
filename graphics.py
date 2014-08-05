@@ -200,7 +200,7 @@ class GameWindow(pyglet.window.Window):
 
         # schedule tasks
         pyglet.clock.schedule_interval(self.print_info, 2.0 / 1.0)
-        pyglet.clock.schedule_interval(self.less_frequent_tasks, 1.0)
+        pyglet.clock.schedule_interval(self.less_frequent_tasks, 1.0 / 2.0)
         pyglet.clock.schedule_interval(self.update, 1.0 / 30.0)
 
         self.keyboard = pyglet.window.key.KeyStateHandler()
@@ -232,6 +232,9 @@ class GameWindow(pyglet.window.Window):
 
         # self.hud_shader = None
         # self.test_shader = None
+
+        self.long_tasks = 3
+        self.long_tasks_counter = 0
 
         self.setup()
 
@@ -544,11 +547,20 @@ class GameWindow(pyglet.window.Window):
 
     def less_frequent_tasks(self, dt):
 
-        self.renderer.check_visibility(self.camera.get_position_inverse_z())
-        self.renderer.set_visibility()
+        if self.long_tasks_counter % self.long_tasks == 0:
 
-        self.renderer.prepare_new_chunks(self.camera.get_position_inverse_z())
-        self.renderer.create_vbos()
+            self.renderer.check_visibility(self.camera.get_position_inverse_z())
+            self.renderer.set_visibility()
+
+        elif self.long_tasks_counter % self.long_tasks == 1:
+
+            self.renderer.prepare_new_chunks(self.camera.get_position_inverse_z())
+
+        elif self.long_tasks_counter % self.long_tasks == 2:
+
+            self.renderer.create_vbos()
+
+        self.long_tasks_counter += 1
 
     def update(self, dt):
 

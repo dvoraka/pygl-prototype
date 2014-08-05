@@ -31,7 +31,7 @@ class Renderer(object):
     def __init__(self, world):
 
         self.world = world
-        self.visibility = 20
+        self.visibility = 17
         self.chunk_gen_distance = self.visibility * 1.1
 
         # VboData list for vertex buffer objects
@@ -130,6 +130,8 @@ class Renderer(object):
             VboData: VBO data object.
         """
 
+        print("Generating VBO...")
+
         blocks_positions = []
 
         chunk_vbo = graphics.VboData(chunk_data.chunk_id)
@@ -150,7 +152,7 @@ class Renderer(object):
         chunk_vertexes = []
         for position in blocks_positions:
 
-            chunk_vertexes.extend(graphics.GraphicBlock().get_vertexes(position))
+            chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
 
         vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
 
