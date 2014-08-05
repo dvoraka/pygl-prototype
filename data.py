@@ -179,8 +179,41 @@ class Chunk(object):
             BlockInfo or None: info about block
         """
 
-        #TODO: implementation
-        raise NotImplementedError
+        selected_blocks = []  # (x, y, z)
+        for x in range(int(point.x - 2 - self.position.x),
+                       int(point.x + 2 - self.position.x)):
+            for y in range(int(point.y - 2 - self.position.y),
+                           int(point.y + 2 - self.position.y)):
+                for z in range(int(point.z - 2 - self.position.z),
+                               int(point.z + 2 - self.position.z)):
+
+                    if x < 0 or x >= self.size:
+
+                        pass
+
+                    elif y < 0 or y >= self.height:
+
+                        pass
+
+                    elif z < 0 or z >= self.size:
+
+                        pass
+
+                    else:
+
+                        selected_blocks.append((x, y, z))
+
+        for block in selected_blocks:
+
+            if abs(block[0] + self.position.x - point.x) < 0.5:
+                if abs(block[1] + self.position.y - point.y) < 0.5:
+                    if abs(block[2] + self.position.z - point.z) < 0.5:
+
+                        if self.blocks[block] is not None:
+
+                            return BlockInfo(self, block)
+
+        return None
 
     def collision(self, point):
         """Return boolean value of collision for the point."""
@@ -229,6 +262,14 @@ class Chunk(object):
             # counter += 1
 
         return False
+
+        # if self.block_collision(point) != None:
+        #
+        #     return True
+        #
+        # else:
+        #
+        #     return False
 
     def __str__(self):
         """String representation of chunk."""
@@ -388,6 +429,16 @@ class BlockWorld(object):
                         positions.append((x_pos, z_pos))
 
         return positions
+
+    def find_nearest_chunks(self, point):
+
+        return self.find_necessary_chunks(point, 7)
+
+    def block_collision(self, point, chunks):
+
+        for chunk in chunks:
+
+            print(self.chunks[chunk].block_collision(point))
 
     def generate_chunks(self, point, distance):
 
