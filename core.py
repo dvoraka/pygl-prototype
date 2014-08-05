@@ -130,7 +130,7 @@ class Renderer(object):
             VboData: VBO data object.
         """
 
-        print("Generating VBO...")
+        # print("Generating VBO...")
 
         blocks_positions = []
 

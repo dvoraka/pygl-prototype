@@ -378,7 +378,14 @@ class BlockWorld(object):
 
                 if x_pos % self.chunk_size == 0 and z_pos % self.chunk_size == 0:
 
-                    positions.append((x_pos, z_pos))
+                    if sqrt((pow((x_pos + offset) - point.x, 2))
+                            + pow((z_pos + offset) - point.z, 2)) > distance:
+
+                        pass
+
+                    else:
+
+                        positions.append((x_pos, z_pos))
 
         return positions
 
