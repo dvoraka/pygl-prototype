@@ -358,11 +358,11 @@ class BlockWorld(object):
         """Find necessary chunks in the distance.
 
         Args:
-            point (Point): Centre point.
-            distance (int): Distance.
+            point (Point): centre point
+            distance (int): distance
 
         Returns:
-            list: List of necessary chunks positions.
+            list: list of necessary chunks positions
         """
 
         offset = self.chunk_size / 2
@@ -378,7 +378,7 @@ class BlockWorld(object):
 
                 if x_pos % self.chunk_size == 0 and z_pos % self.chunk_size == 0:
 
-                    if sqrt((pow((x_pos + offset) - point.x, 2))
+                    if sqrt(pow((x_pos + offset) - point.x, 2)
                             + pow((z_pos + offset) - point.z, 2)) > distance:
 
                         pass
