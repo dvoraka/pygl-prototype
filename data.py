@@ -39,7 +39,7 @@ class Point(object):
         self.z = z
 
     def chunk_distance(self, chunk_pos):
-        """Return distance of chunk from instance.
+        """Return distance of chunk from self instance.
 
         Args:
             chunk_pos (Point): position of chunk
@@ -86,12 +86,12 @@ class BlockInfo(object):
 
     Args:
         chunk (Chunk): chunk object
-        position ((x, y, z)): block position
+        position ((x, y, z)): position of block
 
     Attributes:
-        position ((x, y, z)): block position
-        chunk_id (str): chunk ID
-        chunk_position (Point): chunk position
+        position ((x, y, z)): position of block
+        chunk_id (str): ID of chunk
+        chunk_position (Point): position of chunk
     """
 
     def __init__(self, chunk, position):
@@ -105,7 +105,15 @@ class Chunk(object):
     """Base class for chunks.
 
     Args:
-        position (Point): chunk position
+        position (Point): position of chunk
+
+    Attributes:
+        position (Position): position of chunk
+        centre (Point): centre point of chunk
+        chunk_id (str): ID of chunk
+        dirty (bool): indicates changes in chunk
+        visible (bool): stores visibility for chunk
+        blocks (dict): dictionary of Block objects, key is (x, y, z) of int
     """
 
     size = None
@@ -113,28 +121,31 @@ class Chunk(object):
 
     def __init__(self, position):
 
-        # chunk position in world
         self.position = position
-        # chunk ID
+        self.centre = Point(
+            position.x + self.size / 2,
+            0,
+            position.z + self.size / 2
+        )
+
         self.chunk_id = str(uuid.uuid4())
-        # chunk centre
-        self.centre = Point(position.x + self.size / 2,
-                            0,
-                            position.z + self.size / 2)
-        # chunk change flag
+
         self.dirty = False
-        # chunk visibility
         self.visible = False
-        # chunk Blocks dict
+
         self.blocks = self.generate_chunk()
 
     def get_centre(self):
-        """Return chunk center as Point."""
+        """Return centre of chunk as a Point object."""
 
         return self.centre
 
     def generate_chunk(self):
-        """Generate chunk data."""
+        """Generate chunk data.
+
+        Return:
+            dict: {(x, y, z) of int: Block}
+        """
 
         blocks = {}
 
