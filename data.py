@@ -10,7 +10,7 @@ from math import sqrt
 
 
 class Point(object):
-    """Data for point.
+    """Store data for point in 3D space.
 
     Args:
         x (float): x position
@@ -27,6 +27,7 @@ class Point(object):
         self.set_position(x, y, z)
 
     def __str__(self):
+        """Return string representation."""
 
         return "Position: x={}, y={}, z={}".format(self.x, self.y, self.z)
 
@@ -38,7 +39,11 @@ class Point(object):
         self.z = z
 
     def chunk_distance(self, chunk_pos):
-        """Return chunk distance."""
+        """Return distance of chunk from instance.
+
+        Args:
+            chunk_pos (Point): position of chunk
+        """
 
         x_dist = chunk_pos.x - self.x
         z_dist = chunk_pos.z - self.z
