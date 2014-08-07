@@ -361,13 +361,13 @@ class BlockWorld(object):
                 return position
 
     def collision(self, point):
-        """Return collision with world as a boolean.
+        """Return collision with a world as a boolean.
 
         Args:
-            point (Point): Check collision for the point.
+            point (Point): check collision for the point
 
-        Returns:
-            bool: Point collision with world.
+        Return:
+            bool: point collision with the world
         """
 
         # temporary solution
@@ -396,7 +396,7 @@ class BlockWorld(object):
     def __str__(self):
         """String representation for world."""
 
-        return 'BlockWorld: ' + str(self.chunks)
+        return "BlockWorld: {} chunks".format(len(self.chunks))
 
     def generate_chunk(self, position):
         """Generate chunk.
@@ -416,7 +416,7 @@ class BlockWorld(object):
         """Return chunk existence on the position.
 
         Args:
-            position ((int, int)): Chunk position.
+            position ((int, int)): chunk position/key (x, z)
         """
 
         return position in self.chunks
@@ -428,7 +428,7 @@ class BlockWorld(object):
             point (Point): centre point
             distance (int): distance
 
-        Returns:
+        Return:
             list: list of necessary chunks positions
         """
 
@@ -475,11 +475,11 @@ class BlockWorld(object):
             self.generate_chunk(position)
 
     def set_visibility(self, point, distance):
-        """Set chunk visibility.
+        """Set chunks visibility.
 
         Args:
-            point (Point): Observer position.
-            distance (int): Distance.
+            point (Point): observer position
+            distance (int): max distance
         """
 
         for position, chunk in self.chunks.items():
