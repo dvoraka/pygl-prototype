@@ -232,13 +232,17 @@ class Chunk(object):
         return None
 
     def collision(self, point):
-        """Return boolean value of collision for the point."""
+        """Return boolean value of collision for the point.
+
+        Args:
+            point (Point): check collision for this point
+        """
 
         # debug info
         # counter = 0
 
-        selected_blocks = []  # (x, y, z)
-
+        # list of (x, y, z) of int
+        selected_blocks = []
         for x in range(int(point.x - 2 - self.position.x),
                        int(point.x + 2 - self.position.x)):
             for y in range(int(point.y - 2 - self.position.y),
@@ -298,11 +302,11 @@ class Chunk(object):
 
 
 class SmallChunk(Chunk):
-    """Small chunk of blocks - 2x2x128."""
+    """Small chunk - 2 x 2 x 128 blocks."""
 
     # size of chunk side
     size = 2
-    # chunk height
+    # height of chunk
     height = 128
 
     def __str__(self):
@@ -312,11 +316,11 @@ class SmallChunk(Chunk):
 
 
 class NormalChunk(Chunk):
-    """Normal chunk of blocks - 8x8x128."""
+    """Normal chunk - 8 x 8 x 128 blocks."""
 
     # size of chunk side
     size = 8
-    # chunk height
+    # height of chunk
     height = 128
 
     def __str__(self):
@@ -342,7 +346,11 @@ class BlockWorld(object):
         self.generate_world()
 
     def in_chunk(self, point):
-        """Return chunk key according the point."""
+        """Return chunk key according the point.
+
+        Args:
+            point (Point): find chunk including this point
+        """
 
         for position, chunk in self.chunks.items():
 
@@ -362,6 +370,8 @@ class BlockWorld(object):
             bool: Point collision with world.
         """
 
+        # temporary solution
+        #TODO: change
         point.z = -point.z
 
         offset = 0.5
@@ -392,7 +402,7 @@ class BlockWorld(object):
         """Generate chunk.
 
         Args:
-            position ((int, int)): Chunk position in world.
+            position ((int, int)): position of chunk in a world
         """
 
         if not self.chunk_exists(position):
