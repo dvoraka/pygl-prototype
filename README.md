@@ -38,7 +38,12 @@ S | toggle fullscreen
 
 
 ### Screenshots
+
+phase 2
+
 ![](/imgs/img4.png)
+
+phase 1
 
 ![](/imgs/img2.png)
 
