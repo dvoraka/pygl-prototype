@@ -602,14 +602,24 @@ class GameWindow(pyglet.window.Window):
 
         if self.keyboard[key.NUM_0]:
 
-            if self.camera.falling:
+            #TODO: add gravitation setting methods
+            if self.camera.gravity:
 
+                self.camera.gravity = False
                 self.camera.stop_falling()
-                self.camera_fall_collision = True
 
             else:
 
-                self.camera_fall_collision = False
+                self.camera.gravity = True
+
+            # if self.camera.falling:
+            #
+            #     self.camera.stop_falling()
+            #     self.camera_fall_collision = True
+            #
+            # else:
+            #
+            #     self.camera_fall_collision = False
 
         elif self.keyboard[key.NUM_1]:
 
