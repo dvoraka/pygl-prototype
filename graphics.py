@@ -48,6 +48,7 @@ from OpenGL.GLU import gluPerspective
 import shaders
 import camera
 import data
+import player
 
 
 class TestObject(object):
@@ -206,9 +207,13 @@ class GameWindow(pyglet.window.Window):
         self.keyboard = pyglet.window.key.KeyStateHandler()
         self.push_handlers(self.keyboard)
 
+        # camera settings
         self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
         self.camera.gravity = True
         self.camera_fall_collision = True
+
+        # player's body
+        self.player = player.PlayerBody(self.camera, self.renderer, 0.1, 1.9)
 
         self.collision_offset = 0.1
 
@@ -439,24 +444,26 @@ class GameWindow(pyglet.window.Window):
 
     def go_forward(self):
 
-        next_x = self.camera.next_fw_x_point(self.collision_offset)
-        next_z = self.camera.next_fw_z_point(self.collision_offset)
+        self.player.forward()
 
-        if self.renderer.ground_collision(next_x):
-
-            pass
-
-        else:
-
-            self.camera.forward_x()
-
-        if self.renderer.ground_collision(next_z):
-
-            pass
-
-        else:
-
-            self.camera.forward_z()
+        # next_x = self.camera.next_fw_x_point(self.collision_offset)
+        # next_z = self.camera.next_fw_z_point(self.collision_offset)
+        #
+        # if self.renderer.ground_collision(next_x):
+        #
+        #     pass
+        #
+        # else:
+        #
+        #     self.camera.forward_x()
+        #
+        # if self.renderer.ground_collision(next_z):
+        #
+        #     pass
+        #
+        # else:
+        #
+        #     self.camera.forward_z()
 
     def go_backward(self):
 
