@@ -7,6 +7,10 @@ class Script(object):
 
         self.state = None
 
+    def next_token(self):
+
+        pass
+
     def next(self):
 
         self.state.process(self)
