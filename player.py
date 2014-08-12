@@ -2,6 +2,8 @@
 
 from __future__ import print_function
 
+import copy
+
 
 class PlayerBody(object):
     """Represents player's body in world."""
@@ -13,7 +15,8 @@ class PlayerBody(object):
         self.collision_offset = collision_offset
 
         self.height = height
-        self.vertical_offsets = [self.height * 0.1, self.height * 0.9]
+        # static for now
+        self.vertical_offsets = [0.1, 1.1]
 
     def forward(self):
 
@@ -23,7 +26,7 @@ class PlayerBody(object):
         collide_x = False
         for offset in self.vertical_offsets:
 
-            temp_x = next_x
+            temp_x = copy.copy(next_x)
             temp_x.y += offset
             if self.renderer.ground_collision(temp_x):
 
@@ -35,6 +38,15 @@ class PlayerBody(object):
             self.camera.forward_x()
 
         collide_z = False
-        if not self.renderer.ground_collision(next_z):
+        for offset in self.vertical_offsets:
+
+            temp_z = copy.copy(next_z)
+            temp_z.y += offset
+            if self.renderer.ground_collision(temp_z):
+
+                collide_z = True
+                break
+
+        if not collide_z:
 
             self.camera.forward_z()
