@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 from __future__ import print_function
 
 import re
@@ -9,9 +11,39 @@ class Script(object):
 
         self.state = None
 
+        self.token_pattern = r"""
+(?P<command>\w+)
+|(?P<multiplier>[0-9]+)
+|(?P<whitespace>\s+)
+"""
+
+        self.tokenizer = Tokenizer(self.token_pattern)
+
+        self.script_str = self.load_script("script.txt")
+        self.script_tokens = self.parse_script(self.script_str)
+        self.token_index = 0
+
+    def load_script(self, filename):
+
+        script_str = open(filename).read()
+
+        return script_str
+
+    def parse_script(self, text):
+
+        tokens = []
+        for name, value in self.tokenizer.tokenize(text):
+
+            tokens.append((name, value))
+
+        return tokens
+
     def next_token(self):
 
-        pass
+        act_index = self.token_index
+        self.token_index += 1
+
+        return self.script_tokens[act_index]
 
     def next(self):
 
@@ -66,3 +98,10 @@ class Tokenizer(object):
 
             raise TokenizerException(
                 "Tokenizer stopped at pos {} of {}".format(position, len(text)))
+
+if __name__ == "__main__":
+
+    script = Script()
+
+    print(script.next_token())
+    print(script.next_token())
