@@ -5,6 +5,11 @@ from __future__ import print_function
 import re
 
 
+class ScriptException(Exception):
+
+    pass
+
+
 class Script(object):
 
     def __init__(self, script_file):
@@ -14,6 +19,7 @@ class Script(object):
         self.token_pattern = r"""
 (?P<command>[a-zA-Z]+)
 |(?P<multiplier>[0-9]+)
+|(?P<hash>[#]+)
 |(?P<newline>\n)
 |(?P<whitespace>[ \t])
 """
@@ -105,6 +111,12 @@ class CommandState(ScriptState):
 
                     break
 
+                elif token[0] == "hash":
+
+                    context.state = CommentState()
+
+                    break
+
             else:
 
                 context.state = None
@@ -142,6 +154,31 @@ class MultiplierState(ScriptState):
 
                     print("{} x {}".format(self.command, token[1]))
                     context.state = MultiplierState(token[1])
+
+                    break
+
+            else:
+
+                context.state = None
+
+                break
+
+
+class CommentState(ScriptState):
+
+    def process(self, context):
+
+        while True:
+
+            token = context.next_token()
+
+            # print("Token: {}".format(token))
+
+            if token:
+
+                if token[0] == "newline":
+
+                    context.state = CommandState()
 
                     break
 
