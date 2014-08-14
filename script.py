@@ -7,25 +7,28 @@ import re
 
 class Script(object):
 
-    def __init__(self):
+    def __init__(self, script_file):
 
         self.state = None
 
         self.token_pattern = r"""
 (?P<command>\w+)
 |(?P<multiplier>[0-9]+)
-|(?P<whitespace>\s+)
+|(?P<newline>\n+)
+|(?P<whitespace>[ \t]+)
 """
 
         self.tokenizer = Tokenizer(self.token_pattern)
 
-        self.script_str = self.load_script("script.txt")
+        self.script_str = self.load_script(script_file)
         self.script_tokens = self.parse_script(self.script_str)
         self.token_index = 0
 
     def load_script(self, filename):
 
-        script_str = open(filename).read()
+        with open(filename) as fo:
+
+            script_str = fo.read()
 
         return script_str
 
@@ -42,6 +45,10 @@ class Script(object):
 
         act_index = self.token_index
         self.token_index += 1
+
+        if act_index >= len(self.script_tokens):
+
+            return None
 
         return self.script_tokens[act_index]
 
@@ -101,7 +108,13 @@ class Tokenizer(object):
 
 if __name__ == "__main__":
 
-    script = Script()
+    script = Script("script.txt")
 
-    print(script.next_token())
-    print(script.next_token())
+    while True:
+
+        token = script.next_token()
+        print(token)
+
+        if not token:
+
+            break
