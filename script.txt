@@ -1,2 +1,3 @@
-forward 5
-backward 10
+forward                           5                     
+backward                        10
+left 2

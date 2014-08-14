@@ -9,10 +9,10 @@ class Script(object):
 
     def __init__(self, script_file):
 
-        self.state = None
+        self.state = CommandState()
 
         self.token_pattern = r"""
-(?P<command>\w+)
+(?P<command>[a-zA-Z]+)
 |(?P<multiplier>[0-9]+)
 |(?P<newline>\n+)
 |(?P<whitespace>[ \t]+)
@@ -54,7 +54,11 @@ class Script(object):
 
     def next(self):
 
-        self.state.process(self)
+        if self.state:
+
+            self.state.process(self)
+
+            return self.state
 
 
 class CameraScript(Script):
@@ -65,9 +69,89 @@ class CameraScript(Script):
 class ScriptState(object):
     """Base class for script states."""
 
+    def __init__(self):
+
+        pass
+
     def process(self, context):
 
         pass
+
+
+class CommandState(ScriptState):
+
+    def process(self, context):
+
+        while True:
+
+            token = context.next_token()
+
+            # print("Token: {}".format(token))
+
+            if token:
+
+                if token[0] == "whitespace":
+
+                    continue
+
+                elif token[0] == "newline":
+
+                    context.state = None
+
+                    break
+
+                elif token[0] == "command":
+
+                    # print("Command: {}".format(token[1]))
+                    context.state = MultiplierState(token[1])
+
+                    break
+
+            else:
+
+                context.state = None
+
+                break
+
+
+class MultiplierState(ScriptState):
+
+    def __init__(self, command):
+
+        self.command = command
+
+    def process(self, context):
+
+        while True:
+
+            token = context.next_token()
+
+            # print("Token: {}".format(token))
+
+            if token:
+
+                if token[0] == "whitespace":
+
+                    continue
+
+                elif token[0] == "newline":
+
+                    context.state = CommandState()
+
+                    break
+
+                elif token[0] == "multiplier":
+
+                    print("{} x {}".format(self.command, token[1]))
+                    context.state = MultiplierState(token[1])
+
+                    break
+
+            else:
+
+                context = None
+
+                break
 
 
 class TokenizerException(Exception):
@@ -106,15 +190,24 @@ class Tokenizer(object):
             raise TokenizerException(
                 "Tokenizer stopped at pos {} of {}".format(position, len(text)))
 
+
 if __name__ == "__main__":
 
     script = Script("script.txt")
 
     while True:
 
-        token = script.next_token()
-        print(token)
+        val = script.next()
 
-        if not token:
+        if not val:
 
             break
+
+    # while True:
+    #
+    #     token = script.next_token()
+    #     print(token)
+    #
+    #     if not token:
+    #
+    #         break
