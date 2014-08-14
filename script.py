@@ -96,9 +96,7 @@ class CommandState(ScriptState):
 
                 elif token[0] == "newline":
 
-                    context.state = None
-
-                    break
+                    continue
 
                 elif token[0] == "command":
 
@@ -149,7 +147,7 @@ class MultiplierState(ScriptState):
 
             else:
 
-                context = None
+                context.state = None
 
                 break
 
