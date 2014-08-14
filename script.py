@@ -14,8 +14,8 @@ class Script(object):
         self.token_pattern = r"""
 (?P<command>[a-zA-Z]+)
 |(?P<multiplier>[0-9]+)
-|(?P<newline>\n+)
-|(?P<whitespace>[ \t]+)
+|(?P<newline>\n)
+|(?P<whitespace>[ \t])
 """
 
         self.tokenizer = Tokenizer(self.token_pattern)
