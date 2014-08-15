@@ -32,7 +32,8 @@ class Script(object):
 
         self.action_completed = False
 
-    def load_script(self, filename):
+    @staticmethod
+    def load_script(filename):
 
         with open(filename) as fo:
 
@@ -60,9 +61,20 @@ class Script(object):
 
         return self.script_tokens[act_index]
 
+    def action_done(self):
+
+        self.action_completed = True
+
     def next_action(self):
 
         self.action_completed = False
+        while not self.action_completed:
+
+            new_state = self.next()
+
+            if not new_state:
+
+                break
 
     def next(self):
 
@@ -130,7 +142,7 @@ class CommandState(ScriptState):
 
             else:
 
-                context.state = None
+                context.set_next_state(None)
 
                 break
 
@@ -164,7 +176,7 @@ class MultiplierState(ScriptState):
                 elif token[0] == "multiplier":
 
                     print("{} x {}".format(self.command, token[1]))
-                    context.set_next_state(MultiplierState(token[1]))
+                    context.set_next_state(CommandState())
 
                     break
 
