@@ -30,6 +30,8 @@ class Script(object):
         self.script_tokens = self.parse_script(self.script_str)
         self.token_index = 0
 
+        self.action_completed = False
+
     def load_script(self, filename):
 
         with open(filename) as fo:
@@ -58,13 +60,22 @@ class Script(object):
 
         return self.script_tokens[act_index]
 
+    def next_action(self):
+
+        self.action_completed = False
+
     def next(self):
 
         if self.state:
 
             self.state.process(self)
 
+            # return new state
             return self.state
+
+    def set_next_state(self, state):
+
+        self.state = state
 
 
 class CameraScript(Script):
@@ -107,13 +118,13 @@ class CommandState(ScriptState):
                 elif token[0] == "command":
 
                     # print("Command: {}".format(token[1]))
-                    context.state = MultiplierState(token[1])
+                    context.set_next_state(MultiplierState(token[1]))
 
                     break
 
                 elif token[0] == "hash":
 
-                    context.state = CommentState()
+                    context.set_next_state(CommentState())
 
                     break
 
@@ -146,20 +157,20 @@ class MultiplierState(ScriptState):
 
                 elif token[0] == "newline":
 
-                    context.state = CommandState()
+                    context.set_next_state(CommandState())
 
                     break
 
                 elif token[0] == "multiplier":
 
                     print("{} x {}".format(self.command, token[1]))
-                    context.state = MultiplierState(token[1])
+                    context.set_next_state(MultiplierState(token[1]))
 
                     break
 
             else:
 
-                context.state = None
+                context.set_next_state(None)
 
                 break
 
@@ -178,13 +189,13 @@ class CommentState(ScriptState):
 
                 if token[0] == "newline":
 
-                    context.state = CommandState()
+                    context.set_next_state(CommandState())
 
                     break
 
             else:
 
-                context.state = None
+                context.set_next_state(None)
 
                 break
 
