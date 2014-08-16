@@ -32,9 +32,11 @@ class ScriptException(Exception):
 
 class Script(object):
 
-    def __init__(self, script_file):
+    def __init__(self, script_file, controllable_obj):
 
         self.state = CommandState()
+
+        self.controllable_obj = controllable_obj
 
         self.token_pattern = r"""
 (?P<command>[a-zA-Z]+)
@@ -252,7 +254,22 @@ class ProcessCommandState(ScriptState):
 
             print("Processing {} ({})".format(self.command, self.multiplier))
 
-            # do something
+            # action
+            if self.command == "forward":
+
+                context.controllable_obj.forward()
+
+            elif self.command == "backward":
+
+                context.controllable_obj.backward()
+
+            elif self.command == "left":
+
+                context.controllable_obj.left()
+
+            elif self.command == "right":
+
+                context.controllable_obj.right()
 
             context.action_done()
 

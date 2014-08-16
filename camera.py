@@ -12,9 +12,10 @@ from numpy import matrix
 from numpy import linalg
 
 import data
+import script
 
 
-class FPSCamera(object):
+class FPSCamera(script.Controllable):
 
     def __init__(
             self,

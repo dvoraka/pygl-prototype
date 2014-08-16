@@ -49,6 +49,7 @@ import shaders
 import camera
 import data
 import player
+import script
 
 
 class TestObject(object):
@@ -211,6 +212,12 @@ class GameWindow(pyglet.window.Window):
         self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
         self.camera.gravity = True
         self.camera_fall_collision = True
+
+        # script mode settings
+        self.scripter = script.Script("script.txt", self.camera)
+        if self.scripter:
+
+            self.camera.gravity = False
 
         # player's body
         self.player = player.PlayerBody(self.camera, self.renderer, 0.1, 1.9)
@@ -581,6 +588,10 @@ class GameWindow(pyglet.window.Window):
             print(self.renderer.world.block_collision(cposition, nchunks))
 
         ### end testing zone
+
+        if self.scripter:
+
+            self.scripter.next_action()
 
         position = data.Point(
             self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)

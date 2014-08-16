@@ -1,12 +1,7 @@
 # script
-             forward                           5                     
 
+forward 500
 
-        
-#backward                        10
-                                                left 2
-      #
+left 250
 
-right       7
-        #
-   forward       6
+backward 500
