@@ -5,6 +5,26 @@ from __future__ import print_function
 import re
 
 
+class Controllable(object):
+    """Abstract class for controllable by script objects."""
+
+    def forward(self):
+
+        raise NotImplementedError()
+
+    def backward(self):
+
+        raise NotImplementedError()
+
+    def left(self):
+
+        raise NotImplementedError()
+
+    def right(self):
+
+        raise NotImplementedError()
+
+
 class ScriptException(Exception):
 
     pass
