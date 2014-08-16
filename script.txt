@@ -1,7 +1,12 @@
 # script
-forward                           5                     
+             forward                           5                     
 
 
         
 #backward                        10
-left 2
+                                                left 2
+      #
+
+right       7
+        #
+   forward       6
