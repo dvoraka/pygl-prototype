@@ -151,6 +151,8 @@ class MultiplierState(ScriptState):
 
     def __init__(self, command):
 
+        super(MultiplierState, self).__init__()
+
         self.command = command
 
     def process(self, context):
@@ -176,7 +178,8 @@ class MultiplierState(ScriptState):
                 elif token[0] == "multiplier":
 
                     print("{} x {}".format(self.command, token[1]))
-                    context.set_next_state(CommandState())
+                    context.set_next_state(
+                        ProcessCommandState(self.command, int(token[1])))
 
                     break
 
@@ -210,6 +213,33 @@ class CommentState(ScriptState):
                 context.set_next_state(None)
 
                 break
+
+
+class ProcessCommandState(ScriptState):
+
+    def __init__(self, command, multiplier):
+
+        super(ProcessCommandState, self).__init__()
+
+        self.command = command
+        self.multiplier = multiplier
+
+    def process(self, context):
+
+        if self.multiplier > 0:
+
+            print("Processing {} ({})".format(self.command, self.multiplier))
+
+            # do something
+
+            context.action_done()
+
+            self.multiplier -= 1
+            context.set_next_state(self)
+
+        else:
+
+            context.set_next_state(CommandState())
 
 
 class TokenizerException(Exception):
