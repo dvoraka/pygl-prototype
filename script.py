@@ -74,7 +74,9 @@ class Script(object):
 
             if not new_state:
 
-                break
+                return None
+
+        return True
 
     def next(self):
 
@@ -283,13 +285,17 @@ if __name__ == "__main__":
 
     script = Script("script.txt")
 
-    while True:
+    while script.next_action():
 
-        val = script.next()
+        pass
 
-        if not val:
-
-            break
+    # while True:
+    #
+    #     val = script.next()
+    #
+    #     if not val:
+    #
+    #         break
 
     # while True:
     #
