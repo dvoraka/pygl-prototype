@@ -39,6 +39,33 @@ class Controllable(object):
         raise NotImplementedError()
 
 
+class DummyObject(Controllable):
+
+    def forward(self):
+
+        print("Moving forward...")
+
+    def backward(self):
+
+        print("Moving backward...")
+
+    def left(self):
+
+        print("Moving left...")
+
+    def right(self):
+
+        print("Moving right...")
+
+    def up(self):
+
+        print("Moving up...")
+
+    def down(self):
+
+        print("Moving down...")
+
+
 class ScriptException(Exception):
 
     pass
@@ -215,7 +242,7 @@ class MultiplierState(ScriptState):
 
                 elif token[0] == "multiplier":
 
-                    print("{} x {}".format(self.command, token[1]))
+                    # print("{} x {}".format(self.command, token[1]))
                     context.set_next_state(
                         ProcessCommandState(self.command, int(token[1])))
 
@@ -266,7 +293,7 @@ class ProcessCommandState(ScriptState):
 
         if self.multiplier > 0:
 
-            print("Processing {} ({})".format(self.command, self.multiplier))
+            # print("Processing {} ({})".format(self.command, self.multiplier))
 
             # action
             if self.command == "forward":
@@ -337,12 +364,13 @@ class Tokenizer(object):
         if position != len(text):
 
             raise TokenizerException(
-                "Tokenizer stopped at pos {} of {}".format(position, len(text)))
+                "Tokenizer stopped at pos {} of {}".format(
+                    position, len(text)))
 
 
 if __name__ == "__main__":
 
-    script = Script("script.txt")
+    script = Script("script.txt", DummyObject())
 
     while script.next_action():
 
