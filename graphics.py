@@ -683,4 +683,9 @@ class GameWindow(pyglet.window.Window):
 
             self.toggle_fullscreen()
 
+        elif self.keyboard[key.R]:
+
+            self.keyboard[key.R] = False
+            self.scripter.reload("script.txt")
+
         self.counter += 1

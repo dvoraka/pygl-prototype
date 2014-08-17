@@ -154,6 +154,21 @@ class Script(object):
 
         self.state = state
 
+    def restart(self):
+
+        self.state = CommandState()
+
+        self.token_index = 0
+        self.action_completed = False
+
+    def reload(self, script_file):
+
+        print("Reloading script file...")
+        self.script_str = self.load_script(script_file)
+        self.script_tokens = self.parse_script(self.script_str)
+
+        self.restart()
+
 
 class CameraScript(Script):
 
