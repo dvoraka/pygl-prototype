@@ -9,18 +9,32 @@ class Controllable(object):
     """Abstract class for controllable by script objects."""
 
     def forward(self):
+        """Move forward."""
 
         raise NotImplementedError()
 
     def backward(self):
+        """Move backward."""
 
         raise NotImplementedError()
 
     def left(self):
+        """Move left."""
 
         raise NotImplementedError()
 
     def right(self):
+        """Move right."""
+
+        raise NotImplementedError()
+
+    def up(self):
+        """Move up."""
+
+        raise NotImplementedError()
+
+    def down(self):
+        """Move down."""
 
         raise NotImplementedError()
 
@@ -270,6 +284,14 @@ class ProcessCommandState(ScriptState):
             elif self.command == "right":
 
                 context.controllable_obj.right()
+
+            elif self.command == "up":
+
+                context.controllable_obj.up()
+
+            elif self.command == "down":
+
+                context.controllable_obj.down()
 
             context.action_done()
 
