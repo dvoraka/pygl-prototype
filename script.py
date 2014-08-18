@@ -1,4 +1,7 @@
 #! /usr/bin/env python
+#
+
+"""Scripting module."""
 
 from __future__ import print_function
 
@@ -40,6 +43,7 @@ class Controllable(object):
 
 
 class DummyObject(Controllable):
+    """Simple testing class."""
 
     def forward(self):
 
@@ -72,6 +76,12 @@ class ScriptException(Exception):
 
 
 class Script(object):
+    """Class for scripts running.
+
+    Args:
+        script_file (str): script filename
+        controllable_obj (Controllable): object for controlling
+    """
 
     def __init__(self, script_file, controllable_obj):
 
@@ -98,6 +108,14 @@ class Script(object):
 
     @staticmethod
     def load_script(filename):
+        """Load script string from file.
+
+        Args:
+            filename (str): filename
+
+        Return:
+            str: script string
+        """
 
         with open(filename) as fo:
 
@@ -106,6 +124,14 @@ class Script(object):
         return script_str
 
     def parse_script(self, text):
+        """Parse script string.
+
+        Args:
+            text (str): script string
+
+        Return:
+            list of (token name, token value): script tokens
+        """
 
         tokens = []
         for name, value in self.tokenizer.tokenize(text):
