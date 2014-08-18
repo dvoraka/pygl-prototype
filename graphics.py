@@ -639,10 +639,6 @@ class GameWindow(pyglet.window.Window):
             #
             #     self.camera_fall_collision = False
 
-        elif self.keyboard[key.NUM_1]:
-
-            self.camera.sprint()
-
         if self.keyboard[key.UP]:
 
             self.go_forward()
@@ -687,5 +683,20 @@ class GameWindow(pyglet.window.Window):
 
             self.keyboard[key.R] = False
             self.scripter.reload("script.txt")
+
+        # testing keys
+        elif self.keyboard[key.NUM_1]:
+
+            self.camera.sprint()
+
+        elif self.keyboard[key.NUM_2]:
+
+            self.keyboard[key.NUM_2] = False
+            self.scripter.stop()
+
+        elif self.keyboard[key.NUM_3]:
+
+            self.keyboard[key.NUM_3] = False
+            self.scripter.start()
 
         self.counter += 1

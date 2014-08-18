@@ -93,6 +93,7 @@ class Script(object):
         self.script_tokens = self.parse_script(self.script_str)
         self.token_index = 0
 
+        self.stopped = False
         self.action_completed = False
 
     @staticmethod
@@ -130,14 +131,20 @@ class Script(object):
 
     def next_action(self):
 
-        self.action_completed = False
-        while not self.action_completed:
+        if not self.stopped:
 
-            new_state = self.next()
+            self.action_completed = False
+            while not self.action_completed:
 
-            if not new_state:
+                new_state = self.next()
 
-                return None
+                if not new_state:
+
+                    return None
+
+        else:
+
+            pass
 
         return True
 
@@ -153,6 +160,14 @@ class Script(object):
     def set_next_state(self, state):
 
         self.state = state
+
+    def start(self):
+
+        self.stopped = False
+
+    def stop(self):
+
+        self.stopped = True
 
     def restart(self):
 
