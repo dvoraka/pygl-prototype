@@ -101,7 +101,7 @@ class Script(object):
         self.tokenizer = Tokenizer(self.token_pattern)
 
         self.script_str = self.load_script(script_file)
-        self.script_tokens = self.parse_script(self.script_str)
+        self.script_tokens = self.analyze_script(self.script_str)
         self.token_index = 0
 
         self.stopped = False
@@ -124,8 +124,8 @@ class Script(object):
 
         return script_str
 
-    def parse_script(self, text):
-        """Parse script string.
+    def analyze_script(self, text):
+        """Analyze script string.
 
         Args:
             text (str): script string
@@ -207,7 +207,7 @@ class Script(object):
 
         print("Reloading script file...")
         self.script_str = self.load_script(script_file)
-        self.script_tokens = self.parse_script(self.script_str)
+        self.script_tokens = self.analyze_script(self.script_str)
 
         self.restart()
 
