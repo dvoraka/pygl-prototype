@@ -90,12 +90,13 @@ class Script(object):
         self.controllable_obj = controllable_obj
 
         self.token_pattern = r"""
-(?P<command>[a-zA-Z]+)
-|(?P<multiplier>[0-9]+)
-|(?P<hash>[#]+)
-|(?P<newline>\n)
-|(?P<whitespace>[ \t])
-"""
+            (?P<command>[a-zA-Z]+)
+            |(?P<float>[+-]?[0-9]+[.][0-9]+)
+            |(?P<integer>[0-9]+)
+            |(?P<hash>[#]+)
+            |(?P<newline>\n)
+            |(?P<whitespace>[ \t])
+        """
 
         self.tokenizer = Tokenizer(self.token_pattern)
 
@@ -296,7 +297,7 @@ class MultiplierState(ScriptState):
 
                     break
 
-                elif token[0] == "multiplier":
+                elif token[0] == "integer":
 
                     # print("{} x {}".format(self.command, token[1]))
                     context.set_next_state(
@@ -428,9 +429,13 @@ if __name__ == "__main__":
 
     script = Script("script.txt", DummyObject())
 
-    while script.next_action():
+    for token in script.script_tokens:
 
-        pass
+        print(token)
+
+    # while script.next_action():
+    #
+    #     pass
 
     # while True:
     #

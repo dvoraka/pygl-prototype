@@ -4,4 +4,6 @@ forward 500
 
 left 250
 
+rotateH -10.0
+
 backward 500
