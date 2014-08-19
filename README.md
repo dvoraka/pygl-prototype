@@ -8,6 +8,7 @@ Game engine prototype using Python, PyOpenGL, Pyglet and NumPy.
 * full ground collisions and gravity
 * dynamic rendering distance
 * dynamic world generation
+* simple scripting
 
 
 ### Dependencies
