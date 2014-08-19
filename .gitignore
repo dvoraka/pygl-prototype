@@ -1,5 +1,6 @@
 *.py[co]
 *.prof
+*.swp
 
 *.png
 !imgs/*.png
