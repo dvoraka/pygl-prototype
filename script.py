@@ -9,7 +9,7 @@ import re
 
 
 class Controllable(object):
-    """Abstract class for controllable by script objects."""
+    """Abstract class for controllable objects."""
 
     def forward(self):
         """Move forward."""
