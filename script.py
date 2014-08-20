@@ -142,6 +142,11 @@ class Script(object):
         return tokens
 
     def next_token(self):
+        """Return token.
+
+        Return:
+            (token name, token value): token
+        """
 
         act_index = self.token_index
         self.token_index += 1
@@ -153,10 +158,16 @@ class Script(object):
         return self.script_tokens[act_index]
 
     def action_done(self):
+        """Set action completed status."""
 
         self.action_completed = True
 
     def next_action(self):
+        """Run next action.
+
+        Return:
+            True if next action exists
+        """
 
         if not self.stopped:
 
@@ -167,7 +178,7 @@ class Script(object):
 
                 if not new_state:
 
-                    return None
+                    return False
 
         else:
 
@@ -176,6 +187,11 @@ class Script(object):
         return True
 
     def next(self):
+        """Transition to state.
+
+        Return:
+            ScriptState or None: next state
+        """
 
         if self.state:
 
@@ -184,19 +200,31 @@ class Script(object):
             # return new state
             return self.state
 
+        else:
+
+            return None
+
     def set_next_state(self, state):
+        """Set next state.
+
+        Args:
+            state (ScriptState): new script state
+        """
 
         self.state = state
 
     def start(self):
+        """Start script."""
 
         self.stopped = False
 
     def stop(self):
+        """Stop/pause script."""
 
         self.stopped = True
 
     def restart(self):
+        """Restart script."""
 
         self.state = CommandState()
 
@@ -205,7 +233,7 @@ class Script(object):
 
     def reload(self, script_file):
 
-        print("Reloading script file...")
+        # print("Reloading script file...")
         self.script_str = self.load_script(script_file)
         self.script_tokens = self.analyze_script(self.script_str)
 
