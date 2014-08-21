@@ -456,25 +456,6 @@ class GameWindow(pyglet.window.Window):
 
         self.player.forward()
 
-        # next_x = self.camera.next_fw_x_point(self.collision_offset)
-        # next_z = self.camera.next_fw_z_point(self.collision_offset)
-        #
-        # if self.renderer.ground_collision(next_x):
-        #
-        #     pass
-        #
-        # else:
-        #
-        #     self.camera.forward_x()
-        #
-        # if self.renderer.ground_collision(next_z):
-        #
-        #     pass
-        #
-        # else:
-        #
-        #     self.camera.forward_z()
-
     def go_backward(self):
 
         next_x = self.camera.next_bw_x_point(self.collision_offset)
@@ -579,9 +560,8 @@ class GameWindow(pyglet.window.Window):
 
         self.long_tasks_counter += 1
 
-    def update(self, dt):
+    def testing_zone(self):
 
-        ### testing zone
         if self.counter % 120 == 0:
 
             print(self.renderer.world.in_chunk(self.camera.get_position_inverse_z()))
@@ -590,11 +570,7 @@ class GameWindow(pyglet.window.Window):
             nchunks = self.renderer.world.find_nearest_chunks(cposition)
             print(self.renderer.world.block_collision(cposition, nchunks))
 
-        ### end testing zone
-
-        if self.scripter:
-
-            self.scripter.next_action()
+    def camera_gravity(self):
 
         position = data.Point(
             self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
@@ -620,6 +596,16 @@ class GameWindow(pyglet.window.Window):
         if self.camera.gravity and not self.camera_fall_collision:
 
             self.camera.fall()
+
+    def update(self, dt):
+
+        self.testing_zone()
+
+        if self.scripter:
+
+            self.scripter.next_action()
+
+        self.camera_gravity()
 
         # check input
         #################
