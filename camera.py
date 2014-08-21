@@ -556,3 +556,7 @@ class FPSCamera(script.Controllable):
         """Help camera with in-block collisions."""
 
         self.y_pos += self.helper_step
+
+    def set_gravity(self, gravity):
+
+        self.gravity = gravity

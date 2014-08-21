@@ -210,14 +210,15 @@ class GameWindow(pyglet.window.Window):
 
         # camera settings
         self.camera = camera.FPSCamera(x_pos=10, y_pos=53, z_pos=-20)
-        self.camera.gravity = True
+        self.camera.set_gravity(True)
         self.camera_fall_collision = True
 
         # script mode settings
         self.scripter = script.Script("script.txt", self.camera)
         if self.scripter:
 
-            self.camera.gravity = False
+            # self.camera.set_gravity(False)
+            self.camera.set_gravity(True)
 
         # player's body
         self.player = player.PlayerBody(self.camera, self.renderer, 0.1, 1.9)
@@ -620,24 +621,15 @@ class GameWindow(pyglet.window.Window):
 
         if self.keyboard[key.NUM_0]:
 
-            #TODO: add gravitation setting methods
+            self.keyboard[key.NUM_0] = False
             if self.camera.gravity:
 
-                self.camera.gravity = False
+                self.camera.set_gravity(False)
                 self.camera.stop_falling()
 
             else:
 
-                self.camera.gravity = True
-
-            # if self.camera.falling:
-            #
-            #     self.camera.stop_falling()
-            #     self.camera_fall_collision = True
-            #
-            # else:
-            #
-            #     self.camera_fall_collision = False
+                self.camera.set_gravity(True)
 
         if self.keyboard[key.UP]:
 

@@ -1,9 +1,9 @@
 # script
 
-forward 500
+forward 50
 
-left 250
+#left 250
 
 rotateH -10.0
 
-backward 500
+#backward 500
