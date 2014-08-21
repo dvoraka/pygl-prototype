@@ -36,6 +36,7 @@ Page Down | go down
 L | lines rendering
 F | full rendering
 S | toggle fullscreen
+NUM 0 | toggle gravity
 
 
 ### Screenshots
