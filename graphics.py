@@ -50,6 +50,7 @@ import camera
 import data
 import player
 import script
+import controls
 
 
 class TestObject(object):
@@ -223,6 +224,9 @@ class GameWindow(pyglet.window.Window):
         # player's body
         self.player = player.PlayerBody(self.camera, self.renderer, 0.1, 1.9)
 
+        # controller for player's input
+        self.controller = controls.Controller(self.player, None)
+
         self.collision_offset = 0.1
 
         self.counter = 0
@@ -243,15 +247,13 @@ class GameWindow(pyglet.window.Window):
         # fill, lines, points
         self.rendering_type = "fill"
 
-        # self.hud_shader = None
-        # self.test_shader = None
-
         self.long_tasks = 3
         self.long_tasks_counter = 0
 
         self.setup()
 
-    def print_fps(self, dt):
+    @staticmethod
+    def print_fps(dt):
 
         print(pyglet.clock.get_fps())
 
@@ -619,6 +621,8 @@ class GameWindow(pyglet.window.Window):
 
             self.camera.fall()
 
+        # check input
+        #################
         if self.keyboard[key.NUM_0]:
 
             self.keyboard[key.NUM_0] = False
@@ -630,6 +634,9 @@ class GameWindow(pyglet.window.Window):
             else:
 
                 self.camera.set_gravity(True)
+
+        # send keys status to controller
+        self.controller.update(self.keyboard)
 
         if self.keyboard[key.UP]:
 
