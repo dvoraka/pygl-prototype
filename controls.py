@@ -24,6 +24,7 @@ class ControlsMapper(object):
         self.pyglet_mapping = {
 
             "A": key.A,
+            "B": key.B,
         }
 
         print(self.controls)
@@ -36,6 +37,7 @@ class ControlsMapper(object):
         section = "Controls"
 
         self.controls["forward"] = config.get(section, "forward")
+        self.controls["backward"] = config.get(section, "backward")
 
     # def get_action(self, key):
     #
@@ -57,13 +59,24 @@ class Controller(object):
         self.actions = {
 
             "forward": self.controllable_obj.forward,
+#            "backward": self.controllable_obj.backward,
         }
 
     def update(self, key_state):
 
-        if key_state[self.mapper.get_key("forward")]:
+        action = "forward"
+        if key_state[self.get_key(action)]:
 
-            self.actions["forward"]()
+            self.actions[action]()
+
+        action = "backward"
+        if key_state[self.get_key(action)]:
+
+            self.actions[action]()
+
+    def get_key(self, action):
+
+        return self.mapper.get_key(action)
 
 
 if __name__ == "__main__":
