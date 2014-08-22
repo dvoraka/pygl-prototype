@@ -2,6 +2,8 @@
 
 from __future__ import print_function
 
+from pyglet.window import key
+
 
 class ControlsMapper(object):
 
@@ -9,13 +11,21 @@ class ControlsMapper(object):
 
         self.filename = filename
 
+        self.controls = {
+            "forward": key.A,
+        }
+
     def load_controls(self):
 
         pass
 
-    def get_action(self, key):
+    # def get_action(self, key):
+    #
+    #     pass
 
-        pass
+    def get_key(self, action):
+
+        return self.controls[action]
 
 
 class Controller(object):
@@ -32,4 +42,6 @@ class Controller(object):
 
     def update(self, key_state):
 
-        pass
+        if key_state[self.mapper.get_key("forward")]:
+
+            self.actions["forward"]()
