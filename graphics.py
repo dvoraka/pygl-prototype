@@ -225,7 +225,7 @@ class GameWindow(pyglet.window.Window):
         self.player = player.PlayerBody(self.camera, self.renderer, 0.1, 1.9)
 
         # controller for player's input
-        self.controller = controls.Controller(self.player, None)
+        self.controller = controls.Controller(self.player, "settings.ini")
 
         self.collision_offset = 0.1
 

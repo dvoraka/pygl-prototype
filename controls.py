@@ -1,7 +1,10 @@
+#! /usr/bin/env python
+
 """Module for controls infrastructure."""
 
 from __future__ import print_function
 
+import ConfigParser
 from pyglet.window import key
 
 
@@ -12,12 +15,27 @@ class ControlsMapper(object):
         self.filename = filename
 
         self.controls = {
-            "forward": key.A,
+
+            "forward": "A",
         }
 
-    def load_controls(self):
+        self.load_controls(self.filename)
 
-        pass
+        self.pyglet_mapping = {
+
+            "A": key.A,
+        }
+
+        print(self.controls)
+
+    def load_controls(self, ini_file):
+
+        config = ConfigParser.ConfigParser()
+        config.read(ini_file)
+
+        section = "Controls"
+
+        self.controls["forward"] = config.get(section, "forward")
 
     # def get_action(self, key):
     #
@@ -25,7 +43,7 @@ class ControlsMapper(object):
 
     def get_key(self, action):
 
-        return self.controls[action]
+        return self.pyglet_mapping[self.controls[action]]
 
 
 class Controller(object):
@@ -37,6 +55,7 @@ class Controller(object):
         self.mapper = ControlsMapper(controls_file)
 
         self.actions = {
+
             "forward": self.controllable_obj.forward,
         }
 
@@ -45,3 +64,8 @@ class Controller(object):
         if key_state[self.mapper.get_key("forward")]:
 
             self.actions["forward"]()
+
+
+if __name__ == "__main__":
+
+    cm = ControlsMapper("settings.ini")
