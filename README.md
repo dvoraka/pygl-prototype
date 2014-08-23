@@ -24,6 +24,7 @@ System supports OpenGL 2.1 and above.
 
 
 ### Controls
+Can be remapped in settings.ini file.
 
 Key | Action
 ---|---
