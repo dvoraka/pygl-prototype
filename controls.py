@@ -14,17 +14,33 @@ class ControlsMapper(object):
 
         self.filename = filename
 
+        # default controls (when no config file is found)
         self.controls = {
 
             "forward": "A",
         }
 
-        self.load_controls(self.filename)
+        try:
+
+            self.load_controls(self.filename)
+
+        except ConfigParser.NoOptionError as e:
+
+            print(e)
+            print("Bad controls config.")
 
         self.pyglet_mapping = {
 
             "A": key.A,
             "B": key.B,
+            "C": key.C,
+            "D": key.D,
+            "E": key.E,
+            "F": key.F,
+            "UP": key.UP,
+            "DOWN": key.DOWN,
+            "LEFT": key.LEFT,
+            "RIGHT": key.RIGHT,
         }
 
         print(self.controls)
@@ -32,12 +48,24 @@ class ControlsMapper(object):
     def load_controls(self, ini_file):
 
         config = ConfigParser.ConfigParser()
-        config.read(ini_file)
+
+        try:
+
+            config.read(ini_file)
+
+        except ConfigParser.ParsingError as e:
+
+            print("Bad controls config file: {}".format(ini_file))
+            print(e)
+
+            return
 
         section = "Controls"
 
         self.controls["forward"] = config.get(section, "forward")
         self.controls["backward"] = config.get(section, "backward")
+        self.controls["left"] = config.get(section, "left")
+        self.controls["right"] = config.get(section, "right")
 
     # def get_action(self, key):
     #
@@ -45,7 +73,7 @@ class ControlsMapper(object):
 
     def get_key(self, action):
 
-        return self.pyglet_mapping[self.controls[action]]
+        return self.pyglet_mapping[self.controls[action].upper()]
 
 
 class Controller(object):
@@ -59,7 +87,9 @@ class Controller(object):
         self.actions = {
 
             "forward": self.controllable_obj.forward,
-#            "backward": self.controllable_obj.backward,
+            "backward": self.controllable_obj.backward,
+            "left": self.controllable_obj.left,
+            "right": self.controllable_obj.right,
         }
 
     def update(self, key_state):

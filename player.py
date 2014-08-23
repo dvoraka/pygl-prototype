@@ -4,8 +4,10 @@ from __future__ import print_function
 
 import copy
 
+import script
 
-class PlayerBody(object):
+
+class PlayerBody(script.Controllable):
     """Represents player's body in world."""
 
     def __init__(self, camera, renderer, collision_offset, height):
