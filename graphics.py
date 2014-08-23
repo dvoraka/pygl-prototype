@@ -452,9 +452,9 @@ class GameWindow(pyglet.window.Window):
         self.camera.add_v_angle(float(dy))
         self.camera.add_h_angle(float(dx))
 
-    def go_forward(self):
-
-        self.player.forward()
+    # def go_forward(self):
+    #
+    #     self.player.forward()
 
     def go_backward(self):
 
@@ -624,11 +624,11 @@ class GameWindow(pyglet.window.Window):
         # send keys status to controller
         self.controller.update(self.keyboard)
 
-        if self.keyboard[key.UP]:
+        # if self.keyboard[key.UP]:
+        #
+        #     self.go_forward()
 
-            self.go_forward()
-
-        elif self.keyboard[key.DOWN]:
+        if self.keyboard[key.DOWN]:
 
             self.go_backward()
 
