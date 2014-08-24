@@ -52,3 +52,36 @@ class PlayerBody(script.Controllable):
         if not collide_z:
 
             self.camera.forward_z()
+
+    def backward(self):
+
+        next_x = self.camera.next_bw_x_point(self.collision_offset)
+        next_z = self.camera.next_bw_z_point(self.collision_offset)
+
+        collide_x = False
+        for offset in self.vertical_offsets:
+
+            temp_x = copy.copy(next_x)
+            temp_x.y += offset
+            if self.renderer.ground_collision(temp_x):
+
+                collide_x = True
+                break
+
+        if not collide_x:
+
+            self.camera.backward_x()
+
+        collide_z = False
+        for offset in self.vertical_offsets:
+
+            temp_z = copy.copy(next_z)
+            temp_z.y += offset
+            if self.renderer.ground_collision(temp_z):
+
+                collide_z = True
+                break
+
+        if not collide_z:
+
+            self.camera.backward_z()

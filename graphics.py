@@ -458,24 +458,26 @@ class GameWindow(pyglet.window.Window):
 
     def go_backward(self):
 
-        next_x = self.camera.next_bw_x_point(self.collision_offset)
-        next_z = self.camera.next_bw_z_point(self.collision_offset)
+        self.player.backward()
 
-        if self.renderer.ground_collision(next_x):
-
-            pass
-
-        else:
-
-            self.camera.backward_x()
-
-        if self.renderer.ground_collision(next_z):
-
-            pass
-
-        else:
-
-            self.camera.backward_z()
+        # next_x = self.camera.next_bw_x_point(self.collision_offset)
+        # next_z = self.camera.next_bw_z_point(self.collision_offset)
+        #
+        # if self.renderer.ground_collision(next_x):
+        #
+        #     pass
+        #
+        # else:
+        #
+        #     self.camera.backward_x()
+        #
+        # if self.renderer.ground_collision(next_z):
+        #
+        #     pass
+        #
+        # else:
+        #
+        #     self.camera.backward_z()
 
     def go_left(self):
 
