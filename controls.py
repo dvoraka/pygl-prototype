@@ -17,7 +17,10 @@ class ControlsMapper(object):
         # default controls (when no config file is found)
         self.controls = {
 
-            "forward": "A",
+            "forward": "W",
+            "backward": "S",
+            "left": "A",
+            "right": "D",
         }
 
         try:
@@ -37,6 +40,26 @@ class ControlsMapper(object):
             "D": key.D,
             "E": key.E,
             "F": key.F,
+            "G": key.G,
+            "H": key.H,
+            "I": key.I,
+            "J": key.J,
+            "K": key.K,
+            "L": key.L,
+            "M": key.M,
+            "O": key.O,
+            "P": key.P,
+            "Q": key.Q,
+            "R": key.R,
+            "S": key.S,
+            "T": key.T,
+            "U": key.U,
+            "V": key.V,
+            "W": key.W,
+            "X": key.X,
+            "Y": key.Y,
+            "Z": key.Z,
+
             "UP": key.UP,
             "DOWN": key.DOWN,
             "LEFT": key.LEFT,
@@ -100,6 +123,16 @@ class Controller(object):
             self.actions[action]()
 
         # action = "backward"
+        # if key_state[self.get_key(action)]:
+        #
+        #     self.actions[action]()
+
+        # action = "left"
+        # if key_state[self.get_key(action)]:
+        #
+        #     self.actions[action]()
+
+        # action = "right"
         # if key_state[self.get_key(action)]:
         #
         #     self.actions[action]()
