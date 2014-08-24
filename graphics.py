@@ -456,9 +456,9 @@ class GameWindow(pyglet.window.Window):
     #
     #     self.player.forward()
 
-    def go_backward(self):
-
-        self.player.backward()
+    # def go_backward(self):
+    #
+    #     self.player.backward()
 
         # next_x = self.camera.next_bw_x_point(self.collision_offset)
         # next_z = self.camera.next_bw_z_point(self.collision_offset)
@@ -630,9 +630,9 @@ class GameWindow(pyglet.window.Window):
         #
         #     self.go_forward()
 
-        if self.keyboard[key.DOWN]:
-
-            self.go_backward()
+        # if self.keyboard[key.DOWN]:
+        #
+        #     self.go_backward()
 
         if self.keyboard[key.PAGEUP]:
 

@@ -122,10 +122,10 @@ class Controller(object):
 
             self.actions[action]()
 
-        # action = "backward"
-        # if key_state[self.get_key(action)]:
-        #
-        #     self.actions[action]()
+        action = "backward"
+        if key_state[self.get_key(action)]:
+
+            self.actions[action]()
 
         # action = "left"
         # if key_state[self.get_key(action)]:
