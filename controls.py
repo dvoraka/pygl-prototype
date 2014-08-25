@@ -115,6 +115,12 @@ class ControlsMapper(object):
 
 
 class Controller(object):
+    """Class for objects controlling.
+
+    Args:
+        controllable (interfaces.Controllable): object for controlling
+        controls_file (str): configuration file
+    """
 
     def __init__(self, controllable, controls_file):
 
@@ -131,14 +137,19 @@ class Controller(object):
         }
 
     def update(self, key_state):
+        """Call actions according to key states.
+
+        Args:
+            key_state (dict): keys states
+        """
 
         action = "forward"
-        if key_state[self.get_key(action)]:
+        if key_state[self.get_pyglet_key(action)]:
 
             self.actions[action]()
 
         action = "backward"
-        if key_state[self.get_key(action)]:
+        if key_state[self.get_pyglet_key(action)]:
 
             self.actions[action]()
 
@@ -152,7 +163,12 @@ class Controller(object):
         #
         #     self.actions[action]()
 
-    def get_key(self, action):
+    def get_pyglet_key(self, action):
+        """Return Pyglet key for action.
+
+        Args:
+            action (str): action
+        """
 
         return self.mapper.get_pyglet_key(action)
 
