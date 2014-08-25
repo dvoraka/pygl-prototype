@@ -9,6 +9,11 @@ from pyglet.window import key
 
 
 class ControlsMapper(object):
+    """Mapper class for controls.
+
+    Args:
+        filename (str): file with control schema
+    """
 
     def __init__(self, filename):
 
@@ -69,6 +74,11 @@ class ControlsMapper(object):
         print(self.controls)
 
     def load_controls(self, ini_file):
+        """Load controls from file.
+
+        Args:
+            ini_file (str): ini file with controls
+        """
 
         config = ConfigParser.ConfigParser()
 
@@ -94,7 +104,12 @@ class ControlsMapper(object):
     #
     #     pass
 
-    def get_key(self, action):
+    def get_pyglet_key(self, action):
+        """Return Pyglet key for action.
+
+        Args:
+            action (str): action
+        """
 
         return self.pyglet_mapping[self.controls[action].upper()]
 
@@ -139,7 +154,7 @@ class Controller(object):
 
     def get_key(self, action):
 
-        return self.mapper.get_key(action)
+        return self.mapper.get_pyglet_key(action)
 
 
 if __name__ == "__main__":
