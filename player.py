@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import copy
 
+import data
 import script
 
 
@@ -19,6 +20,33 @@ class PlayerBody(script.Controllable):
         self.height = height
         # static for now
         self.vertical_offsets = [0.1, 1.1]
+
+    def fall(self):
+
+        position = data.Point(
+            self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
+        position2 = data.Point(
+            self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
+
+        if self.renderer.ground_collision(position2):
+
+            print("helper")
+            self.camera.collision_helper()
+            self.camera.stop_falling()
+            self.camera_fall_collision = True
+
+        elif self.renderer.ground_collision(position):
+
+            self.camera.stop_falling()
+            self.camera_fall_collision = True
+
+        else:
+
+            self.camera_fall_collision = False
+
+        if self.camera.gravity and not self.camera_fall_collision:
+
+            self.camera.fall()
 
     def forward(self):
 

@@ -572,32 +572,32 @@ class GameWindow(pyglet.window.Window):
             nchunks = self.renderer.world.find_nearest_chunks(cposition)
             print(self.renderer.world.block_collision(cposition, nchunks))
 
-    def camera_gravity(self):
-
-        position = data.Point(
-            self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
-        position2 = data.Point(
-            self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
-
-        if self.renderer.ground_collision(position2):
-
-            print("helper")
-            self.camera.collision_helper()
-            self.camera.stop_falling()
-            self.camera_fall_collision = True
-
-        elif self.renderer.ground_collision(position):
-
-            self.camera.stop_falling()
-            self.camera_fall_collision = True
-
-        else:
-
-            self.camera_fall_collision = False
-
-        if self.camera.gravity and not self.camera_fall_collision:
-
-            self.camera.fall()
+    # def camera_gravity(self):
+    #
+    #     position = data.Point(
+    #         self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
+    #     position2 = data.Point(
+    #         self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
+    #
+    #     if self.renderer.ground_collision(position2):
+    #
+    #         print("helper")
+    #         self.camera.collision_helper()
+    #         self.camera.stop_falling()
+    #         self.camera_fall_collision = True
+    #
+    #     elif self.renderer.ground_collision(position):
+    #
+    #         self.camera.stop_falling()
+    #         self.camera_fall_collision = True
+    #
+    #     else:
+    #
+    #         self.camera_fall_collision = False
+    #
+    #     if self.camera.gravity and not self.camera_fall_collision:
+    #
+    #         self.camera.fall()
 
     def update(self, dt):
 
@@ -607,7 +607,7 @@ class GameWindow(pyglet.window.Window):
 
             self.scripter.next_action()
 
-        self.camera_gravity()
+        # self.camera_gravity()
 
         # check input
         #################

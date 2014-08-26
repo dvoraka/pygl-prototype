@@ -11,6 +11,11 @@ import re
 class Controllable(object):
     """Abstract class for controllable objects."""
 
+    def fall(self):
+        """Fall."""
+
+        raise NotImplementedError()
+
     def forward(self):
         """Move forward."""
 

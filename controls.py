@@ -130,6 +130,7 @@ class Controller(object):
 
         self.actions = {
 
+            "fall": self.controllable_obj.fall,
             "forward": self.controllable_obj.forward,
             "backward": self.controllable_obj.backward,
             "left": self.controllable_obj.left,
@@ -142,6 +143,9 @@ class Controller(object):
         Args:
             key_state (dict): keys states
         """
+
+        # gravity
+        self.actions["fall"]()
 
         action = "forward"
         if key_state[self.get_pyglet_key(action)]:
