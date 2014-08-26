@@ -14,23 +14,27 @@ class PlayerBody(script.Controllable):
     def __init__(self, camera, renderer, collision_offset, height):
 
         self.camera = camera
+        self.camera_fall_collision = False
+
         self.renderer = renderer
         self.collision_offset = collision_offset
 
         self.height = height
+        self.camera_height = self.height * 0.9
+
         # static for now
-        self.vertical_offsets = [0.1, 1.1]
+        self.vertical_offsets = [0.2, 1.2]
 
     def fall(self):
 
         position = data.Point(
-            self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
+            self.camera.x_pos, self.camera.y_pos - self.camera_height, self.camera.z_pos)
         position2 = data.Point(
-            self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
+            self.camera.x_pos, self.camera.y_pos - (self.height * 0.8), self.camera.z_pos)
 
         if self.renderer.ground_collision(position2):
 
-            print("helper")
+            # print("helper")
             self.camera.collision_helper()
             self.camera.stop_falling()
             self.camera_fall_collision = True
@@ -57,7 +61,7 @@ class PlayerBody(script.Controllable):
         for offset in self.vertical_offsets:
 
             temp_x = copy.copy(next_x)
-            temp_x.y += offset
+            temp_x.y += offset - self.camera_height
             if self.renderer.ground_collision(temp_x):
 
                 collide_x = True
@@ -71,7 +75,7 @@ class PlayerBody(script.Controllable):
         for offset in self.vertical_offsets:
 
             temp_z = copy.copy(next_z)
-            temp_z.y += offset
+            temp_z.y += offset - self.camera_height
             if self.renderer.ground_collision(temp_z):
 
                 collide_z = True
@@ -90,7 +94,7 @@ class PlayerBody(script.Controllable):
         for offset in self.vertical_offsets:
 
             temp_x = copy.copy(next_x)
-            temp_x.y += offset
+            temp_x.y += offset - self.camera_height
             if self.renderer.ground_collision(temp_x):
 
                 collide_x = True
@@ -104,7 +108,7 @@ class PlayerBody(script.Controllable):
         for offset in self.vertical_offsets:
 
             temp_z = copy.copy(next_z)
-            temp_z.y += offset
+            temp_z.y += offset - self.camera_height
             if self.renderer.ground_collision(temp_z):
 
                 collide_z = True
