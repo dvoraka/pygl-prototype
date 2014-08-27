@@ -500,26 +500,26 @@ class GameWindow(pyglet.window.Window):
     #
     #         self.camera.left_z()
 
-    def go_right(self):
-
-        next_x = self.camera.next_right_x_point(self.collision_offset)
-        next_z = self.camera.next_right_z_point(self.collision_offset)
-
-        if self.renderer.ground_collision(next_x):
-
-            pass
-
-        else:
-
-            self.camera.right_x()
-
-        if self.renderer.ground_collision(next_z):
-
-            pass
-
-        else:
-
-            self.camera.right_z()
+    # def go_right(self):
+    #
+    #     next_x = self.camera.next_right_x_point(self.collision_offset)
+    #     next_z = self.camera.next_right_z_point(self.collision_offset)
+    #
+    #     if self.renderer.ground_collision(next_x):
+    #
+    #         pass
+    #
+    #     else:
+    #
+    #         self.camera.right_x()
+    #
+    #     if self.renderer.ground_collision(next_z):
+    #
+    #         pass
+    #
+    #     else:
+    #
+    #         self.camera.right_z()
 
     def fill_rendering(self):
 
@@ -646,9 +646,9 @@ class GameWindow(pyglet.window.Window):
         #
         #     self.go_left()
 
-        if self.keyboard[key.RIGHT]:
-
-            self.go_right()
+        # if self.keyboard[key.RIGHT]:
+        #
+        #     self.go_right()
 
         if self.keyboard[key.L]:
 

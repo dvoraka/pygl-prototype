@@ -57,12 +57,21 @@ class Body(script.Controllable):
             self.camera.fall()
 
     def is_collide(self, point):
+        """Check collision for point and all its vertical offsets.
+
+        Args:
+            point (data.Point): point
+
+        Return:
+            bool: collision
+        """
 
         for offset in self.vertical_offsets:
 
-            temp_x = copy.copy(point)
-            temp_x.y += offset - self.camera_height
-            if self.renderer.ground_collision(temp_x):
+            temp = copy.copy(point)
+            temp.y += offset - self.camera_height
+
+            if self.renderer.ground_collision(temp):
 
                 return True
 
@@ -166,6 +175,19 @@ class Body(script.Controllable):
         if not self.is_collide(next_z):
 
             self.camera.left_z()
+
+    def right(self):
+
+        next_x = self.camera.next_right_x_point(self.collision_offset)
+        next_z = self.camera.next_right_z_point(self.collision_offset)
+
+        if not self.is_collide(next_x):
+
+            self.camera.right_x()
+
+        if not self.is_collide(next_z):
+
+            self.camera.right_z()
 
 
 class PlayerBody(Body):

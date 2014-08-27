@@ -162,10 +162,10 @@ class Controller(object):
 
             self.actions[action]()
 
-        # action = "right"
-        # if key_state[self.get_key(action)]:
-        #
-        #     self.actions[action]()
+        action = "right"
+        if key_state[self.get_pyglet_key(action)]:
+
+            self.actions[action]()
 
     def get_pyglet_key(self, action):
         """Return Pyglet key for action.
