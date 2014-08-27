@@ -8,8 +8,8 @@ import data
 import script
 
 
-class PlayerBody(script.Controllable):
-    """Represents player's body in world."""
+class Body(script.Controllable):
+    """Represents body in world."""
 
     def __init__(self, camera, renderer, collision_offset, height):
 
@@ -28,9 +28,13 @@ class PlayerBody(script.Controllable):
     def fall(self):
 
         position = data.Point(
-            self.camera.x_pos, self.camera.y_pos - self.camera_height, self.camera.z_pos)
+            self.camera.x_pos,
+            self.camera.y_pos - self.camera_height,
+            self.camera.z_pos)
         position2 = data.Point(
-            self.camera.x_pos, self.camera.y_pos - (self.height * 0.8), self.camera.z_pos)
+            self.camera.x_pos,
+            self.camera.y_pos - (self.height * 0.8),
+            self.camera.z_pos)
 
         if self.renderer.ground_collision(position2):
 
@@ -117,3 +121,9 @@ class PlayerBody(script.Controllable):
         if not collide_z:
 
             self.camera.backward_z()
+
+
+class PlayerBody(Body):
+    """Represents player's body in world."""
+
+    pass
