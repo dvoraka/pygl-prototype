@@ -122,6 +122,39 @@ class Body(script.Controllable):
 
             self.camera.backward_z()
 
+    def left(self):
+
+        next_x = self.camera.next_left_x_point(self.collision_offset)
+        next_z = self.camera.next_left_z_point(self.collision_offset)
+
+        collide_x = False
+        for offset in self.vertical_offsets:
+
+            temp_x = copy.copy(next_x)
+            temp_x.y += offset - self.camera_height
+            if self.renderer.ground_collision(temp_x):
+
+                collide_x = True
+                break
+
+        if not collide_x:
+
+            self.camera.left_x()
+
+        collide_z = False
+        for offset in self.vertical_offsets:
+
+            temp_z = copy.copy(next_z)
+            temp_z.y += offset - self.camera_height
+            if self.renderer.ground_collision(temp_z):
+
+                collide_z = True
+                break
+
+        if not collide_z:
+
+            self.camera.left_z()
+
 
 class PlayerBody(Body):
     """Represents player's body in world."""
