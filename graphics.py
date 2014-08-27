@@ -2,55 +2,56 @@
 
 from __future__ import print_function
 
-import sys
 import pyglet
+import sys
 
 from pyglet.window import key
 
 # PyOpenGL imports
 from OpenGL.GL import GL_ARRAY_BUFFER
+from OpenGL.GL import GL_COLOR_BUFFER_BIT
+from OpenGL.GL import GL_CULL_FACE
+from OpenGL.GL import GL_DEPTH_BUFFER_BIT
+from OpenGL.GL import GL_DEPTH_TEST
+from OpenGL.GL import GL_FALSE
+from OpenGL.GL import GL_FLOAT
+from OpenGL.GL import GL_MODELVIEW
+from OpenGL.GL import GL_PROJECTION
 from OpenGL.GL import GL_STATIC_DRAW
 from OpenGL.GL import GL_TRIANGLES
-from OpenGL.GL import GL_FLOAT
-from OpenGL.GL import GL_FALSE
-from OpenGL.GL import GL_CULL_FACE
-from OpenGL.GL import GL_DEPTH_TEST
-from OpenGL.GL import GL_PROJECTION
-from OpenGL.GL import GL_COLOR_BUFFER_BIT
-from OpenGL.GL import GL_DEPTH_BUFFER_BIT
-from OpenGL.GL import GL_MODELVIEW
 
-from OpenGL.GL import GLuint
 from OpenGL.GL import GLfloat
+from OpenGL.GL import GLuint
+
 from OpenGL.GL import glBindBuffer
 from OpenGL.GL import glBufferData
-from OpenGL.GL import glGenBuffers
-from OpenGL.GL import glEnableVertexAttribArray
-from OpenGL.GL import glVertexAttribPointer
-from OpenGL.GL import glDrawArrays
-from OpenGL.GL import glDisableVertexAttribArray
-from OpenGL.GL import glIsEnabled
-from OpenGL.GL import glEnable
-from OpenGL.GL import glDisable
-from OpenGL.GL import glClearColor
-from OpenGL.GL import glUseProgram
-from OpenGL.GL import glViewport
-from OpenGL.GL import glMatrixMode
-from OpenGL.GL import glLoadIdentity
 from OpenGL.GL import glClear
+from OpenGL.GL import glClearColor
+from OpenGL.GL import glDisable
+from OpenGL.GL import glDisableVertexAttribArray
+from OpenGL.GL import glDrawArrays
+from OpenGL.GL import glEnable
+from OpenGL.GL import glEnableVertexAttribArray
+from OpenGL.GL import glGenBuffers
+from OpenGL.GL import glIsEnabled
+from OpenGL.GL import glLoadIdentity
+from OpenGL.GL import glMatrixMode
+from OpenGL.GL import glOrtho
 from OpenGL.GL import glRotatef
 from OpenGL.GL import glTranslatef
-from OpenGL.GL import glOrtho
+from OpenGL.GL import glUseProgram
+from OpenGL.GL import glVertexAttribPointer
+from OpenGL.GL import glViewport
 
 from OpenGL.GLU import gluPerspective
 
 # project imports
-import shaders
 import camera
+import controls
 import data
 import player
 import script
-import controls
+import shaders
 
 
 class TestObject(object):
