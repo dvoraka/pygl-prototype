@@ -56,36 +56,48 @@ class Body(script.Controllable):
 
             self.camera.fall()
 
+    def is_collide(self, point):
+
+        for offset in self.vertical_offsets:
+
+            temp_x = copy.copy(point)
+            temp_x.y += offset - self.camera_height
+            if self.renderer.ground_collision(temp_x):
+
+                return True
+
+        return False
+
     def forward(self):
 
         next_x = self.camera.next_fw_x_point(self.collision_offset)
         next_z = self.camera.next_fw_z_point(self.collision_offset)
 
-        collide_x = False
-        for offset in self.vertical_offsets:
+        # collide_x = False
+        # for offset in self.vertical_offsets:
+        #
+        #     temp_x = copy.copy(next_x)
+        #     temp_x.y += offset - self.camera_height
+        #     if self.renderer.ground_collision(temp_x):
+        #
+        #         collide_x = True
+        #         break
 
-            temp_x = copy.copy(next_x)
-            temp_x.y += offset - self.camera_height
-            if self.renderer.ground_collision(temp_x):
-
-                collide_x = True
-                break
-
-        if not collide_x:
+        if not self.is_collide(next_x):
 
             self.camera.forward_x()
 
-        collide_z = False
-        for offset in self.vertical_offsets:
+        # collide_z = False
+        # for offset in self.vertical_offsets:
+        #
+        #     temp_z = copy.copy(next_z)
+        #     temp_z.y += offset - self.camera_height
+        #     if self.renderer.ground_collision(temp_z):
+        #
+        #         collide_z = True
+        #         break
 
-            temp_z = copy.copy(next_z)
-            temp_z.y += offset - self.camera_height
-            if self.renderer.ground_collision(temp_z):
-
-                collide_z = True
-                break
-
-        if not collide_z:
+        if not self.is_collide(next_z):
 
             self.camera.forward_z()
 
