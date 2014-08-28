@@ -26,10 +26,11 @@ class FPSCamera(script.Controllable):
 
         # gravity attributes
         self.gravity = gravity
+        # falling
         self.falling = False
-        # falling start time
         self.falling_start = None
-        self.fall_mp = 0.04
+        self.falling_mp = 0.2
+        self.falling_max_speed = 2.5
 
         # camera position
         self.x_pos = x_pos
@@ -46,12 +47,13 @@ class FPSCamera(script.Controllable):
         self.v_multiplier = 0.02
 
         self.inverse_horizontal = False
+        self.inverse_vertical = False
 
-        # camera min and max horizontal angles
+        # camera min and max vertical angles
         self.v_angle_min = - pi / 3
         self.v_angle_max = pi / 3
 
-        self.step = 0.02
+        self.step = 0.045
         self.sprint_mp = 1.8
         self.side_step = self.step
         self.back_step = 0.2
@@ -206,7 +208,12 @@ class FPSCamera(script.Controllable):
 
             pass
 
-        self.y_pos -= self.fall_mp * 5 * pow(now - self.falling_start, 2)
+        falling_step = self.falling_mp * 5 * pow(now - self.falling_start, 2)
+        if falling_step > self.falling_max_speed:
+
+            falling_step = self.falling_max_speed
+
+        self.y_pos -= falling_step
 
     def stop_falling(self):
         """Stop camera falling."""
