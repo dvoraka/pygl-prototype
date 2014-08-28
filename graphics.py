@@ -214,6 +214,8 @@ class GameWindow(pyglet.window.Window):
         self.camera.set_gravity(True)
         self.camera_fall_collision = True
 
+        self.devel_keys_enabled = True
+
         # script mode settings
         self.scripter = script.Script("script.txt", self.camera)
         if self.scripter:
@@ -229,7 +231,7 @@ class GameWindow(pyglet.window.Window):
 
         #self.collision_offset = 0.1
 
-        self.counter = 0
+        self.update_counter = 0
 
         self.test_label = pyglet.text.Label(
             'TEST Label',
@@ -455,7 +457,7 @@ class GameWindow(pyglet.window.Window):
 
     def testing_zone(self):
 
-        if self.counter % 120 == 0:
+        if self.update_counter % 120 == 0:
 
             print(self.renderer.world.in_chunk(self.camera.get_position_inverse_z()))
 
@@ -463,16 +465,13 @@ class GameWindow(pyglet.window.Window):
             nchunks = self.renderer.world.find_nearest_chunks(cposition)
             print(self.renderer.world.block_collision(cposition, nchunks))
 
-    def update(self, dt):
-
-        self.testing_zone()
-
         if self.scripter:
 
             self.scripter.next_action()
 
-        # check input
-        #################
+    def devel_keys(self):
+
+        #TODO: remap functions to Fx
         if self.keyboard[key.NUM_0]:
 
             self.keyboard[key.NUM_0] = False
@@ -485,9 +484,6 @@ class GameWindow(pyglet.window.Window):
 
                 self.camera.set_gravity(True)
 
-        # send keys status to controller
-        self.controller.update(self.keyboard)
-
         if self.keyboard[key.PAGEUP]:
 
             self.camera.up()
@@ -498,12 +494,10 @@ class GameWindow(pyglet.window.Window):
 
         if self.keyboard[key.L]:
 
-            # self.renderer.set_lines()
             self.lines_rendering()
 
         elif self.keyboard[key.F]:
 
-            # self.renderer.set_fill()
             self.fill_rendering()
 
         elif self.keyboard[key.S]:
@@ -517,8 +511,10 @@ class GameWindow(pyglet.window.Window):
             self.keyboard[key.R] = False
             self.scripter.reload("script.txt")
 
-        # testing keys
-        elif self.keyboard[key.NUM_1]:
+    def testing_keys(self):
+        """Keys for testing and temporary purposes."""
+
+        if self.keyboard[key.NUM_1]:
 
             self.camera.sprint()
 
@@ -532,4 +528,19 @@ class GameWindow(pyglet.window.Window):
             self.keyboard[key.NUM_3] = False
             self.scripter.start()
 
-        self.counter += 1
+    def update(self, dt):
+
+        self.testing_zone()
+
+        # send keys status to controller
+        self.controller.update(self.keyboard)
+
+        # development keys
+        if self.devel_keys_enabled:
+
+            self.devel_keys()
+
+        # testing keys
+        self.testing_keys()
+
+        self.update_counter += 1
