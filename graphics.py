@@ -48,7 +48,6 @@ from OpenGL.GLU import gluPerspective
 # project imports
 import camera
 import controls
-import data
 import player
 import script
 import shaders
@@ -228,7 +227,7 @@ class GameWindow(pyglet.window.Window):
         # controller for player's input
         self.controller = controls.Controller(self.player, "settings.ini")
 
-        self.collision_offset = 0.1
+        #self.collision_offset = 0.1
 
         self.counter = 0
 
@@ -245,9 +244,10 @@ class GameWindow(pyglet.window.Window):
         shader_pool = shaders.ShaderPool(self.capabilities)
         self.shader_programs = shader_pool.get_shaders()
 
-        # fill, lines, points
+        # initial rendering - fill, lines, points
         self.rendering_type = "fill"
 
+        # variables for scheduling
         self.long_tasks = 3
         self.long_tasks_counter = 0
 
@@ -311,48 +311,7 @@ class GameWindow(pyglet.window.Window):
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
 
-        # self.renderer.set_fill()
-
         self.print_gl_settings()
-
-    # def init_shaders(self):
-    #
-    #     shaders = {}
-    #     shaders["test"] = self.init_test_shader()
-    #     shaders["hud"] = self.init_hud_shader()
-    #     shaders["lines"] = self.init_line_shader()
-    #
-    #     return shaders
-
-    # def init_test_shader(self):
-    #     """Return compiled test shader."""
-    #
-    #     v_shader = shaders.load_vshader('shaders_data/simple.vs')
-    #     f_shader = shaders.load_fshader('shaders_data/test1.fs')
-    #
-    #     program = shaders.compile_program(v_shader, f_shader)
-    #
-    #     return program
-    #
-    # def init_hud_shader(self):
-    #     """Return compiled HUD shader."""
-    #
-    #     v_shader = shaders.load_vshader('shaders_data/test.vs')
-    #     f_shader = shaders.load_fshader('shaders_data/hud.fs')
-    #
-    #     program = shaders.compile_program(v_shader, f_shader)
-    #
-    #     return program
-    #
-    # def init_line_shader(self):
-    #     """Return compiled line shader."""
-    #
-    #     v_shader = shaders.load_vshader('shaders_data/test.vs')
-    #     f_shader = shaders.load_fshader('shaders_data/black.fs')
-    #
-    #     program = shaders.compile_program(v_shader, f_shader)
-    #
-    #     return program
 
     def on_resize(self, width, height):
         """Prepare perspective for window size."""
@@ -453,75 +412,6 @@ class GameWindow(pyglet.window.Window):
         self.camera.add_v_angle(float(dy))
         self.camera.add_h_angle(float(dx))
 
-    # def go_forward(self):
-    #
-    #     self.player.forward()
-
-    # def go_backward(self):
-    #
-    #     self.player.backward()
-
-        # next_x = self.camera.next_bw_x_point(self.collision_offset)
-        # next_z = self.camera.next_bw_z_point(self.collision_offset)
-        #
-        # if self.renderer.ground_collision(next_x):
-        #
-        #     pass
-        #
-        # else:
-        #
-        #     self.camera.backward_x()
-        #
-        # if self.renderer.ground_collision(next_z):
-        #
-        #     pass
-        #
-        # else:
-        #
-        #     self.camera.backward_z()
-
-    # def go_left(self):
-    #
-    #     next_x = self.camera.next_left_x_point(self.collision_offset)
-    #     next_z = self.camera.next_left_z_point(self.collision_offset)
-    #
-    #     if self.renderer.ground_collision(next_x):
-    #
-    #         pass
-    #
-    #     else:
-    #
-    #         self.camera.left_x()
-    #
-    #     if self.renderer.ground_collision(next_z):
-    #
-    #         pass
-    #
-    #     else:
-    #
-    #         self.camera.left_z()
-
-    # def go_right(self):
-    #
-    #     next_x = self.camera.next_right_x_point(self.collision_offset)
-    #     next_z = self.camera.next_right_z_point(self.collision_offset)
-    #
-    #     if self.renderer.ground_collision(next_x):
-    #
-    #         pass
-    #
-    #     else:
-    #
-    #         self.camera.right_x()
-    #
-    #     if self.renderer.ground_collision(next_z):
-    #
-    #         pass
-    #
-    #     else:
-    #
-    #         self.camera.right_z()
-
     def fill_rendering(self):
 
         self.rendering_type = "fill"
@@ -573,33 +463,6 @@ class GameWindow(pyglet.window.Window):
             nchunks = self.renderer.world.find_nearest_chunks(cposition)
             print(self.renderer.world.block_collision(cposition, nchunks))
 
-    # def camera_gravity(self):
-    #
-    #     position = data.Point(
-    #         self.camera.x_pos, self.camera.y_pos - 0.5, self.camera.z_pos)
-    #     position2 = data.Point(
-    #         self.camera.x_pos, self.camera.y_pos - 0.3, self.camera.z_pos)
-    #
-    #     if self.renderer.ground_collision(position2):
-    #
-    #         print("helper")
-    #         self.camera.collision_helper()
-    #         self.camera.stop_falling()
-    #         self.camera_fall_collision = True
-    #
-    #     elif self.renderer.ground_collision(position):
-    #
-    #         self.camera.stop_falling()
-    #         self.camera_fall_collision = True
-    #
-    #     else:
-    #
-    #         self.camera_fall_collision = False
-    #
-    #     if self.camera.gravity and not self.camera_fall_collision:
-    #
-    #         self.camera.fall()
-
     def update(self, dt):
 
         self.testing_zone()
@@ -607,8 +470,6 @@ class GameWindow(pyglet.window.Window):
         if self.scripter:
 
             self.scripter.next_action()
-
-        # self.camera_gravity()
 
         # check input
         #################
@@ -627,14 +488,6 @@ class GameWindow(pyglet.window.Window):
         # send keys status to controller
         self.controller.update(self.keyboard)
 
-        # if self.keyboard[key.UP]:
-        #
-        #     self.go_forward()
-
-        # if self.keyboard[key.DOWN]:
-        #
-        #     self.go_backward()
-
         if self.keyboard[key.PAGEUP]:
 
             self.camera.up()
@@ -642,14 +495,6 @@ class GameWindow(pyglet.window.Window):
         elif self.keyboard[key.PAGEDOWN]:
 
             self.camera.down()
-
-        # if self.keyboard[key.LEFT]:
-        #
-        #     self.go_left()
-
-        # if self.keyboard[key.RIGHT]:
-        #
-        #     self.go_right()
 
         if self.keyboard[key.L]:
 
