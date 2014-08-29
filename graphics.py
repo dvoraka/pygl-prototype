@@ -257,15 +257,18 @@ class GameWindow(pyglet.window.Window):
 
     @staticmethod
     def print_fps(dt):
+        """Print FPS."""
 
         print(pyglet.clock.get_fps())
 
     def print_info(self, dt):
+        """Print useful info."""
 
         print("FPS: {}".format(pyglet.clock.get_fps()))
         print(self.camera.get_position())
 
     def print_gl_info(self):
+        """Print OpenGL info."""
 
         print("=" * 40)
         print("OpenGL info")
@@ -277,6 +280,7 @@ class GameWindow(pyglet.window.Window):
         print("")
 
     def print_gl_settings(self):
+        """Print OpenGL settings."""
 
         print("=" * 40)
         print("OpenGL settings")
@@ -286,6 +290,7 @@ class GameWindow(pyglet.window.Window):
         print("")
 
     def detect_capabilities(self):
+        """Detect OpenGL capabilities."""
 
         if pyglet.gl.gl_info.have_version(3, 3):
 
@@ -336,6 +341,7 @@ class GameWindow(pyglet.window.Window):
         pyglet.app.run()
 
     def set_2d(self):
+        """Set 2D render mode."""
 
         glDisable(GL_DEPTH_TEST)
 
@@ -349,6 +355,7 @@ class GameWindow(pyglet.window.Window):
         glLoadIdentity()
 
     def set_3d(self):
+        """Set 3D render mode."""
 
         glEnable(GL_DEPTH_TEST)
 
@@ -362,6 +369,11 @@ class GameWindow(pyglet.window.Window):
         glLoadIdentity()
 
     def use_shader(self, shader_name):
+        """Use cached shader.
+
+        Args:
+            shader_name (str): shader name in cache dict
+        """
 
         if shader_name in self.shader_programs:
 
@@ -402,6 +414,7 @@ class GameWindow(pyglet.window.Window):
         self.draw_hud()
 
     def draw_hud(self):
+        """Render HUD."""
 
         #TODO: add resize changes
         # glUseProgram(self.hud_shader)
@@ -415,11 +428,13 @@ class GameWindow(pyglet.window.Window):
         self.camera.add_h_angle(float(dx))
 
     def fill_rendering(self):
+        """Set fill rendering option."""
 
         self.rendering_type = "fill"
         self.renderer.set_fill()
 
     def lines_rendering(self):
+        """Set lines rendering option."""
 
         self.rendering_type = "lines"
         self.renderer.set_lines()
