@@ -32,6 +32,9 @@ class FPSCamera(script.Controllable):
         self.falling_mp = 0.0005
         self.falling_max_speed = 2.5
 
+        self.jump_step_height = 0.2
+        self.jump_steps = 7
+
         self.falling_counter = 0
         self.jump_counter = 0
 
@@ -197,6 +200,13 @@ class FPSCamera(script.Controllable):
 
         return data.Point(self.x_pos, self.y_pos, next_z)
 
+    def jump(self):
+
+        if self.jump_counter == 0:
+
+            self.jump_counter = 1
+            self.y_pos += self.jump_step_height
+
     def fall(self):
         """Simulate camera falling."""
 
@@ -211,6 +221,12 @@ class FPSCamera(script.Controllable):
         else:
 
             pass
+
+        print(self.jump_counter)
+        if 0 < self.jump_counter < self.jump_steps:
+
+            self.y_pos += self.jump_step_height
+            self.jump_counter += 1
 
         # falling_step = self.falling_mp * 5 * pow(now - self.falling_start, 2)
         falling_step = self.falling_mp * 5 * pow(self.falling_counter, 2)

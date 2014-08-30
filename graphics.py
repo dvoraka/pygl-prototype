@@ -526,6 +526,10 @@ class GameWindow(pyglet.window.Window):
             self.keyboard[key.R] = False
             self.scripter.reload("script.txt")
 
+        elif self.keyboard[key.INSERT]:
+
+            self.set_exclusive_mouse(False)
+
     def testing_keys(self):
         """Keys for testing and temporary purposes."""
 
@@ -542,6 +546,10 @@ class GameWindow(pyglet.window.Window):
 
             self.keyboard[key.NUM_3] = False
             self.scripter.start()
+
+        elif self.keyboard[key.SPACE]:
+
+            self.camera.jump()
 
     def update(self, dt):
 

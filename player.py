@@ -56,6 +56,10 @@ class Body(script.Controllable):
 
             self.camera.fall()
 
+        else:
+
+            self.camera.jump_counter = 0
+
     def is_collide(self, point):
         """Check collision for point and all its vertical offsets.
 
