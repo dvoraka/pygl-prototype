@@ -32,8 +32,8 @@ class FPSCamera(script.Controllable):
         self.falling_mp = 0.0005
         self.falling_max_speed = 2.5
 
-        self.jump_step_height = 0.2
-        self.jump_steps = 7
+        self.jump_step_height = 0.17
+        self.jump_steps = 16
 
         self.falling_counter = 0
         self.jump_counter = 0

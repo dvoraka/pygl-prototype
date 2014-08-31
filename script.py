@@ -46,6 +46,11 @@ class Controllable(object):
 
         raise NotImplementedError()
 
+    def jump(self):
+        """Jump."""
+
+        raise NotImplementedError()
+
 
 class DummyObject(Controllable):
     """Simple testing class."""

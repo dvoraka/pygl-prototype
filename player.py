@@ -195,7 +195,14 @@ class Body(script.Controllable):
 
     def jump(self):
 
-        pass
+        # camera_position = self.camera.get_position_inverse_z()
+        camera_position = self.camera.get_position()
+        camera_position.y += 0.6
+        new_position = camera_position
+
+        if not self.renderer.ground_collision(new_position):
+
+            self.camera.jump()
 
 
 class PlayerBody(Body):
