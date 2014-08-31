@@ -26,6 +26,7 @@ class ControlsMapper(object):
             "backward": "S",
             "left": "A",
             "right": "D",
+            "jump": "Space",
         }
 
         try:
@@ -69,6 +70,7 @@ class ControlsMapper(object):
             "DOWN": key.DOWN,
             "LEFT": key.LEFT,
             "RIGHT": key.RIGHT,
+            "SPACE": key.SPACE,
         }
 
         print(self.controls)
@@ -99,6 +101,7 @@ class ControlsMapper(object):
         self.controls["backward"] = config.get(section, "backward")
         self.controls["left"] = config.get(section, "left")
         self.controls["right"] = config.get(section, "right")
+        self.controls["jump"] = config.get(section, "jump")
 
     # def get_action(self, key):
     #
@@ -135,6 +138,7 @@ class Controller(object):
             "backward": self.controllable_obj.backward,
             "left": self.controllable_obj.left,
             "right": self.controllable_obj.right,
+            "jump": self.controllable_obj.jump,
         }
 
     def update(self, key_state):
@@ -163,6 +167,11 @@ class Controller(object):
             self.actions[action]()
 
         action = "right"
+        if key_state[self.get_pyglet_key(action)]:
+
+            self.actions[action]()
+
+        action = "jump"
         if key_state[self.get_pyglet_key(action)]:
 
             self.actions[action]()

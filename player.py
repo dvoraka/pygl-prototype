@@ -193,6 +193,10 @@ class Body(script.Controllable):
 
             self.camera.right_z()
 
+    def jump(self):
+
+        pass
+
 
 class PlayerBody(Body):
     """Represents player's body in world."""
