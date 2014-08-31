@@ -32,12 +32,18 @@ UP | forward
 DOWN | backward
 LEFT | step left
 RIGHT | step right
-Page Up | go up
-Page Down | go down
-L | lines rendering
-F | full rendering
-S | toggle fullscreen
-NUM 0 | toggle gravity
+Space | jump
+
+##### Development controls
+
+Key | Action
+---|---
+1 | full rendering
+2 | lines rendering
+6 | toggle fullscreen
+7 | toggle gravity
+8 | move up
+9 | move down
 
 
 ### Screenshots
