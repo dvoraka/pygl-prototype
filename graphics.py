@@ -486,10 +486,10 @@ class GameWindow(pyglet.window.Window):
 
     def devel_keys(self):
 
-        #TODO: remap functions to Fx
-        if self.keyboard[key.NUM_0]:
+        # toggle gravity
+        if self.keyboard[key._7]:
 
-            self.keyboard[key.NUM_0] = False
+            self.keyboard[key._7] = False
             if self.camera.gravity:
 
                 self.camera.set_gravity(False)
@@ -499,33 +499,36 @@ class GameWindow(pyglet.window.Window):
 
                 self.camera.set_gravity(True)
 
-        if self.keyboard[key.PAGEUP]:
+        # move up
+        if self.keyboard[key._8]:
 
             self.camera.up()
 
-        elif self.keyboard[key.PAGEDOWN]:
+        # move down
+        elif self.keyboard[key._9]:
 
             self.camera.down()
 
-        if self.keyboard[key.L]:
+        # lines rendering
+        if self.keyboard[key._2]:
 
             self.lines_rendering()
 
-        elif self.keyboard[key.F]:
+        # fill rendering
+        elif self.keyboard[key._1]:
 
             self.fill_rendering()
 
-        elif self.keyboard[key.S]:
+        # points rendering in future
 
-            self.keyboard[key.S] = False
+        # toggle fullscreen
+        elif self.keyboard[key._6]:
+
+            self.keyboard[key._6] = False
 
             self.toggle_fullscreen()
 
-        elif self.keyboard[key.R]:
-
-            self.keyboard[key.R] = False
-            self.scripter.reload("script.txt")
-
+        # disable exclusive mouse
         elif self.keyboard[key.INSERT]:
 
             self.set_exclusive_mouse(False)
@@ -550,6 +553,11 @@ class GameWindow(pyglet.window.Window):
         elif self.keyboard[key.SPACE]:
 
             self.camera.jump()
+
+        elif self.keyboard[key.R]:
+
+            self.keyboard[key.R] = False
+            self.scripter.reload("script.txt")
 
     def update(self, dt):
 
