@@ -13,6 +13,11 @@ class ControlsMapper(object):
 
     Args:
         filename (str): file with control schema
+
+    Attributes:
+        filename (str): file with control schema
+        controls (dict): mapping action to keys
+        pyglet_mapping (dict): pyglet keys mapping
     """
 
     def __init__(self, filename):
@@ -103,15 +108,19 @@ class ControlsMapper(object):
         self.controls["right"] = config.get(section, "right")
         self.controls["jump"] = config.get(section, "jump")
 
-    # def get_action(self, key):
-    #
-    #     pass
+    def get_pyglet_action(self, pyglet_key):
+        """Return mapped action to the pyglet key."""
+
+        pass
 
     def get_pyglet_key(self, action):
         """Return Pyglet key for action.
 
         Args:
             action (str): action
+
+        Return:
+            int: key constant
         """
 
         return self.pyglet_mapping[self.controls[action].upper()]
@@ -123,6 +132,11 @@ class Controller(object):
     Args:
         controllable (interfaces.Controllable): object for controlling
         controls_file (str): configuration file
+
+    Attributes:
+        controllable_obj (interfaces.Controllable): object for controlling
+        mapper (ControlsMapper): mapper
+        actions (dict): map actions names to methods
     """
 
     def __init__(self, controllable, controls_file):
@@ -177,10 +191,13 @@ class Controller(object):
             self.actions[action]()
 
     def get_pyglet_key(self, action):
-        """Return Pyglet key for action.
+        """Return Pyglet key for the action.
 
         Args:
-            action (str): action
+            action (str): the action
+
+        Return:
+            int: key constant
         """
 
         return self.mapper.get_pyglet_key(action)
