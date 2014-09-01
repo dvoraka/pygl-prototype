@@ -1,7 +1,7 @@
 Introduction
 ==============
 
-Game engine prototype using Python, PyOpenGL, Pyglet and NumPy.
+Game engine prototype using Python, PyOpenGL, Pyglet and NumPy. It is mainly a study project.
 
 ### Features
 * controllable FPS camera
