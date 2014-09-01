@@ -222,7 +222,6 @@ class FPSCamera(script.Controllable):
 
             pass
 
-        print(self.jump_counter)
         if 0 < self.jump_counter < self.jump_steps:
 
             self.y_pos += self.jump_step_height
