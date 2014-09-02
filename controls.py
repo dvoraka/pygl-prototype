@@ -5,6 +5,8 @@
 from __future__ import print_function
 
 import ConfigParser
+import os.path
+
 from pyglet.window import key
 
 
@@ -20,9 +22,10 @@ class ControlsMapper(object):
         pyglet_mapping (dict): pyglet keys mapping
     """
 
-    def __init__(self, filename):
+    def __init__(self, filename, user_filename):
 
         self.filename = filename
+        self.user_filename = user_filename
 
         # default controls (when no config file is found)
         self.controls = {
@@ -42,6 +45,17 @@ class ControlsMapper(object):
 
             print(e)
             print("Bad controls config.")
+
+        if os.path.isfile(self.user_filename):
+
+            try:
+
+                self.load_controls(self.user_filename)
+
+            except ConfigParser.NoOptionError as e:
+
+                print(e)
+                print("Bad user controls config.")
 
         self.pyglet_mapping = {
 
@@ -139,11 +153,11 @@ class Controller(object):
         actions (dict): map actions names to methods
     """
 
-    def __init__(self, controllable, controls_file):
+    def __init__(self, controllable, controls_file, user_file="user.ini"):
 
         self.controllable_obj = controllable
 
-        self.mapper = ControlsMapper(controls_file)
+        self.mapper = ControlsMapper(controls_file, user_file)
 
         self.actions = {
 
@@ -205,4 +219,4 @@ class Controller(object):
 
 if __name__ == "__main__":
 
-    cm = ControlsMapper("settings.ini")
+    cm = ControlsMapper("settings.ini", "user.ini")
