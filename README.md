@@ -25,7 +25,7 @@ System supports OpenGL 2.1 and above.
 
 ### Controls
 ##### Normal controls
-Normal controls can be remapped in settings.ini and overridden in user.ini file.
+You can remap normal controls in global settings.ini file or override global settings in user.ini file.
 
 Key | Action
 ---|---
