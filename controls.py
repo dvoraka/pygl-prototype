@@ -39,6 +39,11 @@ class ControlsMapper(object):
         self.pyglet_mapping = self.get_pyglet_mapping()
 
     def get_default_controls(self):
+        """Return default controls mapping as dict.
+
+        Return:
+            dict: {"action": "key name"}
+        """
 
         default_controls = {
 
@@ -82,6 +87,13 @@ class ControlsMapper(object):
         self.set_value(config, section, "jump")
 
     def set_value(self, config, section, action):
+        """Load configuration value and assign it.
+
+        Args:
+            config (ConfigParser): configuration parser
+            section (str): section
+            action (str): action
+        """
 
         new_value = self.config_value(config, section, action)
 
@@ -90,6 +102,13 @@ class ControlsMapper(object):
             self.controls[action] = new_value
 
     def config_value(self, config, section, action):
+        """Read configuration value.
+
+        Args:
+            config (ConfigParser: configuration parser
+            section (str): section
+            action (str): action
+        """
 
         if config.has_section(section) and config.has_option(section, action):
 
@@ -113,6 +132,7 @@ class ControlsMapper(object):
         return self.pyglet_mapping[self.controls[action].upper()]
 
     def get_pyglet_mapping(self):
+        """Return Pyglet mapping."""
 
         pyglet_mapping = {
 
