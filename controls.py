@@ -28,14 +28,7 @@ class ControlsMapper(object):
         self.user_filename = user_filename
 
         # default controls (when no config file is found)
-        self.controls = {
-
-            "forward": "W",
-            "backward": "S",
-            "left": "A",
-            "right": "D",
-            "jump": "Space",
-        }
+        self.controls = self.get_default_controls()
 
         try:
 
@@ -54,10 +47,88 @@ class ControlsMapper(object):
 
             except ConfigParser.NoOptionError as e:
 
-                print(e)
                 print("Bad user controls config.")
+                print(e)
 
-        self.pyglet_mapping = {
+        self.pyglet_mapping = self.get_pyglet_mapping()
+
+    def get_default_controls(self):
+
+        default_controls = {
+
+            "forward": "W",
+            "backward": "S",
+            "left": "A",
+            "right": "D",
+            "jump": "Space",
+        }
+
+        return default_controls
+
+    def load_controls(self, ini_file):
+        """Load controls from file.
+
+        Args:
+            ini_file (str): ini file with controls
+        """
+
+        config = ConfigParser.ConfigParser()
+
+        try:
+
+            config.read(ini_file)
+
+        except ConfigParser.ParsingError as e:
+
+            print("Bad controls config file: {}".format(ini_file))
+            print(e)
+
+            return
+
+        section = "Controls"
+
+        # self.controls["forward"] = self.config_value(config, section, "forward")
+
+        self.set_value(config, section, "forward")
+        self.set_value(config, section, "backward")
+        self.set_value(config, section, "left")
+        self.set_value(config, section, "right")
+        self.set_value(config, section, "jump")
+
+    def set_value(self, config, section, action):
+
+        new_value = self.config_value(config, section, action)
+
+        if new_value:
+
+            self.controls[action] = new_value
+
+    def config_value(self, config, section, action):
+
+        if config.has_section(section) and config.has_option(section, action):
+
+            return config.get(section, action)
+
+    def get_pyglet_action(self, pyglet_key):
+        """Return mapped action to the pyglet key."""
+
+        pass
+
+    def get_pyglet_key(self, action):
+        """Return Pyglet key for action.
+
+        Args:
+            action (str): action
+
+        Return:
+            int: key constant
+        """
+
+        return self.pyglet_mapping[self.controls[action].upper()]
+
+    def get_pyglet_mapping(self):
+
+        pyglet_mapping = {
 
             "A": key.A,
             "B": key.B,
@@ -92,69 +163,7 @@ class ControlsMapper(object):
             "SPACE": key.SPACE,
         }
 
-        print(self.controls)
-
-    def load_controls(self, ini_file):
-        """Load controls from file.
-
-        Args:
-            ini_file (str): ini file with controls
-        """
-
-        config = ConfigParser.ConfigParser()
-
-        try:
-
-            config.read(ini_file)
-
-        except ConfigParser.ParsingError as e:
-
-            print("Bad controls config file: {}".format(ini_file))
-            print(e)
-
-            return
-
-        section = "Controls"
-
-        # self.controls["forward"] = self.config_value(config, section, "forward")
-        self.set_value(config, section, "forward")
-        # self.controls["backward"] = config.get(section, "backward")
-        self.set_value(config, section, "backward")
-
-        self.controls["left"] = config.get(section, "left")
-        self.controls["right"] = config.get(section, "right")
-        self.controls["jump"] = config.get(section, "jump")
-
-    def set_value(self, config, section, action):
-
-        new_value = self.config_value(config, section, action)
-
-        if new_value:
-
-            self.controls[action] = new_value
-
-    def config_value(self, config, section, action):
-
-        if config.has_section(section) and config.has_option(section, action):
-
-            return config.get(section, action)
-
-    def get_pyglet_action(self, pyglet_key):
-        """Return mapped action to the pyglet key."""
-
-        pass
-
-    def get_pyglet_key(self, action):
-        """Return Pyglet key for action.
-
-        Args:
-            action (str): action
-
-        Return:
-            int: key constant
-        """
-
-        return self.pyglet_mapping[self.controls[action].upper()]
+        return pyglet_mapping
 
 
 class Controller(object):
@@ -237,3 +246,4 @@ class Controller(object):
 if __name__ == "__main__":
 
     cm = ControlsMapper("settings.ini", "user.ini")
+    print(cm.controls)
