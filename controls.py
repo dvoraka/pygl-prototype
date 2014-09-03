@@ -30,25 +30,11 @@ class ControlsMapper(object):
         # default controls (when no config file is found)
         self.controls = self.get_default_controls()
 
-        try:
-
-            self.load_controls(self.filename)
-
-        except ConfigParser.NoOptionError as e:
-
-            print(e)
-            print("Bad controls config.")
+        self.load_controls(self.filename)
 
         if os.path.isfile(self.user_filename):
 
-            try:
-
-                self.load_controls(self.user_filename)
-
-            except ConfigParser.NoOptionError as e:
-
-                print("Bad user controls config.")
-                print(e)
+            self.load_controls(self.user_filename)
 
         self.pyglet_mapping = self.get_pyglet_mapping()
 
