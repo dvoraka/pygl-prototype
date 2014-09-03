@@ -116,11 +116,28 @@ class ControlsMapper(object):
 
         section = "Controls"
 
-        self.controls["forward"] = config.get(section, "forward")
-        self.controls["backward"] = config.get(section, "backward")
+        # self.controls["forward"] = self.config_value(config, section, "forward")
+        self.set_value(config, section, "forward")
+        # self.controls["backward"] = config.get(section, "backward")
+        self.set_value(config, section, "backward")
+
         self.controls["left"] = config.get(section, "left")
         self.controls["right"] = config.get(section, "right")
         self.controls["jump"] = config.get(section, "jump")
+
+    def set_value(self, config, section, action):
+
+        new_value = self.config_value(config, section, action)
+
+        if new_value:
+
+            self.controls[action] = new_value
+
+    def config_value(self, config, section, action):
+
+        if config.has_section(section) and config.has_option(section, action):
+
+            return config.get(section, action)
 
     def get_pyglet_action(self, pyglet_key):
         """Return mapped action to the pyglet key."""
