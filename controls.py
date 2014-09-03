@@ -18,6 +18,7 @@ class ControlsMapper(object):
 
     Attributes:
         filename (str): file with control schema
+        user_filename (str): user file with control schema (override filename)
         controls (dict): mapping action to keys
         pyglet_mapping (dict): pyglet keys mapping
     """
@@ -39,7 +40,7 @@ class ControlsMapper(object):
         self.pyglet_mapping = self.get_pyglet_mapping()
 
     def get_default_controls(self):
-        """Return default controls mapping as dict.
+        """Return default controls mapping as a dict.
 
         Return:
             dict: {"action": "key name"}
@@ -108,6 +109,9 @@ class ControlsMapper(object):
             config (ConfigParser: configuration parser
             section (str): section
             action (str): action
+
+        Return:
+            str or None: found value in configuration file
         """
 
         if config.has_section(section) and config.has_option(section, action):
