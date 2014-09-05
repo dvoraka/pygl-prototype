@@ -12,6 +12,6 @@ then
     exit 1
 fi
 
-flake8 ${MODULES}
+${CHECKER} ${MODULES}
 
 exit 0
