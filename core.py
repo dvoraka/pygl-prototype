@@ -1,3 +1,5 @@
+"""Core graphics module."""
+
 from __future__ import print_function
 
 from OpenGL.GL import GLfloat
@@ -65,6 +67,7 @@ class Renderer(object):
         self.world.generate_chunks(position, self.chunk_gen_distance)
 
     def print_visibility(self):
+        """Print visibility for all chunks in world."""
 
         for position, chunk in self.world.chunks.items():
 
@@ -80,6 +83,7 @@ class Renderer(object):
         self.world.set_visibility(point, self.visibility)
 
     def set_visibility(self):
+        """Set visibility for VBOs according to world data."""
 
         for position, chunk in self.world.chunks.items():
 
@@ -90,6 +94,7 @@ class Renderer(object):
                     vbo.render = chunk.visible
 
     def create_vbos(self):
+        """Create necessary VBOs."""
 
         for position, chunk in self.world.chunks.items():
 
@@ -120,7 +125,8 @@ class Renderer(object):
 
         return False
 
-    def generate_vbo(self, chunk_data):
+    @staticmethod
+    def generate_vbo(chunk_data):
         """Generate VBO object.
 
         Args:

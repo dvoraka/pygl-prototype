@@ -71,10 +71,10 @@ class ControlsMapper(object):
 
             config.read(ini_file)
 
-        except ConfigParser.ParsingError as e:
+        except ConfigParser.ParsingError as err:
 
             print("Bad controls config file: {}".format(ini_file))
-            print(e)
+            print(err)
 
             return
 
