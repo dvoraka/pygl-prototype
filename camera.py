@@ -16,6 +16,7 @@ import script
 
 
 class FPSCamera(script.Controllable):
+    """Class for first person shooter camera."""
 
     def __init__(
             self,
@@ -175,6 +176,7 @@ class FPSCamera(script.Controllable):
         return data.Point(self.x_pos, self.y_pos, next_z)
 
     def next_right_x_point(self, offset=0.0):
+        """Return next right x axis Point."""
 
         rot_m = self.rot_y_matrix(pi / 2)
         new_vec = rot_m * self.horizontal_view_vec()
@@ -188,6 +190,7 @@ class FPSCamera(script.Controllable):
         return data.Point(next_x, self.y_pos, self.z_pos)
 
     def next_right_z_point(self, offset=0.0):
+        """Return next right z axis Point."""
 
         rot_m = self.rot_y_matrix(pi / 2)
         new_vec = rot_m * self.horizontal_view_vec()
@@ -201,6 +204,7 @@ class FPSCamera(script.Controllable):
         return data.Point(self.x_pos, self.y_pos, next_z)
 
     def jump(self):
+        """Simulate camera jumping."""
 
         if self.jump_counter == 0:
 
@@ -326,6 +330,11 @@ class FPSCamera(script.Controllable):
         self.z_pos = pos_list[2][0]
 
     def set_position(self, point):
+        """Set new camera position.
+
+        Args:
+            point (Point): new camera position
+        """
 
         self.x_pos = point.x
         self.y_pos = point.y
@@ -422,6 +431,7 @@ class FPSCamera(script.Controllable):
         return vec
 
     def forward(self, sprint=False):
+        """Move camera forward."""
 
         pos_vec = self.get_position_vec()
         trans_matrix = self.fw_matrix(sprint)
@@ -460,6 +470,7 @@ class FPSCamera(script.Controllable):
         self.forward(sprint=True)
 
     def backward(self):
+        """Move camera backward."""
 
         pos_vec = self.get_position_vec()
         trans_matrix = linalg.inv(self.fw_matrix())
@@ -588,5 +599,10 @@ class FPSCamera(script.Controllable):
         self.y_pos += self.helper_step
 
     def set_gravity(self, gravity):
+        """Set camera gravitation.
+
+        Args:
+            gravity (bool): enable gravity
+        """
 
         self.gravity = gravity
