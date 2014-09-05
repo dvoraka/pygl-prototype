@@ -194,7 +194,8 @@ class Renderer(object):
             # chunk_vertexes = []
             # for position in b_positions:
             #
-            #     chunk_vertexes.extend(graphics.GraphicBlock().get_vertexes(position))
+            #     chunk_vertexes.extend(
+            #           graphics.GraphicBlock().get_vertexes(position))
             #
             # vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
             #

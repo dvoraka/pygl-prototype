@@ -3,7 +3,7 @@
 
 """Module for cameras."""
 
-import time
+# import time
 
 from math import sin
 from math import cos

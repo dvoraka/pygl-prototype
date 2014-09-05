@@ -80,8 +80,6 @@ class ControlsMapper(object):
 
         section = "Controls"
 
-        # self.controls["forward"] = self.config_value(config, section, "forward")
-
         self.set_value(config, section, "forward")
         self.set_value(config, section, "backward")
         self.set_value(config, section, "left")

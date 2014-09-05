@@ -380,9 +380,9 @@ class BlockWorld(object):
         for chunk in self.chunks:
 
             if (chunk[0] < point.x + offset and
-                            point.x - offset < chunk[0] + self.chunk_size):
+                    point.x - offset < chunk[0] + self.chunk_size):
                 if (chunk[1] < point.z + offset and
-                                point.z - offset < chunk[1] + self.chunk_size):
+                        point.z - offset < chunk[1] + self.chunk_size):
 
                     if self.chunks[chunk].collision(point):
 
@@ -443,7 +443,8 @@ class BlockWorld(object):
         for x_pos in range(min_x, max_x):
             for z_pos in range(min_z, max_z):
 
-                if x_pos % self.chunk_size == 0 and z_pos % self.chunk_size == 0:
+                if (x_pos % self.chunk_size == 0 and
+                        z_pos % self.chunk_size == 0):
 
                     if sqrt(pow((x_pos + offset) - point.x, 2)
                             + pow((z_pos + offset) - point.z, 2)) > distance:

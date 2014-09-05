@@ -457,12 +457,14 @@ class GameWindow(pyglet.window.Window):
 
         if self.long_tasks_counter % self.long_tasks == 0:
 
-            self.renderer.check_visibility(self.camera.get_position_inverse_z())
+            self.renderer.check_visibility(
+                self.camera.get_position_inverse_z())
             self.renderer.set_visibility()
 
         elif self.long_tasks_counter % self.long_tasks == 1:
 
-            self.renderer.prepare_new_chunks(self.camera.get_position_inverse_z())
+            self.renderer.prepare_new_chunks(
+                self.camera.get_position_inverse_z())
 
         elif self.long_tasks_counter % self.long_tasks == 2:
 
@@ -474,7 +476,8 @@ class GameWindow(pyglet.window.Window):
 
         if self.update_counter % 120 == 0:
 
-            print(self.renderer.world.in_chunk(self.camera.get_position_inverse_z()))
+            print(self.renderer.world.in_chunk(
+                self.camera.get_position_inverse_z()))
 
             cposition = self.camera.get_position_inverse_z()
             nchunks = self.renderer.world.find_nearest_chunks(cposition)
