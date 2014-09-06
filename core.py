@@ -26,6 +26,8 @@ from OpenGL.GL import GL_POINTS
 
 import graphics
 
+from decorators import print_time
+
 
 class Renderer(object):
     """Render world."""
@@ -126,6 +128,7 @@ class Renderer(object):
         return False
 
     @staticmethod
+    @print_time
     def generate_vbo(chunk_data):
         """Generate VBO object.
 
