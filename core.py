@@ -50,7 +50,7 @@ def generate_vertexes(chunk_vertexes):
     return vertexes
 
 
-def generate_blocks(chunk_data):
+def generate_vbo_blocks(chunk_data):
 
     blocks_positions = []
     for rel_pos, block in chunk_data.blocks.items():
@@ -80,12 +80,10 @@ def generate_vbo(chunk_data):
 
     # print("Generating VBO...")
 
-    blocks_positions = []
-
     chunk_vbo = graphics.VboData(chunk_data.chunk_id)
     glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
 
-    blocks_positions = generate_blocks(chunk_data)
+    blocks_positions = generate_vbo_blocks(chunk_data)
 
     chunk_vertexes = []
     for position in blocks_positions:
