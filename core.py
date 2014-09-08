@@ -26,6 +26,7 @@ from OpenGL.GL import GL_POINTS
 
 import collections
 import multiprocessing as mp
+import time
 
 import graphics
 
@@ -39,6 +40,32 @@ def vbo_done(vbo_data):
 
     vbos_queue.append(vbo_data)
     print("vbo done")
+
+
+@print_time
+def generate_vertexes(chunk_vertexes):
+
+    vertexes = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
+
+    return vertexes
+
+
+def generate_blocks(chunk_data):
+
+    blocks_positions = []
+    for rel_pos, block in chunk_data.blocks.items():
+
+        block_position = (
+            chunk_data.position.x + rel_pos[0],
+            rel_pos[1],
+            chunk_data.position.z + rel_pos[2]
+        )
+
+        if block is not None:
+
+            blocks_positions.append(block_position)
+
+    return blocks_positions
 
 
 def generate_vbo(chunk_data):
@@ -58,24 +85,14 @@ def generate_vbo(chunk_data):
     chunk_vbo = graphics.VboData(chunk_data.chunk_id)
     glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
 
-    for rel_pos, block in chunk_data.blocks.items():
-
-        block_position = (
-            chunk_data.position.x + rel_pos[0],
-            rel_pos[1],
-            chunk_data.position.z + rel_pos[2]
-        )
-
-        if block is not None:
-
-            blocks_positions.append(block_position)
+    blocks_positions = generate_blocks(chunk_data)
 
     chunk_vertexes = []
     for position in blocks_positions:
 
         chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
 
-    vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
+    vertexes_GL = generate_vertexes(chunk_vertexes)
 
     chunk_vbo.vertexes_count = len(vertexes_GL)
 

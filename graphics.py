@@ -202,7 +202,7 @@ class GameWindow(pyglet.window.Window):
             sys.exit()
 
         # schedule tasks
-        pyglet.clock.schedule_interval(self.print_info, 2.0 / 1.0)
+        pyglet.clock.schedule_interval(self.print_info, 4.0 / 1.0)
         pyglet.clock.schedule_interval(self.less_frequent_tasks, 1.0 / 2.0)
         pyglet.clock.schedule_interval(self.update, 1.0 / 30.0)
 
