@@ -24,9 +24,69 @@ from OpenGL.GL import GL_LINE
 from OpenGL.GL import GL_FILL
 from OpenGL.GL import GL_POINTS
 
+import collections
+import multiprocessing as mp
+
 import graphics
 
 from decorators import print_time
+
+
+vbos_queue = collections.deque()
+
+
+def vbo_done(vbo_data):
+
+    vbos_queue.append(vbo_data)
+    print("vbo done")
+
+
+def generate_vbo(chunk_data):
+    """Generate VBO object.
+
+    Args:
+        chunk_data (Chunk): Chunk data.
+
+    Return:
+        VboData: VBO data object.
+    """
+
+    # print("Generating VBO...")
+
+    blocks_positions = []
+
+    chunk_vbo = graphics.VboData(chunk_data.chunk_id)
+    glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
+
+    for rel_pos, block in chunk_data.blocks.items():
+
+        block_position = (
+            chunk_data.position.x + rel_pos[0],
+            rel_pos[1],
+            chunk_data.position.z + rel_pos[2]
+        )
+
+        if block is not None:
+
+            blocks_positions.append(block_position)
+
+    chunk_vertexes = []
+    for position in blocks_positions:
+
+        chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
+
+    vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
+
+    chunk_vbo.vertexes_count = len(vertexes_GL)
+
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        len(vertexes_GL) * 4,
+        vertexes_GL,
+        GL_STATIC_DRAW)
+    glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+    return chunk_vbo
 
 
 class Renderer(object):
@@ -40,6 +100,8 @@ class Renderer(object):
 
         # VboData list for vertex buffer objects
         self.vbos = []
+
+        self.pool = mp.Pool(2)
 
     def print_info(self, point):
         """Development info method."""
@@ -106,8 +168,10 @@ class Renderer(object):
 
             else:
 
-                new_vbo = self.generate_vbo(chunk)
+                new_vbo = generate_vbo(chunk)
                 self.vbos.append(new_vbo)
+
+                # self.prepare_vbo(chunk)
 
     def vbo_exists(self, chunk_id):
         """Check VBO existence for the chunk ID.
@@ -127,54 +191,81 @@ class Renderer(object):
 
         return False
 
-    @staticmethod
-    @print_time
-    def generate_vbo(chunk_data):
-        """Generate VBO object.
+    # @staticmethod
+    # @print_time
+    # def generate_vbo(chunk_data):
+    #     """Generate VBO object.
+    #
+    #     Args:
+    #         chunk_data (Chunk): Chunk data.
+    #
+    #     Return:
+    #         VboData: VBO data object.
+    #     """
+    #
+    #     # print("Generating VBO...")
+    #
+    #     blocks_positions = []
+    #
+    #     chunk_vbo = graphics.VboData(chunk_data.chunk_id)
+    #     glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
+    #
+    #     for rel_pos, block in chunk_data.blocks.items():
+    #
+    #         block_position = (
+    #             chunk_data.position.x + rel_pos[0],
+    #             rel_pos[1],
+    #             chunk_data.position.z + rel_pos[2]
+    #         )
+    #
+    #         if block is not None:
+    #
+    #             blocks_positions.append(block_position)
+    #
+    #     chunk_vertexes = []
+    #     for position in blocks_positions:
+    #
+    #         chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
+    #
+    #     vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
+    #
+    #     chunk_vbo.vertexes_count = len(vertexes_GL)
+    #
+    #     glBufferData(
+    #         GL_ARRAY_BUFFER,
+    #         len(vertexes_GL) * 4,
+    #         vertexes_GL,
+    #         GL_STATIC_DRAW)
+    #     glBindBuffer(GL_ARRAY_BUFFER, 0)
+    #
+    #     return chunk_vbo
 
-        Args:
-            chunk_data (Chunk): Chunk data.
+    # @staticmethod
+    # def generate_vbo(chunk_data):
+    #
+    #     return generate_vbo(chunk_data)
 
-        Return:
-            VboData: VBO data object.
-        """
+    def prepare_vbo(self, chunk_data):
 
-        # print("Generating VBO...")
+        self.pool.apply_async(
+            generate_vbo, args=(chunk_data,), callback=vbo_done)
 
-        blocks_positions = []
+    def get_new_vbo(self):
 
-        chunk_vbo = graphics.VboData(chunk_data.chunk_id)
-        glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
+        if len(vbos_queue) > 0:
 
-        for rel_pos, block in chunk_data.blocks.items():
+            return vbos_queue.popleft()
 
-            block_position = (
-                chunk_data.position.x + rel_pos[0],
-                rel_pos[1],
-                chunk_data.position.z + rel_pos[2]
-            )
+    def check_new_vbo(self):
 
-            if block is not None:
+        new_vbo = self.get_new_vbo()
 
-                blocks_positions.append(block_position)
+        print(new_vbo)
 
-        chunk_vertexes = []
-        for position in blocks_positions:
+        if new_vbo:
 
-            chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
-
-        vertexes_GL = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
-
-        chunk_vbo.vertexes_count = len(vertexes_GL)
-
-        glBufferData(
-            GL_ARRAY_BUFFER,
-            len(vertexes_GL) * 4,
-            vertexes_GL,
-            GL_STATIC_DRAW)
-        glBindBuffer(GL_ARRAY_BUFFER, 0)
-
-        return chunk_vbo
+            self.vbos.append(new_vbo)
+            print(len(self.vbos))
 
     def prepare_world(self):
         """Fill buffer objects with data."""
@@ -217,7 +308,7 @@ class Renderer(object):
             #     GL_STATIC_DRAW)
             # glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-            chunk_vbo = self.generate_vbo(chunk)
+            chunk_vbo = generate_vbo(chunk)
 
             self.vbos.append(chunk_vbo)
 
