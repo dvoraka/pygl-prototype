@@ -1,6 +1,7 @@
 *.py[co]
 *.prof
 *.swp
+.coverage
 
 *.png
 !imgs/*.png
