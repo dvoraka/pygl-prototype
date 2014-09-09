@@ -37,6 +37,7 @@ vbos_queue = collections.deque()
 
 
 def vbo_done(vbo_data):
+    """Testing callback."""
 
     vbos_queue.append(vbo_data)
     print("vbo done")
@@ -44,6 +45,11 @@ def vbo_done(vbo_data):
 
 @print_time
 def generate_vertexes(chunk_vertexes):
+    """Generate vertex data.
+
+    Args:
+        chunk_vertexes (list): vertexes of chunk
+    """
 
     vertexes = (GLfloat * len(chunk_vertexes))(*chunk_vertexes)
 
@@ -51,6 +57,11 @@ def generate_vertexes(chunk_vertexes):
 
 
 def generate_vbo_blocks(chunk_data):
+    """Generate blocks data.
+
+    Args:
+        chunk_data (Chunk): chunk data
+    """
 
     blocks_positions = []
     for rel_pos, block in chunk_data.blocks.items():
@@ -72,10 +83,10 @@ def generate_vbo(chunk_data):
     """Generate VBO object.
 
     Args:
-        chunk_data (Chunk): Chunk data.
+        chunk_data (Chunk): chunk data
 
     Return:
-        VboData: VBO data object.
+        VboData: VBO data object
     """
 
     # print("Generating VBO...")
