@@ -38,6 +38,14 @@ from decorators import print_time
 
 vbos_queue = collections.deque()
 
+# {'uid': list}
+is_done = {}
+
+#TODO: define structures for object parts
+# queue1
+# queue2
+# ...
+
 
 def vbo_done(vbo_data):
     """Testing callback."""
@@ -46,15 +54,17 @@ def vbo_done(vbo_data):
     print("vbo done")
 
 
-def vbo_ready():
-    """Check queue for new VBOs and send them to another queue."""
+def add_vbo(vbo):
+    """Add new VBO to queue/list."""
 
+    # add vbo to vbos_queue
     pass
 
 
 def build_vbo():
     """Build final VBO object."""
 
+    # call add_vbo with result
     pass
 
 
