@@ -33,6 +33,9 @@ import graphics
 from decorators import print_time
 
 
+### multiprocessing infrastructure
+####################################
+
 vbos_queue = collections.deque()
 
 
@@ -41,6 +44,24 @@ def vbo_done(vbo_data):
 
     vbos_queue.append(vbo_data)
     print("vbo done")
+
+
+def vbo_ready():
+    """Check queue for new VBOs and send them to another queue."""
+
+    pass
+
+
+def build_vbo():
+    """Build final VBO object."""
+
+    pass
+
+
+def generate_vbo_async(chunk_data):
+    """Asynchronous variant for VBO generation."""
+
+    pass
 
 
 @print_time
@@ -77,6 +98,9 @@ def generate_vbo_blocks(chunk_data):
             blocks_positions.append(block_position)
 
     return blocks_positions
+
+###### MP end
+######################################
 
 
 def generate_vbo(chunk_data):
