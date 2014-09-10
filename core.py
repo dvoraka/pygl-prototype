@@ -153,9 +153,17 @@ class VboCreator(object):
 
         self.orig_list = vbo_list
 
+        self.active_tasks = []
+        self.pool = mp.Pool(4)
+
     def create(self, chunk_data):
 
-        pass
+        if chunk_data.chunk_id in self.active_tasks:
+
+            print("task already exists")
+            return
+
+        self.active_tasks.append(chunk_data.chunk_id)
 
 
 class Renderer(object):
