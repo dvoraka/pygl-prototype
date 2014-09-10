@@ -27,11 +27,14 @@ from OpenGL.GL import GL_POINTS
 import collections
 import multiprocessing as mp
 import time
+import logging
 
 import graphics
 
 from decorators import print_time
 
+
+log = logging.getLogger(__name__)
 
 ### multiprocessing infrastructure
 ####################################
@@ -171,6 +174,8 @@ class Renderer(object):
 
     def __init__(self, world):
 
+        log.debug("Renderer initializing...")
+
         self.world = world
         self.visibility = 17
         self.chunk_gen_distance = self.visibility * 1.1
@@ -179,6 +184,8 @@ class Renderer(object):
         self.vbos = []
 
         self.pool = mp.Pool(2)
+
+        log.debug("Renderer initialized.")
 
     def print_info(self, point):
         """Development info method."""
