@@ -77,6 +77,13 @@ def generate_vbo_async(chunk_data):
     pass
 
 
+def long_func(uid):
+
+    time.sleep(5)
+
+    return (uid, "DATA")
+
+
 @print_time
 def generate_vertexes(chunk_vertexes):
     """Generate vertex data.
@@ -157,8 +164,9 @@ class VboCreator(object):
         self.orig_list = vbo_list
 
         self.active_tasks = []
-        self.pool = mp.Pool(4)
+        self.pool = mp.Pool(10)
 
+    @print_time
     def create(self, chunk_data):
 
         if chunk_data.chunk_id in self.active_tasks:
@@ -167,6 +175,22 @@ class VboCreator(object):
             return
 
         self.active_tasks.append(chunk_data.chunk_id)
+
+        # start three long tasks
+        self.pool.apply_async(long_func, args=("id1",), callback=self.test_done1)
+        self.pool.apply_async(long_func, args=("id2",), callback=self.test_done2)
+        self.pool.apply_async(long_func, args=("id3",), callback=self.test_done1)
+
+        self.pool.close()
+        self.pool.join()
+
+    def test_done1(self, arg):
+
+        print("done1: {}".format(arg))
+
+    def test_done2(self, arg):
+
+        print("done2: {}".format(arg))
 
 
 class Renderer(object):
