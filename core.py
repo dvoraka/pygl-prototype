@@ -123,13 +123,9 @@ def generate_vbo(chunk_data):
         VboData: VBO data object
     """
 
-    # print("Generating VBO...")
-
     chunk_vbo = graphics.VboData(chunk_data.chunk_id)
-    glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
 
     blocks_positions = generate_vbo_blocks(chunk_data)
-
     chunk_vertexes = []
     for position in blocks_positions:
 
@@ -139,6 +135,7 @@ def generate_vbo(chunk_data):
 
     chunk_vbo.vertexes_count = len(vertexes_GL)
 
+    glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
     glBufferData(
         GL_ARRAY_BUFFER,
         len(vertexes_GL) * 4,
@@ -147,6 +144,18 @@ def generate_vbo(chunk_data):
     glBindBuffer(GL_ARRAY_BUFFER, 0)
 
     return chunk_vbo
+
+
+class VboCreator(object):
+    """Create VBO data object."""
+
+    def __init__(self, vbo_list):
+
+        self.orig_list = vbo_list
+
+    def create(self, chunk_data):
+
+        pass
 
 
 class Renderer(object):
