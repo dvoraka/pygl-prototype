@@ -39,29 +39,6 @@ log = logging.getLogger(__name__)
 ### multiprocessing infrastructure
 ####################################
 
-vbos_queue = collections.deque()
-
-
-def add_vbo(vbo):
-    """Add new VBO to queue/list."""
-
-    # add vbo to vbos_queue
-    pass
-
-
-def build_vbo():
-    """Build final VBO object."""
-
-    # call add_vbo with result
-    pass
-
-
-def generate_vbo_async(chunk_data):
-    """Asynchronous variant for VBO generation."""
-
-    pass
-
-
 def long_func(uid):
 
     time.sleep(5)
@@ -168,9 +145,6 @@ class VboCreator(object):
         self.pool.apply_async(
             long_func, args=(chunk_data.chunk_id,), callback=self.positions_done)
 
-        self.pool.close()
-        self.pool.join()
-
         for vbo in self.prepared_vbos:
 
             self.orig_list.append(self.prepared_vbos[vbo])
@@ -198,6 +172,11 @@ class VboCreator(object):
 
         self.active_tasks.remove(uid)
         self.orig_list.append(chunk_vbo)
+
+    def wait_for_procs(self):
+
+        self.pool.close()
+        self.pool.join()
 
     def test_done1(self, arg):
 
