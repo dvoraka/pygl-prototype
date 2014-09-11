@@ -165,10 +165,39 @@ class VboCreator(object):
         # start three long tasks
         self.pool.apply_async(long_func, args=("id1",), callback=self.test_done1)
         self.pool.apply_async(long_func, args=("id2",), callback=self.test_done2)
-        self.pool.apply_async(long_func, args=("id3",), callback=self.test_done1)
+        self.pool.apply_async(
+            long_func, args=(chunk_data.chunk_id,), callback=self.positions_done)
 
         self.pool.close()
         self.pool.join()
+
+        for vbo in self.prepared_vbos:
+
+            self.orig_list.append(self.prepared_vbos[vbo])
+
+    def build_vbo(self, uid, positions):
+
+        # blocks_positions = positions
+        # chunk_vertexes = []
+        # for position in blocks_positions:
+        #
+        #     chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
+        #
+        # vertexes_GL = generate_vertexes(chunk_vertexes)
+        #
+        chunk_vbo = graphics.VboData(uid)
+        # chunk_vbo.vertexes_count = len(vertexes_GL)
+        #
+        # glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
+        # glBufferData(
+        #     GL_ARRAY_BUFFER,
+        #     len(vertexes_GL) * 4,
+        #     vertexes_GL,
+        #     GL_STATIC_DRAW)
+        # glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+        self.active_tasks.remove(uid)
+        self.orig_list.append(chunk_vbo)
 
     def test_done1(self, arg):
 
@@ -177,6 +206,10 @@ class VboCreator(object):
     def test_done2(self, arg):
 
         print("done2: {}".format(arg))
+
+    def positions_done(self, arg):
+
+        self.build_vbo(arg[0], arg[1])
 
 
 class Renderer(object):

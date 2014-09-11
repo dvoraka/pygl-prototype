@@ -12,3 +12,5 @@ vbo_creator = core.VboCreator(vbos)
 
 chunk = data.NormalChunk(data.Point(0, 0, 0))
 vbo_creator.create(chunk)
+
+print(vbos)
