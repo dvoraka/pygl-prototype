@@ -41,21 +41,6 @@ log = logging.getLogger(__name__)
 
 vbos_queue = collections.deque()
 
-# {'uid': list}
-is_done = {}
-
-#TODO: define structures for object parts
-# queue1
-# queue2
-# ...
-
-
-def vbo_done(vbo_data):
-    """Testing callback."""
-
-    vbos_queue.append(vbo_data)
-    print("vbo done")
-
 
 def add_vbo(vbo):
     """Add new VBO to queue/list."""
@@ -133,8 +118,6 @@ def generate_vbo(chunk_data):
         VboData: VBO data object
     """
 
-    chunk_vbo = graphics.VboData(chunk_data.chunk_id)
-
     blocks_positions = generate_vbo_blocks(chunk_data)
     chunk_vertexes = []
     for position in blocks_positions:
@@ -143,6 +126,7 @@ def generate_vbo(chunk_data):
 
     vertexes_GL = generate_vertexes(chunk_vertexes)
 
+    chunk_vbo = graphics.VboData(chunk_data.chunk_id)
     chunk_vbo.vertexes_count = len(vertexes_GL)
 
     glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
@@ -164,6 +148,8 @@ class VboCreator(object):
         self.orig_list = vbo_list
 
         self.active_tasks = []
+        self.prepared_vbos = {}
+
         self.pool = mp.Pool(10)
 
     @print_time
@@ -353,27 +339,27 @@ class Renderer(object):
     #
     #     return generate_vbo(chunk_data)
 
-    def prepare_vbo(self, chunk_data):
+    # def prepare_vbo(self, chunk_data):
+    #
+    #     self.pool.apply_async(
+    #         generate_vbo, args=(chunk_data,), callback=vbo_done)
+    #
+    # def get_new_vbo(self):
+    #
+    #     if len(vbos_queue) > 0:
+    #
+    #         return vbos_queue.popleft()
 
-        self.pool.apply_async(
-            generate_vbo, args=(chunk_data,), callback=vbo_done)
-
-    def get_new_vbo(self):
-
-        if len(vbos_queue) > 0:
-
-            return vbos_queue.popleft()
-
-    def check_new_vbo(self):
-
-        new_vbo = self.get_new_vbo()
-
-        print(new_vbo)
-
-        if new_vbo:
-
-            self.vbos.append(new_vbo)
-            print(len(self.vbos))
+    # def check_new_vbo(self):
+    #
+    #     new_vbo = self.get_new_vbo()
+    #
+    #     print(new_vbo)
+    #
+    #     if new_vbo:
+    #
+    #         self.vbos.append(new_vbo)
+    #         print(len(self.vbos))
 
     def prepare_world(self):
         """Fill buffer objects with data."""
