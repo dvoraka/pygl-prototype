@@ -28,10 +28,12 @@ import collections
 import multiprocessing as mp
 import time
 import logging
+import os
 
 import graphics
 
 from decorators import print_time
+from decorators import print_pid
 
 
 log = logging.getLogger(__name__)
@@ -39,8 +41,11 @@ log = logging.getLogger(__name__)
 ### multiprocessing infrastructure
 ####################################
 
+
 def long_func(uid):
 
+    print("{}, PID: {} ({})".format(
+        "long_func", os.getpid(), os.getppid()))
     time.sleep(5)
 
     return (uid, "DATA")
@@ -129,7 +134,7 @@ class VboCreator(object):
 
         self.pool = mp.Pool(10)
 
-    @print_time
+    @print_pid
     def create(self, chunk_data):
 
         if chunk_data.chunk_id in self.active_tasks:
@@ -186,6 +191,7 @@ class VboCreator(object):
 
         print("done2: {}".format(arg))
 
+    @print_pid
     def positions_done(self, arg):
 
         self.build_vbo(arg[0], arg[1])
