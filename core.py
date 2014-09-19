@@ -29,6 +29,7 @@ import multiprocessing as mp
 import time
 import logging
 import os
+import pprint
 
 import graphics
 
@@ -51,7 +52,7 @@ def long_func(uid):
     return (uid, "DATA")
 
 
-@print_time
+# @print_time
 def generate_vertexes(chunk_vertexes):
     """Generate vertex data.
 
@@ -64,6 +65,7 @@ def generate_vertexes(chunk_vertexes):
     return vertexes
 
 
+@print_time
 def generate_vbo_blocks(chunk_data):
     """Generate blocks data.
 
@@ -132,7 +134,50 @@ class VboCreator(object):
         self.active_tasks = []
         self.prepared_vbos = {}
 
+        self.ready_vbos = []
+        self.vbo_parts = {
+            "vbo_id": {
+                "parts1": (1, 2,),
+                "parts2": ("a", "b", "d"),
+                "parts3": None,
+            },
+        }
+
         self.pool = mp.Pool(10)
+
+    def create_parts(self, vbo_id):
+
+        self.vbo_parts[vbo_id] = {
+            "vertexes": None
+        }
+
+    def add_parts(self, vbo_id, section, data):
+
+        self.vbo_parts[vbo_id][section] = data
+
+    def check_parts(self):
+
+        for key, value in self.vbo_parts.items():
+
+            all_parts = []
+            for part_name, data in value.items():
+
+                if data:
+
+                    # print("key: {}, parts: {}".format(key, data))
+                    all_parts.append(True)
+
+                else:
+
+                    # print("key: {}, parts: {}".format(key, data))
+                    all_parts.append(False)
+
+            if all(all_parts):
+
+                print("All: {}".format(key))
+                if key not in self.ready_vbos:
+
+                    self.ready_vbos.append(key)
 
     @print_pid
     def create(self, chunk_data):
@@ -143,6 +188,7 @@ class VboCreator(object):
             return
 
         self.active_tasks.append(chunk_data.chunk_id)
+        self.create_parts(chunk_data.chunk_id)
 
         # start three long tasks
         self.pool.apply_async(long_func, args=("id1",), callback=self.test_done1)
@@ -183,6 +229,9 @@ class VboCreator(object):
         self.pool.close()
         self.pool.join()
 
+        pprint.pprint(self.vbo_parts)
+        print(self.ready_vbos)
+
     def test_done1(self, arg):
 
         print("done1: {}".format(arg))
@@ -194,7 +243,9 @@ class VboCreator(object):
     @print_pid
     def positions_done(self, arg):
 
+        self.check_parts()
         self.build_vbo(arg[0], arg[1])
+        self.add_parts(arg[0], "vertexes", arg[1])
 
 
 class Renderer(object):
