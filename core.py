@@ -30,6 +30,7 @@ import time
 import logging
 import os
 import pprint
+import random
 
 import graphics
 
@@ -43,13 +44,15 @@ log = logging.getLogger(__name__)
 ####################################
 
 
-def long_func(uid):
+def long_func(chunk_data):
 
     print("{}, PID: {} ({})".format(
         "long_func", os.getpid(), os.getppid()))
-    time.sleep(5)
+    time.sleep(random.randint(2, 8))
 
-    return (uid, "DATA")
+    positions = generate_vbo_blocks(chunk_data)
+
+    return (chunk_data, positions)
 
 
 # @print_time
@@ -145,10 +148,24 @@ class VboCreator(object):
 
         self.pool = mp.Pool(10)
 
+    def add_task(self, chunk_id):
+
+        self.active_tasks.append(chunk_id)
+
+    def task_exists(self, chunk_id):
+
+        if chunk_id in self.active_tasks:
+
+            return True
+
+        else:
+
+            return False
+
     def create_parts(self, vbo_id):
 
         self.vbo_parts[vbo_id] = {
-            "vertexes": None
+            "positions": None
         }
 
     def add_parts(self, vbo_id, section, data):
@@ -182,32 +199,35 @@ class VboCreator(object):
     @print_pid
     def create(self, chunk_data):
 
-        if chunk_data.chunk_id in self.active_tasks:
+        chunk_id = chunk_data.chunk_id
+        if self.task_exists(chunk_id):
 
             print("task already exists")
             return
 
-        self.active_tasks.append(chunk_data.chunk_id)
-        self.create_parts(chunk_data.chunk_id)
+        self.add_task(chunk_id)
+        self.create_parts(chunk_id)
 
-        # start three long tasks
-        self.pool.apply_async(long_func, args=("id1",), callback=self.test_done1)
-        self.pool.apply_async(long_func, args=("id2",), callback=self.test_done2)
         self.pool.apply_async(
-            long_func, args=(chunk_data.chunk_id,), callback=self.positions_done)
+            long_func, args=(chunk_data,), callback=self.positions_done)
 
-        for vbo in self.prepared_vbos:
+        # for vbo in self.prepared_vbos:
+        #
+        #     self.orig_list.append(self.prepared_vbos[vbo])
 
-            self.orig_list.append(self.prepared_vbos[vbo])
+    def build_ready_vbos(self):
+
+        print(self.ready_vbos)
 
     def build_vbo(self, uid, positions):
 
-        # blocks_positions = positions
-        # chunk_vertexes = []
-        # for position in blocks_positions:
-        #
-        #     chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
-        #
+        blocks_positions = positions  # generate_vbo_blocks(chunk_data)
+        chunk_vertexes = []
+        for position in blocks_positions:
+
+            chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
+
+        print(len(chunk_vertexes))
         # vertexes_GL = generate_vertexes(chunk_vertexes)
         #
         chunk_vbo = graphics.VboData(uid)
@@ -229,7 +249,7 @@ class VboCreator(object):
         self.pool.close()
         self.pool.join()
 
-        pprint.pprint(self.vbo_parts)
+        # pprint.pprint(self.vbo_parts)
         print(self.ready_vbos)
 
     def test_done1(self, arg):
@@ -243,9 +263,10 @@ class VboCreator(object):
     @print_pid
     def positions_done(self, arg):
 
-        self.check_parts()
-        self.build_vbo(arg[0], arg[1])
-        self.add_parts(arg[0], "vertexes", arg[1])
+        # self.check_parts()
+        # self.build_vbo(arg[0].chunk_id, arg[1])
+
+        self.add_parts(arg[0].chunk_id, "positions", arg[1])
 
 
 class Renderer(object):
