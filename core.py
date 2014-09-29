@@ -48,7 +48,7 @@ def long_func(chunk_data):
 
     print("{}, PID: {} ({})".format(
         "long_func", os.getpid(), os.getppid()))
-    time.sleep(random.randint(2, 8))
+    time.sleep(random.randint(1, 9))
 
     positions = generate_vbo_blocks(chunk_data)
 
@@ -150,6 +150,7 @@ class VboCreator(object):
 
     def add_task(self, chunk_id):
 
+        print("New task: {}".format(chunk_id))
         self.active_tasks.append(chunk_id)
 
     def task_exists(self, chunk_id):
@@ -168,9 +169,17 @@ class VboCreator(object):
             "positions": None
         }
 
+    def delete_parts(self, vbo_id):
+
+        del self.vbo_parts[vbo_id]
+
     def add_parts(self, vbo_id, section, data):
 
         self.vbo_parts[vbo_id][section] = data
+
+    def add_ready_vbo(self, uid):
+
+        self.ready_vbos.append(uid)
 
     def check_parts(self):
 
@@ -191,10 +200,10 @@ class VboCreator(object):
 
             if all(all_parts):
 
-                print("All: {}".format(key))
+                # print("All: {}".format(key))
                 if key not in self.ready_vbos:
 
-                    self.ready_vbos.append(key)
+                    self.add_ready_vbo(key)
 
     @print_pid
     def create(self, chunk_data):
@@ -217,7 +226,15 @@ class VboCreator(object):
 
     def build_ready_vbos(self):
 
-        print(self.ready_vbos)
+        # pprint.pprint(self.ready_vbos)
+        # test solution (slow)
+        new_vbo = None
+        if len(self.ready_vbos) > 0:
+
+            new_vbo = self.ready_vbos.pop(0)
+
+            self.build_vbo(new_vbo, self.vbo_parts[new_vbo]["positions"])
+            self.delete_parts(new_vbo)
 
     def build_vbo(self, uid, positions):
 
@@ -227,9 +244,9 @@ class VboCreator(object):
 
             chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
 
-        print(len(chunk_vertexes))
-        # vertexes_GL = generate_vertexes(chunk_vertexes)
-        #
+        # print(len(chunk_vertexes))
+        vertexes_gl = generate_vertexes(chunk_vertexes)
+
         chunk_vbo = graphics.VboData(uid)
         # chunk_vbo.vertexes_count = len(vertexes_GL)
         #
@@ -241,6 +258,8 @@ class VboCreator(object):
         #     GL_STATIC_DRAW)
         # glBindBuffer(GL_ARRAY_BUFFER, 0)
 
+        print(self.active_tasks)
+        print(uid)
         self.active_tasks.remove(uid)
         self.orig_list.append(chunk_vbo)
 
@@ -250,7 +269,7 @@ class VboCreator(object):
         self.pool.join()
 
         # pprint.pprint(self.vbo_parts)
-        print(self.ready_vbos)
+        # print(self.ready_vbos)
 
     def test_done1(self, arg):
 
