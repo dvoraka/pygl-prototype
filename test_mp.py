@@ -9,16 +9,14 @@ import core
 import data
 
 
+test_size = 10
+
 vbos = []
 vbo_creator = core.VboCreator(vbos)
 
-chunk = data.NormalChunk(data.Point(0, 0, 0))
-chunk2 = data.NormalChunk(data.Point(0, 0, 0))
-chunk3 = data.NormalChunk(data.Point(0, 0, 0))
+for _ in range(test_size):
 
-vbo_creator.create(chunk)
-vbo_creator.create(chunk2)
-vbo_creator.create(chunk3)
+    vbo_creator.create(data.NormalChunk(data.Point(0, 0, 0)))
 
 for _ in range(10):
 
@@ -28,4 +26,6 @@ for _ in range(10):
 
 vbo_creator.wait_for_procs()
 
-print(vbos)
+print("Ready VBOs: {}".format(len(vbo_creator.ready_vbos)))
+
+# print(vbos)
