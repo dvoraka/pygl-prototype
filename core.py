@@ -184,6 +184,8 @@ class VboCreator(object):
 
     def check_parts(self):
 
+        print("Active tasks: {}".format(len(self.active_tasks)))
+
         for key, value in self.vbo_parts.items():
 
             all_parts = []
@@ -232,7 +234,7 @@ class VboCreator(object):
         new_vbo = None
         if len(self.ready_vbos) > 0:
 
-            new_vbo = self.ready_vbos.pop(0)
+            new_vbo = self.ready_vbos.pop()
 
             self.build_vbo(new_vbo, self.vbo_parts[new_vbo]["positions"])
             self.delete_parts(new_vbo)

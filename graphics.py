@@ -487,7 +487,7 @@ class GameWindow(pyglet.window.Window):
 
             cposition = self.camera.get_position_inverse_z()
             nchunks = self.renderer.world.find_nearest_chunks(cposition)
-            print(self.renderer.world.block_collision(cposition, nchunks))
+            # print(self.renderer.world.block_collision(cposition, nchunks))
 
         if self.scripter:
 
