@@ -145,7 +145,7 @@ class VboCreator(object):
             },
         }
 
-        self.pool = mp.Pool(8)
+        self.pool = mp.Pool(16)
 
     def add_task(self, chunk_id):
 
