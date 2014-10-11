@@ -46,9 +46,9 @@ log = logging.getLogger(__name__)
 
 def long_func(chunk_data):
 
-    print("{}, PID: {} ({})".format(
-        "long_func", os.getpid(), os.getppid()))
-    time.sleep(random.randint(1, 9))
+    # print("{}, PID: {} ({})".format(
+    #     "long_func", os.getpid(), os.getppid()))
+    # time.sleep(random.randint(1, 9))
 
     positions = generate_vbo_blocks(chunk_data)
 
@@ -68,7 +68,7 @@ def generate_vertexes(chunk_vertexes):
     return vertexes
 
 
-@print_time
+# @print_time
 def generate_vbo_blocks(chunk_data):
     """Generate blocks data.
 
@@ -111,16 +111,16 @@ def generate_vbo(chunk_data):
 
         chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
 
-    vertexes_GL = generate_vertexes(chunk_vertexes)
+    vertexes_gl = generate_vertexes(chunk_vertexes)
 
     chunk_vbo = graphics.VboData(chunk_data.chunk_id)
-    chunk_vbo.vertexes_count = len(vertexes_GL)
+    chunk_vbo.vertexes_count = len(vertexes_gl)
 
     glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
     glBufferData(
         GL_ARRAY_BUFFER,
-        len(vertexes_GL) * 4,
-        vertexes_GL,
+        len(vertexes_gl) * 4,
+        vertexes_gl,
         GL_STATIC_DRAW)
     glBindBuffer(GL_ARRAY_BUFFER, 0)
 
@@ -138,6 +138,7 @@ class VboCreator(object):
         self.prepared_vbos = {}
 
         self.ready_vbos = []
+
         self.vbo_parts = {
             "vbo_id": {
                 "parts1": (1, 2,),
@@ -146,11 +147,11 @@ class VboCreator(object):
             },
         }
 
-        self.pool = mp.Pool(10)
+        self.pool = mp.Pool(8)
 
     def add_task(self, chunk_id):
 
-        print("New task: {}".format(chunk_id))
+        # print("New task: {}".format(chunk_id))
         self.active_tasks.append(chunk_id)
 
     def task_exists(self, chunk_id):
@@ -205,13 +206,13 @@ class VboCreator(object):
 
                     self.add_ready_vbo(key)
 
-    @print_pid
+    # @print_pid
     def create(self, chunk_data):
 
         chunk_id = chunk_data.chunk_id
         if self.task_exists(chunk_id):
 
-            print("task already exists")
+            # print("task already exists")
             return
 
         self.add_task(chunk_id)
@@ -248,18 +249,18 @@ class VboCreator(object):
         vertexes_gl = generate_vertexes(chunk_vertexes)
 
         chunk_vbo = graphics.VboData(uid)
-        # chunk_vbo.vertexes_count = len(vertexes_GL)
-        #
-        # glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
-        # glBufferData(
-        #     GL_ARRAY_BUFFER,
-        #     len(vertexes_GL) * 4,
-        #     vertexes_GL,
-        #     GL_STATIC_DRAW)
-        # glBindBuffer(GL_ARRAY_BUFFER, 0)
+        chunk_vbo.vertexes_count = len(vertexes_gl)
 
-        print(self.active_tasks)
-        print(uid)
+        glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
+        glBufferData(
+            GL_ARRAY_BUFFER,
+            len(vertexes_gl) * 4,
+            vertexes_gl,
+            GL_STATIC_DRAW)
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+        # print(self.active_tasks)
+        # print(uid)
         self.active_tasks.remove(uid)
         self.orig_list.append(chunk_vbo)
 
@@ -279,7 +280,7 @@ class VboCreator(object):
 
         print("done2: {}".format(arg))
 
-    @print_pid
+    # @print_pid
     def positions_done(self, arg):
 
         # self.check_parts()
@@ -296,13 +297,15 @@ class Renderer(object):
         log.debug("Renderer initializing...")
 
         self.world = world
-        self.visibility = 17
-        self.chunk_gen_distance = self.visibility * 1.1
+        self.visibility = 18
+        self.chunk_gen_distance = self.visibility * 1.2
 
         # VboData list for vertex buffer objects
         self.vbos = []
 
-        self.pool = mp.Pool(2)
+        # self.pool = mp.Pool(2)
+
+        self.vbo_creator = VboCreator(self.vbos)
 
         log.debug("Renderer initialized.")
 
@@ -371,8 +374,13 @@ class Renderer(object):
 
             else:
 
-                new_vbo = generate_vbo(chunk)
-                self.vbos.append(new_vbo)
+                self.vbo_creator.create(chunk)
+
+                # self.vbo_creator.check_parts()
+                # self.vbo_creator.build_ready_vbos()
+
+                # new_vbo = generate_vbo(chunk)
+                # self.vbos.append(new_vbo)
 
                 # self.prepare_vbo(chunk)
 
