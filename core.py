@@ -133,6 +133,8 @@ class VboCreator(object):
         self.orig_list = vbo_list
 
         self.active_tasks = []
+        self.active_subtasks = {}
+
         self.prepared_vbos = {}
 
         self.ready_vbos = []
@@ -212,6 +214,7 @@ class VboCreator(object):
             return
 
         self.add_task(chunk_id)
+        # self.create_subtasks()
         self.create_parts(chunk_id)
 
         self.pool.apply_async(
