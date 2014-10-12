@@ -82,6 +82,7 @@ def vertexes_mp(chunk_id, positions):
 
     return chunk_id, vertexes
 
+
 def generate_vertexes(positions):
 
     vertexes = []
@@ -277,21 +278,19 @@ class VboCreator(object):
     def build_vbo(self, uid, positions):
 
         blocks_positions = positions  # generate_vbo_blocks(chunk_data)
-        chunk_vertexes = []
-        for position in blocks_positions:
 
-            chunk_vertexes.extend(graphics.GraphicBlock.get_vertexes(position))
+        chunk_vertexes = generate_vertexes(blocks_positions)
 
-        vertexes_gl = generate_gl_vertexes(chunk_vertexes)
+        gl_vertexes = generate_gl_vertexes(chunk_vertexes)
 
         chunk_vbo = graphics.VboData(uid)
-        chunk_vbo.vertexes_count = len(vertexes_gl)
+        chunk_vbo.vertexes_count = len(gl_vertexes)
 
         glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
         glBufferData(
             GL_ARRAY_BUFFER,
-            len(vertexes_gl) * 4,
-            vertexes_gl,
+            len(gl_vertexes) * 4,
+            gl_vertexes,
             GL_STATIC_DRAW)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
 
