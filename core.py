@@ -201,6 +201,7 @@ class VboCreator(object):
         self.active_subtasks[vbo_id] = {
             "positions": None,
             "vertexes": None,
+            #"gl_vertexes": None,
         }
 
     def set_subtask_state(self, vbo_id, subtask, state):
@@ -212,6 +213,7 @@ class VboCreator(object):
         self.vbo_parts[vbo_id] = {
             "positions": None,
             "vertexes": None,
+            #"gl_vertexes": None,
         }
 
     def delete_parts(self, vbo_id):
@@ -248,7 +250,20 @@ class VboCreator(object):
                         )
                         self.set_subtask_state(vbo_id, "vertexes", "running")
 
-                        continue
+                        # continue
+
+                    # elif (part_name == "vertexes"
+                    #         and not self.active_subtasks[vbo_id]["gl_vertexes"]):
+                    #
+                    #     vertexes = data
+                    #     self.pool.apply_async(
+                    #         gl_vertexes_mp,
+                    #         args=(vbo_id, vertexes),
+                    #         callback=self.gl_vertexes_done
+                    #     )
+                    #     self.set_subtask_state(vbo_id, "gl_vertexes", "running")
+
+                        # continue
 
                     all_parts.append(True)
                     # print(self.active_subtasks[vbo_id][part_name])
@@ -294,10 +309,11 @@ class VboCreator(object):
                 new_vbo,
                 self.vbo_parts[new_vbo]["positions"],
                 self.vbo_parts[new_vbo]["vertexes"],
+                #self.vbo_parts[new_vbo]["gl_vertexes"],
             )
             self.delete_parts(new_vbo)
 
-    def build_vbo(self, uid, positions, vertexes):
+    def build_vbo(self, uid, positions, vertexes):  #, gl_vertexes):
 
         blocks_positions = positions  # generate_vbo_blocks(chunk_data)
 
@@ -334,7 +350,7 @@ class VboCreator(object):
 
     def positions_done(self, arg):
 
-        # print("positions done")
+        print("positions done")
 
         chunk_data = arg[0]
 
@@ -343,12 +359,21 @@ class VboCreator(object):
 
     def vertexes_done(self, arg):
 
-        # print("vertexes done")
+        print("vertexes done")
 
         uid = arg[0]
 
         self.add_parts(uid, "vertexes", arg[1])
         self.set_subtask_state(uid, "vertexes", "done")
+
+    def gl_vertexes_done(self, arg):
+
+        print("gl_vertexes done")
+
+        uid = arg[0]
+
+        self.add_parts(uid, "gl_vertexes", arg[1])
+        self.set_subtask_state(uid, "gl_vertexes", "done")
 
 
 class Renderer(object):
