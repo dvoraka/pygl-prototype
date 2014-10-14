@@ -40,6 +40,8 @@ from decorators import print_pid
 
 log = logging.getLogger(__name__)
 
+mpl = mp.log_to_stderr(logging.DEBUG)
+
 ### multiprocessing infrastructure
 ####################################
 
@@ -179,7 +181,7 @@ class VboCreator(object):
             # },
         }
 
-        self.pool = mp.Pool(16)
+        self.pool = mp.Pool(2)
 
     def add_task(self, chunk_id):
 
