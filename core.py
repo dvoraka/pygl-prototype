@@ -24,6 +24,10 @@ from OpenGL.GL import GL_LINE
 from OpenGL.GL import GL_FILL
 from OpenGL.GL import GL_POINTS
 
+from multiprocessing.sharedctypes import RawArray
+from multiprocessing.sharedctypes import Array
+from ctypes import c_float
+
 import collections
 import multiprocessing as mp
 import time
@@ -45,6 +49,8 @@ mpl = mp.log_to_stderr(logging.DEBUG)
 ### multiprocessing infrastructure
 ####################################
 
+shared_array = RawArray(c_float, 10)
+
 
 def long_func(chunk_data):
 
@@ -60,9 +66,17 @@ def long_func(chunk_data):
 def gl_vertexes_mp(chunk_id, chunk_vertexes):
     """MP wrapper."""
 
-    gl_vertexes = generate_gl_vertexes(chunk_vertexes)
+    # gl_vertexes = generate_gl_vertexes(chunk_vertexes)
+    print("Array: {}".format(shared_array))
 
-    return chunk_id, gl_vertexes
+    index = 0
+    for value in chunk_vertexes:
+
+        shared_array[index] = value
+
+        index += 1
+
+    return chunk_id
 
 
 def generate_gl_vertexes(chunk_vertexes):
@@ -182,6 +196,14 @@ class VboCreator(object):
         }
 
         self.pool = mp.Pool(2)
+
+        # print("last: {}".format(shared_array[-1]))
+        # test_vertexes = [x for x in range(10)]
+        # self.pool.apply_async(
+        #     gl_vertexes_mp,
+        #     args=("uid1", test_vertexes,),
+        #     callback=self.gl_vertexes_done,
+        # )
 
     def add_task(self, chunk_id):
 
@@ -372,10 +394,13 @@ class VboCreator(object):
 
         print("gl_vertexes done")
 
-        uid = arg[0]
+        print("new last: {}".format(shared_array[-1]))
 
-        self.add_parts(uid, "gl_vertexes", arg[1])
-        self.set_subtask_state(uid, "gl_vertexes", "done")
+
+        # uid = arg[0]
+        #
+        # self.add_parts(uid, "gl_vertexes", arg[1])
+        # self.set_subtask_state(uid, "gl_vertexes", "done")
 
 
 class Renderer(object):
