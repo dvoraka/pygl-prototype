@@ -24,6 +24,7 @@ from OpenGL.GL import GL_LINE
 from OpenGL.GL import GL_FILL
 from OpenGL.GL import GL_POINTS
 
+from multiprocessing import Lock
 from multiprocessing.sharedctypes import RawArray
 from multiprocessing.sharedctypes import Array
 from ctypes import c_float
@@ -44,12 +45,14 @@ from decorators import print_pid
 
 log = logging.getLogger(__name__)
 
-mpl = mp.log_to_stderr(logging.DEBUG)
+# mpl = mp.log_to_stderr(logging.DEBUG)
 
 ### multiprocessing infrastructure
 ####################################
 
-shared_array = RawArray(c_float, 10)
+lock = Lock()
+size = 250000
+shared_array = Array(c_float, size, lock=lock)
 
 
 def long_func(chunk_data):
@@ -67,7 +70,7 @@ def gl_vertexes_mp(chunk_id, chunk_vertexes):
     """MP wrapper."""
 
     # gl_vertexes = generate_gl_vertexes(chunk_vertexes)
-    print("Array: {}".format(shared_array))
+    # print("Array: {}".format(shared_array))
 
     index = 0
     for value in chunk_vertexes:
@@ -225,7 +228,7 @@ class VboCreator(object):
         self.active_subtasks[vbo_id] = {
             "positions": None,
             "vertexes": None,
-            #"gl_vertexes": None,
+            "gl_vertexes": None,
         }
 
     def set_subtask_state(self, vbo_id, subtask, state):
@@ -237,7 +240,7 @@ class VboCreator(object):
         self.vbo_parts[vbo_id] = {
             "positions": None,
             "vertexes": None,
-            #"gl_vertexes": None,
+            "gl_vertexes": None,
         }
 
     def delete_parts(self, vbo_id):
@@ -274,28 +277,30 @@ class VboCreator(object):
                         )
                         self.set_subtask_state(vbo_id, "vertexes", "running")
 
-                        # continue
+                        all_parts.append(False)
 
-                    # elif (part_name == "vertexes"
-                    #         and not self.active_subtasks[vbo_id]["gl_vertexes"]):
-                    #
-                    #     vertexes = data
-                    #     self.pool.apply_async(
-                    #         gl_vertexes_mp,
-                    #         args=(vbo_id, vertexes),
-                    #         callback=self.gl_vertexes_done
-                    #     )
-                    #     self.set_subtask_state(vbo_id, "gl_vertexes", "running")
+                    elif (part_name == "vertexes"
+                            and not self.active_subtasks[vbo_id]["gl_vertexes"]):
 
-                        # continue
+                        vertexes = data
+                        self.pool.apply_async(
+                            gl_vertexes_mp,
+                            args=(vbo_id, vertexes),
+                            callback=self.gl_vertexes_done
+                        )
+                        self.set_subtask_state(vbo_id, "gl_vertexes", "running")
 
-                    all_parts.append(True)
-                    # print(self.active_subtasks[vbo_id][part_name])
+                        all_parts.append(False)
+
+                    else:
+
+                        all_parts.append(True)
 
                 else:
 
                     all_parts.append(False)
 
+            # print(all_parts)
             if all(all_parts):
 
                 if vbo_id not in self.ready_vbos:
@@ -333,7 +338,6 @@ class VboCreator(object):
                 new_vbo,
                 self.vbo_parts[new_vbo]["positions"],
                 self.vbo_parts[new_vbo]["vertexes"],
-                #self.vbo_parts[new_vbo]["gl_vertexes"],
             )
             self.delete_parts(new_vbo)
 
@@ -343,7 +347,7 @@ class VboCreator(object):
 
         chunk_vertexes = vertexes  # generate_vertexes(blocks_positions)
 
-        gl_vertexes = generate_gl_vertexes(chunk_vertexes)
+        gl_vertexes = shared_array.get_obj()  # generate_gl_vertexes(chunk_vertexes)
 
         chunk_vbo = graphics.VboData(uid)
         chunk_vbo.vertexes_count = len(gl_vertexes)
@@ -394,13 +398,10 @@ class VboCreator(object):
 
         print("gl_vertexes done")
 
-        print("new last: {}".format(shared_array[-1]))
+        uid = arg
 
-
-        # uid = arg[0]
-        #
-        # self.add_parts(uid, "gl_vertexes", arg[1])
-        # self.set_subtask_state(uid, "gl_vertexes", "done")
+        self.add_parts(uid, "gl_vertexes", "shared")
+        self.set_subtask_state(uid, "gl_vertexes", "done")
 
 
 class Renderer(object):
