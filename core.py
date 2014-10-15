@@ -25,8 +25,10 @@ from OpenGL.GL import GL_FILL
 from OpenGL.GL import GL_POINTS
 
 from multiprocessing import Lock
+from multiprocessing import RLock
 from multiprocessing.sharedctypes import RawArray
 from multiprocessing.sharedctypes import Array
+from multiprocessing.sharedctypes import copy
 from ctypes import c_float
 
 import collections
@@ -45,7 +47,7 @@ from decorators import print_pid
 
 log = logging.getLogger(__name__)
 
-# mpl = mp.log_to_stderr(logging.DEBUG)
+mpl = mp.log_to_stderr(5)
 
 ### multiprocessing infrastructure
 ####################################
@@ -69,8 +71,12 @@ def long_func(chunk_data):
 def gl_vertexes_mp(chunk_id, chunk_vertexes):
     """MP wrapper."""
 
-    # gl_vertexes = generate_gl_vertexes(chunk_vertexes)
     # print("Array: {}".format(shared_array))
+
+    # print(shared_array.get_lock().acquire())
+    print(shared_array.get_lock())
+    print(mp.current_process())
+    # print("acquire")
 
     index = 0
     for value in chunk_vertexes:
@@ -78,6 +84,8 @@ def gl_vertexes_mp(chunk_id, chunk_vertexes):
         shared_array[index] = value
 
         index += 1
+
+    print("after write")
 
     return chunk_id
 
@@ -338,16 +346,17 @@ class VboCreator(object):
                 new_vbo,
                 self.vbo_parts[new_vbo]["positions"],
                 self.vbo_parts[new_vbo]["vertexes"],
+                self.vbo_parts[new_vbo]["gl_vertexes"],
             )
             self.delete_parts(new_vbo)
 
-    def build_vbo(self, uid, positions, vertexes):  #, gl_vertexes):
+    def build_vbo(self, uid, positions, vertexes, gl_vertexes):
 
         blocks_positions = positions  # generate_vbo_blocks(chunk_data)
 
         chunk_vertexes = vertexes  # generate_vertexes(blocks_positions)
 
-        gl_vertexes = shared_array.get_obj()  # generate_gl_vertexes(chunk_vertexes)
+        gl_vertexes = gl_vertexes  # shared_array.get_obj()  # generate_gl_vertexes(chunk_vertexes)
 
         chunk_vbo = graphics.VboData(uid)
         chunk_vbo.vertexes_count = len(gl_vertexes)
@@ -355,7 +364,7 @@ class VboCreator(object):
         glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
         glBufferData(
             GL_ARRAY_BUFFER,
-            len(gl_vertexes) * 4,
+            len(chunk_vertexes) * 4,
             gl_vertexes,
             GL_STATIC_DRAW)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
@@ -400,7 +409,11 @@ class VboCreator(object):
 
         uid = arg
 
-        self.add_parts(uid, "gl_vertexes", "shared")
+        c_array = copy(shared_array.get_obj())
+
+        # shared_array.get_lock().release()
+
+        self.add_parts(uid, "gl_vertexes", c_array)
         self.set_subtask_state(uid, "gl_vertexes", "done")
 
 
