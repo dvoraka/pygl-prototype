@@ -194,7 +194,7 @@ class VboCreator(object):
 
         self.prepared_vbos = {}
 
-        self.ready_vbos = []
+        self.ready_vbos = collections.deque()
 
         self.vbo_parts = {
             # "vbo_id": {
@@ -205,14 +205,6 @@ class VboCreator(object):
         }
 
         self.pool = mp.Pool(4)
-
-        # print("last: {}".format(shared_array[-1]))
-        # test_vertexes = [x for x in range(10)]
-        # self.pool.apply_async(
-        #     gl_vertexes_mp,
-        #     args=("uid1", test_vertexes,),
-        #     callback=self.gl_vertexes_done,
-        # )
 
     def add_task(self, chunk_id):
 
@@ -334,11 +326,10 @@ class VboCreator(object):
 
     def build_ready_vbos(self):
 
-        # test solution (slow)
         new_vbo = None
         if len(self.ready_vbos) > 0:
 
-            new_vbo = self.ready_vbos.pop(0)
+            new_vbo = self.ready_vbos.popleft()
 
             self.build_vbo(
                 new_vbo,
@@ -346,6 +337,7 @@ class VboCreator(object):
                 self.vbo_parts[new_vbo]["vertexes"],
                 self.vbo_parts[new_vbo]["gl_vertexes"],
             )
+
             self.delete_parts(new_vbo)
 
     def build_vbo(self, uid, positions, vertexes, gl_vertexes):
