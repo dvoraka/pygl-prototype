@@ -356,7 +356,7 @@ class VboCreator(object):
 
         chunk_vertexes = vertexes  # generate_vertexes(blocks_positions)
 
-        gl_vertexes = gl_vertexes  # shared_array.get_obj()  # generate_gl_vertexes(chunk_vertexes)
+        gl_vertexes = generate_gl_vertexes(chunk_vertexes)  # gl_vertexes  # shared_array.get_obj()  # generate_gl_vertexes(chunk_vertexes)
 
         chunk_vbo = graphics.VboData(uid)
         chunk_vbo.vertexes_count = len(gl_vertexes)
