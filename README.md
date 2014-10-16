@@ -9,6 +9,7 @@ Game engine prototype using Python, PyOpenGL, Pyglet and NumPy. It is mainly a s
 * dynamic rendering distance
 * dynamic world generation
 * simple scripting
+* asynchronous data generation
 
 
 ### Dependencies
