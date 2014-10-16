@@ -47,7 +47,7 @@ from decorators import print_pid
 
 log = logging.getLogger(__name__)
 
-mpl = mp.log_to_stderr(5)
+# mpl = mp.log_to_stderr(5)
 
 ### multiprocessing infrastructure
 ####################################
@@ -71,21 +71,19 @@ def long_func(chunk_data):
 def gl_vertexes_mp(chunk_id, chunk_vertexes):
     """MP wrapper."""
 
-    # print("Array: {}".format(shared_array))
+    shared_array.get_lock().acquire()
+    # print(mp.current_process())
 
-    # print(shared_array.get_lock().acquire())
-    print(shared_array.get_lock())
-    print(mp.current_process())
-    # print("acquire")
+    raw_array = shared_array.get_obj()
 
     index = 0
     for value in chunk_vertexes:
 
-        shared_array[index] = value
+        raw_array[index] = value
 
         index += 1
 
-    print("after write")
+    # print("after write")
 
     return chunk_id
 
@@ -206,7 +204,7 @@ class VboCreator(object):
             # },
         }
 
-        self.pool = mp.Pool(2)
+        self.pool = mp.Pool(4)
 
         # print("last: {}".format(shared_array[-1]))
         # test_vertexes = [x for x in range(10)]
@@ -356,7 +354,7 @@ class VboCreator(object):
 
         chunk_vertexes = vertexes  # generate_vertexes(blocks_positions)
 
-        gl_vertexes = generate_gl_vertexes(chunk_vertexes)  # gl_vertexes  # shared_array.get_obj()  # generate_gl_vertexes(chunk_vertexes)
+        gl_vertexes = gl_vertexes
 
         chunk_vbo = graphics.VboData(uid)
         chunk_vbo.vertexes_count = len(gl_vertexes)
@@ -411,7 +409,7 @@ class VboCreator(object):
 
         c_array = copy(shared_array.get_obj())
 
-        # shared_array.get_lock().release()
+        shared_array.get_lock().release()
 
         self.add_parts(uid, "gl_vertexes", c_array)
         self.set_subtask_state(uid, "gl_vertexes", "done")
