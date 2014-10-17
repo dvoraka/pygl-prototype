@@ -8,6 +8,8 @@ import uuid
 
 from math import sqrt
 
+from decorators import print_time
+
 
 class Point(object):
     """Store data for point in 3D space.
@@ -140,6 +142,7 @@ class Chunk(object):
 
         return self.centre
 
+    @print_time
     def generate_chunk(self):
         """Generate chunk data.
 
