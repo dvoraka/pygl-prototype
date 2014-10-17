@@ -407,6 +407,12 @@ class VboCreator(object):
         self.add_parts(uid, "gl_vertexes", c_array)
         self.set_subtask_state(uid, "gl_vertexes", "done")
 
+    def update(self):
+
+        self.check_parts()
+
+        self.build_ready_vbos()
+
 
 class Renderer(object):
     """Render world."""
@@ -495,13 +501,7 @@ class Renderer(object):
 
                 self.vbo_creator.create(chunk)
 
-                # self.vbo_creator.check_parts()
-                # self.vbo_creator.build_ready_vbos()
-
-                # new_vbo = generate_vbo(chunk)
-                # self.vbos.append(new_vbo)
-
-                # self.prepare_vbo(chunk)
+        self.vbo_creator.update()
 
     def vbo_exists(self, chunk_id):
         """Check VBO existence for the chunk ID.

@@ -461,8 +461,6 @@ class GameWindow(pyglet.window.Window):
                 self.camera.get_position_inverse_z())
             self.renderer.set_visibility()
 
-            self.renderer.vbo_creator.build_ready_vbos()
-
         elif self.long_tasks_counter % self.long_tasks == 1:
 
             self.renderer.prepare_new_chunks(
@@ -471,10 +469,6 @@ class GameWindow(pyglet.window.Window):
         elif self.long_tasks_counter % self.long_tasks == 2:
 
             self.renderer.create_vbos()
-
-            self.renderer.vbo_creator.build_ready_vbos()
-
-            self.renderer.vbo_creator.check_parts()
 
         self.long_tasks_counter += 1
 
