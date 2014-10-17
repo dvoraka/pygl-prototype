@@ -204,7 +204,7 @@ class VboCreator(object):
             # },
         }
 
-        self.pool = mp.Pool(4)
+        self.pool = mp.Pool(2)
 
     def add_task(self, chunk_id):
 
@@ -332,7 +332,6 @@ class VboCreator(object):
 
             self.build_vbo(
                 new_vbo,
-                self.vbo_parts[new_vbo]["positions"],
                 self.vbo_parts[new_vbo]["vertexes"],
                 self.vbo_parts[new_vbo]["gl_vertexes"],
             )
@@ -341,21 +340,20 @@ class VboCreator(object):
 
             print("Vbo task done.")
 
-    def build_vbo(self, uid, positions, vertexes, gl_vertexes):
+    def build_vbo(self, uid, vertexes, gl_vertexes):
 
-        blocks_positions = positions  # generate_vbo_blocks(chunk_data)
-
-        chunk_vertexes = vertexes  # generate_vertexes(blocks_positions)
-
+        chunk_vertexes = vertexes
         gl_vertexes = gl_vertexes
 
+        vertexes_count = len(chunk_vertexes)
+
         chunk_vbo = graphics.VboData(uid)
-        chunk_vbo.vertexes_count = len(gl_vertexes)
+        chunk_vbo.vertexes_count = vertexes_count
 
         glBindBuffer(GL_ARRAY_BUFFER, chunk_vbo.name)
         glBufferData(
             GL_ARRAY_BUFFER,
-            len(chunk_vertexes) * 4,
+            vertexes_count * 4,
             gl_vertexes,
             GL_STATIC_DRAW)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
