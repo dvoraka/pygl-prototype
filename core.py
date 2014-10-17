@@ -25,8 +25,6 @@ from OpenGL.GL import GL_FILL
 from OpenGL.GL import GL_POINTS
 
 from multiprocessing import Lock
-from multiprocessing import RLock
-from multiprocessing.sharedctypes import RawArray
 from multiprocessing.sharedctypes import Array
 from multiprocessing.sharedctypes import copy
 from ctypes import c_float
@@ -325,7 +323,6 @@ class VboCreator(object):
 
     def build_ready_vbos(self):
 
-        new_vbo = None
         if len(self.ready_vbos) > 0:
 
             new_vbo = self.ready_vbos.popleft()
@@ -366,13 +363,13 @@ class VboCreator(object):
         self.pool.close()
         self.pool.join()
 
-    def test_done1(self, arg):
-
-        print("done1: {}".format(arg))
-
-    def test_done2(self, arg):
-
-        print("done2: {}".format(arg))
+    # def test_done1(self, arg):
+    #
+    #     print("done1: {}".format(arg))
+    #
+    # def test_done2(self, arg):
+    #
+    #     print("done2: {}".format(arg))
 
     def positions_done(self, arg):
 
@@ -432,11 +429,11 @@ class Renderer(object):
 
         log.debug("Renderer initialized.")
 
-    def print_info(self, point):
-        """Development info method."""
-
-        # print(self.world.find_necessary_chunks(point, 10))
-        pass
+    # def print_info(self, point):
+    #     """Development info method."""
+    #
+    #     # print(self.world.find_necessary_chunks(point, 10))
+    #     pass
 
     def ground_collision(self, point):
         """Return ground collision value as boolean.
