@@ -255,7 +255,7 @@ class VboCreator(object):
 
     def check_parts(self):
 
-        print("Active tasks: {}".format(len(self.active_tasks)))
+        print("Active vbo tasks: {}".format(len(self.active_tasks)))
 
         for vbo_id, value in self.vbo_parts.items():
 
@@ -305,7 +305,6 @@ class VboCreator(object):
 
                     self.add_ready_vbo(vbo_id)
 
-    # @print_pid
     def create(self, chunk_data):
 
         chunk_id = chunk_data.chunk_id
@@ -339,6 +338,8 @@ class VboCreator(object):
             )
 
             self.delete_parts(new_vbo)
+
+            print("Vbo task done.")
 
     def build_vbo(self, uid, positions, vertexes, gl_vertexes):
 
@@ -377,7 +378,7 @@ class VboCreator(object):
 
     def positions_done(self, arg):
 
-        print("positions done")
+        # print("positions done")
 
         chunk_data = arg[0]
 
@@ -386,7 +387,7 @@ class VboCreator(object):
 
     def vertexes_done(self, arg):
 
-        print("vertexes done")
+        # print("vertexes done")
 
         uid = arg[0]
 
@@ -395,7 +396,7 @@ class VboCreator(object):
 
     def gl_vertexes_done(self, arg):
 
-        print("gl_vertexes done")
+        # print("gl_vertexes done")
 
         uid = arg
 
