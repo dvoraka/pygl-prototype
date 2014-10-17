@@ -9,57 +9,7 @@ import uuid
 from math import sqrt
 
 from decorators import print_time
-
-
-@print_time
-def generate_chunk(width, height):
-    """Generate chunk data.
-
-    Args:
-        width (int): width
-        height (int): height
-
-    Return:
-        dict: {(x, y, z) of int: Block}
-    """
-
-    blocks = {}
-
-    last = False
-    for x in range(width):
-        for y in range(height):
-            for z in range(width):
-
-                if y < 50:
-
-                    if last:
-                        if random.randint(0, 2) in (0, 1):
-
-                            blocks[(x, y, z)] = Block()
-                            last = True
-
-                        else:
-
-                            blocks[(x, y, z)] = None
-                            last = False
-
-                    else:
-
-                        if random.randint(0, 3) in (0,):
-
-                            blocks[(x, y, z)] = Block()
-                            last = True
-
-                        else:
-
-                            blocks[(x, y, z)] = None
-                            last = False
-
-                else:
-
-                    blocks[(x, y, z)] = None
-
-    return blocks
+from functions import generate_chunk
 
 
 class Point(object):
