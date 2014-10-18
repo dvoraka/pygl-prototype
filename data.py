@@ -30,15 +30,15 @@ class ChunkCreator(object):
 
         self.pool = mp.Pool(workers)
 
-    def add_task(self, chunk_id):
+    def add_task(self, chunk_position):
 
-        log.debug("New task: {}".format(chunk_id))
+        log.debug("New task: {}".format(chunk_position))
 
-        self.active_tasks.append(chunk_id)
+        self.active_tasks.append(chunk_position)
 
-    def task_exists(self, chunk_id):
+    def task_exists(self, position):
 
-        if chunk_id in self.active_tasks:
+        if position in self.active_tasks:
 
             return True
 
@@ -46,13 +46,17 @@ class ChunkCreator(object):
 
             return False
 
-    def add_ready_chunk(self, uid):
+    def add_ready_chunk(self, position):
 
-        self.ready_chunks.append(uid)
+        self.ready_chunks.append(position)
 
     def create(self, chunk_type, position):
 
+        chunk_type = chunk_type
+        width = chunk_type.size
+        height = chunk_type.height
         chunk_position = position
+
         if self.task_exists(chunk_position):
 
             return
@@ -61,7 +65,7 @@ class ChunkCreator(object):
 
         self.pool.apply_async(
             generate_chunk_mp,
-            args=(),
+            args=(width, height),
             callback=self.chunk_done
         )
 
@@ -69,17 +73,17 @@ class ChunkCreator(object):
 
         if len(self.ready_chunks) > 0:
 
-            new_vbo = self.ready_chunks.popleft()
+            new_chunk = self.ready_chunks.popleft()
 
             self.build_chunk()
 
-            log.debug("Vbo task {} done.".format(new_vbo))
+            log.debug("Vbo task {} done.".format(new_chunk))
 
-    def build_chunk(self, uid):
+    def build_chunk(self, position):
 
         new_chunk = None
 
-        self.active_tasks.remove(uid)
+        self.active_tasks.remove(position)
         self.orig_dict.append(new_chunk)
 
     def chunk_done(self, arg):
