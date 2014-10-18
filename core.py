@@ -70,7 +70,6 @@ def gl_vertexes_mp(chunk_id, chunk_vertexes):
     """MP wrapper."""
 
     shared_array.get_lock().acquire()
-    # print(mp.current_process())
 
     raw_array = shared_array.get_obj()
 
@@ -80,8 +79,6 @@ def gl_vertexes_mp(chunk_id, chunk_vertexes):
         raw_array[index] = value
 
         index += 1
-
-    # print("after write")
 
     return chunk_id
 
@@ -417,9 +414,7 @@ class Renderer(object):
         # VboData list for vertex buffer objects
         self.vbos = []
 
-        # self.pool = mp.Pool(2)
-
-        self.vbo_creator = VboCreator(self.vbos)
+        self.vbo_creator = VboCreator(self.vbos, workers=2)
 
         log.debug("Renderer initialized.")
 
