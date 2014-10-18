@@ -11,6 +11,11 @@ import data
 from decorators import print_time
 
 
+def generate_chunk_mp():
+
+    pass
+
+
 @print_time
 def generate_chunk(width, height):
     """Generate chunk data.

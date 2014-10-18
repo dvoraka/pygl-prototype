@@ -3,13 +3,88 @@
 
 """Module for data representation."""
 
-import random
 import uuid
+import collections
+import logging
+import multiprocessing as mp
 
 from math import sqrt
 
 from decorators import print_time
 from functions import generate_chunk
+from functions import generate_chunk_mp
+
+
+log = logging.getLogger(__name__)
+
+
+class ChunkCreator(object):
+
+    def __init__(self, chunk_dict, workers=2):
+
+        self.orig_dict = chunk_dict
+
+        self.active_tasks = []
+        self.prepared_chunks = {}
+        self.ready_chunks = collections.deque()
+
+        self.pool = mp.Pool(workers)
+
+    def add_task(self, chunk_id):
+
+        log.debug("New task: {}".format(chunk_id))
+
+        self.active_tasks.append(chunk_id)
+
+    def task_exists(self, chunk_id):
+
+        if chunk_id in self.active_tasks:
+
+            return True
+
+        else:
+
+            return False
+
+    def add_ready_chunk(self, uid):
+
+        self.ready_chunks.append(uid)
+
+    def create(self, chunk_type, position):
+
+        chunk_position = position
+        if self.task_exists(chunk_position):
+
+            return
+
+        self.add_task(chunk_position)
+
+        self.pool.apply_async(
+            generate_chunk_mp,
+            args=(),
+            callback=self.chunk_done
+        )
+
+    def build_ready_chunks(self):
+
+        if len(self.ready_chunks) > 0:
+
+            new_vbo = self.ready_chunks.popleft()
+
+            self.build_chunk()
+
+            log.debug("Vbo task {} done.".format(new_vbo))
+
+    def build_chunk(self, uid):
+
+        new_chunk = None
+
+        self.active_tasks.remove(uid)
+        self.orig_dict.append(new_chunk)
+
+    def chunk_done(self, arg):
+
+        pass
 
 
 class Point(object):
@@ -377,6 +452,8 @@ class BlockWorld(object):
         if not self.chunk_exists(position):
 
             # print("Creating new chunk: {}".format(position))
+
+            # create chunk with creator
 
             self.chunks[position] = self.chunk_type(
                 Point(position[0], 0, position[1]))
