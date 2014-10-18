@@ -183,7 +183,7 @@ def generate_vbo(chunk_data):
 class VboCreator(object):
     """Create VBO data object."""
 
-    def __init__(self, vbo_list):
+    def __init__(self, vbo_list, workers=2):
 
         self.orig_list = vbo_list
 
@@ -202,11 +202,12 @@ class VboCreator(object):
             # },
         }
 
-        self.pool = mp.Pool(2)
+        self.pool = mp.Pool(workers)
 
     def add_task(self, chunk_id):
 
-        # print("New task: {}".format(chunk_id))
+        log.debug("New task: {}".format(chunk_id))
+
         self.active_tasks.append(chunk_id)
 
     def task_exists(self, chunk_id):
@@ -335,7 +336,7 @@ class VboCreator(object):
 
             self.delete_parts(new_vbo)
 
-            print("Vbo task done.")
+            log.debug("Vbo task {} done.".format(new_vbo))
 
     def build_vbo(self, uid, vertexes, gl_vertexes):
 
@@ -363,38 +364,31 @@ class VboCreator(object):
         self.pool.close()
         self.pool.join()
 
-    # def test_done1(self, arg):
-    #
-    #     print("done1: {}".format(arg))
-    #
-    # def test_done2(self, arg):
-    #
-    #     print("done2: {}".format(arg))
-
     def positions_done(self, arg):
 
-        # print("positions done")
+        log.debug("positions done")
 
         chunk_data = arg[0]
+        positions = arg[1]
 
-        self.add_parts(chunk_data.chunk_id, "positions", arg[1])
+        self.add_parts(chunk_data.chunk_id, "positions", positions)
         self.set_subtask_state(chunk_data.chunk_id, "positions", "done")
 
     def vertexes_done(self, arg):
 
-        # print("vertexes done")
+        log.debug("vertexes done")
 
         uid = arg[0]
+        vertexes = arg[1]
 
-        self.add_parts(uid, "vertexes", arg[1])
+        self.add_parts(uid, "vertexes", vertexes)
         self.set_subtask_state(uid, "vertexes", "done")
 
     def gl_vertexes_done(self, arg):
 
-        # print("gl_vertexes done")
+        log.debug("gl_vertexes done")
 
         uid = arg
-
         c_array = copy(shared_array.get_obj())
 
         shared_array.get_lock().release()
