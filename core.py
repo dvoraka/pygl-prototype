@@ -203,7 +203,7 @@ class VboCreator(object):
 
     def add_task(self, chunk_id):
 
-        log.debug("New task: {}".format(chunk_id))
+        log.debug("New VboCreator task: {}".format(chunk_id))
 
         self.active_tasks.append(chunk_id)
 
@@ -251,7 +251,7 @@ class VboCreator(object):
 
     def check_parts(self):
 
-        print("Active vbo tasks: {}".format(len(self.active_tasks)))
+        log.debug("Active VboCreator tasks: {}".format(len(self.active_tasks)))
 
         for vbo_id, value in self.vbo_parts.items():
 
@@ -333,7 +333,7 @@ class VboCreator(object):
 
             self.delete_parts(new_vbo)
 
-            log.debug("Vbo task {} done.".format(new_vbo))
+            log.debug("VboCreator task {} done.".format(new_vbo))
 
     def build_vbo(self, uid, vertexes, gl_vertexes):
 

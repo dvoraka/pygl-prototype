@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import pyglet
 import sys
+import logging
 
 from pyglet.window import key
 
@@ -51,6 +52,8 @@ import controls
 import player
 import script
 import shaders
+
+log = logging.getLogger(__name__)
 
 
 class TestObject(object):
@@ -264,8 +267,8 @@ class GameWindow(pyglet.window.Window):
     def print_info(self, dt):
         """Print useful info."""
 
-        print("FPS: {}".format(pyglet.clock.get_fps()))
-        print(self.camera.get_position())
+        log.info("FPS: {}".format(pyglet.clock.get_fps()))
+        log.info("Camera: {}".format(self.camera.get_position()))
 
     def print_gl_info(self):
         """Print OpenGL info."""
@@ -476,12 +479,14 @@ class GameWindow(pyglet.window.Window):
 
         if self.update_counter % 120 == 0:
 
-            print(self.renderer.world.in_chunk(
-                self.camera.get_position_inverse_z()))
+            # print(self.renderer.world.in_chunk(
+            #     self.camera.get_position_inverse_z()))
 
-            cposition = self.camera.get_position_inverse_z()
-            nchunks = self.renderer.world.find_nearest_chunks(cposition)
+            # cposition = self.camera.get_position_inverse_z()
+            # nchunks = self.renderer.world.find_nearest_chunks(cposition)
             # print(self.renderer.world.block_collision(cposition, nchunks))
+
+            pass
 
         if self.scripter:
 

@@ -32,7 +32,7 @@ class ChunkCreator(object):
 
     def add_task(self, chunk_position):
 
-        log.debug("New task: {}".format(chunk_position))
+        log.debug("New ChunkCreator task: {}".format(chunk_position))
 
         self.active_tasks.append(chunk_position)
 
@@ -77,7 +77,7 @@ class ChunkCreator(object):
 
             self.build_chunk()
 
-            log.debug("Vbo task {} done.".format(new_chunk))
+            log.debug("ChunkCreator task {} done.".format(new_chunk))
 
     def build_chunk(self, position):
 
