@@ -25,7 +25,7 @@ class ChunkCreator(object):
         self.orig_dict = chunk_dict
 
         self.active_tasks = []
-        # self.prepared_chunks = {}
+        self.prepared_chunks = {}
         self.ready_chunks = collections.deque()
 
         self.pool = mp.Pool(workers)
@@ -50,7 +50,16 @@ class ChunkCreator(object):
 
         self.ready_chunks.append(position)
 
+    def add_blocks(self, position, blocks):
+
+        self.prepared_chunks[position] = blocks
+
     def create(self, chunk_type, chunk_position):
+        """
+
+        Args:
+            chunk_position (int, int): X and Z coordinates
+        """
 
         width = chunk_type.size
         height = chunk_type.height
@@ -64,7 +73,7 @@ class ChunkCreator(object):
 
         self.pool.apply_async(
             generate_chunk_mp,
-            args=(width, height),
+            args=(chunk_position, width, height),
             callback=self.chunk_done
         )
 
@@ -72,20 +81,28 @@ class ChunkCreator(object):
 
         if len(self.ready_chunks) > 0:
 
-            new_chunk = self.ready_chunks.popleft()
+            chunk_position = self.ready_chunks.popleft()
+            blocks = self.prepared_chunks[chunk_position]
 
-            self.build_chunk()
+            self.build_chunk(chunk_position, blocks)
 
-            log.debug("ChunkCreator task {} done.".format(new_chunk))
+            log.debug("ChunkCreator task {} done.".format(chunk_position))
 
-    def build_chunk(self, position):
+    def build_chunk(self, chunk_position, blocks):
 
+        position_point = Point(chunk_position[0], 0, chunk_position[1])
         new_chunk = None
 
-        self.active_tasks.remove(position)
-        self.orig_dict.append(new_chunk)
+        self.active_tasks.remove(chunk_position)
+        self.orig_dict[chunk_position] = new_chunk
 
-    def chunk_done(self, arg):
+    def chunk_done(self, data):
+
+        chunk_position = data[0]
+        chunk_blocks = data[1]
+
+        self.add_blocks(chunk_position, chunk_blocks)
+        self.add_ready_chunk(chunk_position)
 
         print("chunk done")
 

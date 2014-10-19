@@ -11,9 +11,11 @@ import data
 from decorators import print_time
 
 
-def generate_chunk_mp():
+def generate_chunk_mp(position, width, height):
 
-    pass
+    blocks = generate_chunk(width, height)
+
+    return position, blocks
 
 
 @print_time

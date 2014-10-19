@@ -20,11 +20,10 @@ for _ in range(test_size):
     print("create")
     chunk_type = data.NormalChunk
 
-    pos1 = data.Point(0, 0, z_position)
-    pos2 = data.Point(0, 0, z_position)
+    pos = (0, z_position)
 
-    creator.create(chunk_type, pos1)
-    creator.create(chunk_type, pos2)
+    creator.create(chunk_type, pos)
+    creator.create(chunk_type, pos)
 
     z_position += chunk_type.size
 
