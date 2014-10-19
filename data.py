@@ -50,17 +50,16 @@ class ChunkCreator(object):
 
         self.ready_chunks.append(position)
 
-    def create(self, chunk_type, position):
+    def create(self, chunk_type, chunk_position):
 
-        chunk_type = chunk_type
         width = chunk_type.size
         height = chunk_type.height
-        chunk_position = position
 
         if self.task_exists(chunk_position):
 
             return
 
+        print("add task: {}".format(chunk_position))
         self.add_task(chunk_position)
 
         self.pool.apply_async(
@@ -88,7 +87,7 @@ class ChunkCreator(object):
 
     def chunk_done(self, arg):
 
-        pass
+        print("chunk done")
 
     def update(self):
 
@@ -121,6 +120,20 @@ class Point(object):
         """Return string representation."""
 
         return "Position: x={}, y={}, z={}".format(self.x, self.y, self.z)
+
+    def __eq__(self, other):
+
+        if not isinstance(other, Point):
+
+            return False
+
+        if self.x == other.x and self.y == other.y and self.z == other.z:
+
+            return True
+
+    def __ne__(self, other):
+
+        return not self == other
 
     def set_position(self, x, y, z):
         """Set point position."""
