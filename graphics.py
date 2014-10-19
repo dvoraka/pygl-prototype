@@ -205,7 +205,8 @@ class GameWindow(pyglet.window.Window):
             sys.exit()
 
         # schedule tasks
-        pyglet.clock.schedule_interval(self.print_info, 4.0 / 1.0)
+        pyglet.clock.schedule_interval(self.print_info, 5.0 / 1.0)
+        pyglet.clock.schedule_interval(self.data_update, 1.0)
         pyglet.clock.schedule_interval(self.less_frequent_tasks, 1.0 / 2.0)
         pyglet.clock.schedule_interval(self.update, 1.0 / 30.0)
 
@@ -455,6 +456,10 @@ class GameWindow(pyglet.window.Window):
             self.set_fullscreen(True)
             self.set_exclusive_mouse(True)
             self.set_mouse_visible(False)
+
+    def data_update(self, dt):
+
+        self.renderer.data_update()
 
     def less_frequent_tasks(self, dt):
 

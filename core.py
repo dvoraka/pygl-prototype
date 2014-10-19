@@ -472,6 +472,11 @@ class Renderer(object):
 
                     vbo.render = chunk.visible
 
+    def data_update(self):
+
+        self.vbo_creator.update()
+        self.world.update_chunks()
+
     def create_vbos(self):
         """Create necessary VBOs."""
 
@@ -484,9 +489,6 @@ class Renderer(object):
             else:
 
                 self.vbo_creator.create(chunk)
-
-        self.vbo_creator.update()
-        self.world.update_chunks()
 
     def vbo_exists(self, chunk_id):
         """Check VBO existence for the chunk ID.
