@@ -9,23 +9,22 @@ import core
 import data
 
 
-test_size = 10
+test_size = 5
 
-vbos = []
-vbo_creator = core.VboCreator(vbos)
+chunks = {}
+creator = data.ChunkCreator(chunks)
 
 for _ in range(test_size):
 
-    vbo_creator.create(data.NormalChunk(data.Point(0, 0, 0)))
+    print("create")
+    creator.create(data.NormalChunk, data.Point(0, 0, 0))
 
-for _ in range(12):
+for _ in range(test_size * 2):
 
-    vbo_creator.check_parts()
-    vbo_creator.build_ready_vbos()
+    print("update")
+    creator.update()
     time.sleep(1)
 
-vbo_creator.wait_for_procs()
+creator.wait_for_procs()
 
-print("Ready VBOs: {}".format(len(vbo_creator.ready_vbos)))
-
-print(vbos)
+print("Chunks: {}".format(chunks))

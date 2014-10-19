@@ -25,7 +25,7 @@ class ChunkCreator(object):
         self.orig_dict = chunk_dict
 
         self.active_tasks = []
-        self.prepared_chunks = {}
+        # self.prepared_chunks = {}
         self.ready_chunks = collections.deque()
 
         self.pool = mp.Pool(workers)
@@ -89,6 +89,15 @@ class ChunkCreator(object):
     def chunk_done(self, arg):
 
         pass
+
+    def update(self):
+
+        self.build_ready_chunks()
+
+    def wait_for_procs(self):
+
+        self.pool.close()
+        self.pool.join()
 
 
 class Point(object):
