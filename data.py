@@ -50,9 +50,9 @@ class ChunkCreator(object):
 
         self.ready_chunks.append(position)
 
-    def add_blocks(self, position, blocks):
+    def add_blocks(self, chunk_type, position, blocks):
 
-        self.prepared_chunks[position] = blocks
+        self.prepared_chunks[position] = chunk_type, blocks
 
     def create(self, chunk_type, chunk_position):
         """
@@ -73,7 +73,7 @@ class ChunkCreator(object):
 
         self.pool.apply_async(
             generate_chunk_mp,
-            args=(chunk_position, width, height),
+            args=(chunk_type, chunk_position, width, height),
             callback=self.chunk_done
         )
 
@@ -82,26 +82,29 @@ class ChunkCreator(object):
         if len(self.ready_chunks) > 0:
 
             chunk_position = self.ready_chunks.popleft()
-            blocks = self.prepared_chunks[chunk_position]
+            chunk_type = self.prepared_chunks[chunk_position][0]
+            blocks = self.prepared_chunks[chunk_position][1]
 
-            self.build_chunk(chunk_position, blocks)
+            self.build_chunk(chunk_type, chunk_position, blocks)
 
             log.debug("ChunkCreator task {} done.".format(chunk_position))
 
-    def build_chunk(self, chunk_position, blocks):
+    def build_chunk(self, chunk_type, chunk_position, blocks):
 
         position_point = Point(chunk_position[0], 0, chunk_position[1])
-        new_chunk = None
+
+        new_chunk = chunk_type(position_point, blocks=blocks)
 
         self.active_tasks.remove(chunk_position)
         self.orig_dict[chunk_position] = new_chunk
 
     def chunk_done(self, data):
 
-        chunk_position = data[0]
-        chunk_blocks = data[1]
+        chunk_type = data[0]
+        chunk_position = data[1]
+        chunk_blocks = data[2]
 
-        self.add_blocks(chunk_position, chunk_blocks)
+        self.add_blocks(chunk_type, chunk_position, chunk_blocks)
         self.add_ready_chunk(chunk_position)
 
         print("chunk done")
@@ -240,7 +243,7 @@ class Chunk(object):
     size = None
     height = None
 
-    def __init__(self, position):
+    def __init__(self, position, blocks=None):
 
         self.position = position
         self.centre = Point(
@@ -254,7 +257,13 @@ class Chunk(object):
         self.dirty = False
         self.visible = False
 
-        self.blocks = self.generate_chunk()
+        if blocks:
+
+            self.blocks = blocks
+
+        else:
+
+            self.blocks = self.generate_chunk()
 
     def get_centre(self):
         """Return centre of chunk as a Point object."""
@@ -413,7 +422,7 @@ class NormalChunk(Chunk):
     def __str__(self):
         """String representation of chunk."""
 
-        return 'NormalChunk: ' + str(self.blocks)
+        return "NormalChunk: {} blocks".format(len(self.blocks))
 
 
 class BlockWorld(object):
