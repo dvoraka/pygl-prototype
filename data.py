@@ -68,7 +68,6 @@ class ChunkCreator(object):
 
             return
 
-        print("add task: {}".format(chunk_position))
         self.add_task(chunk_position)
 
         self.pool.apply_async(
@@ -107,9 +106,11 @@ class ChunkCreator(object):
         self.add_blocks(chunk_type, chunk_position, chunk_blocks)
         self.add_ready_chunk(chunk_position)
 
-        print("chunk done")
+        log.debug("chunk done")
 
     def update(self):
+
+        log.debug("Active ChunkCreator tasks: {}".format(len(self.active_tasks)))
 
         self.build_ready_chunks()
 
@@ -439,6 +440,8 @@ class BlockWorld(object):
 
         self.chunks = {}
 
+        self.chunk_creator = ChunkCreator(self.chunks)
+
         self.generate_world()
 
     def in_chunk(self, point):
@@ -494,7 +497,7 @@ class BlockWorld(object):
 
         return "BlockWorld: {} chunks".format(len(self.chunks))
 
-    def generate_chunk(self, position):
+    def generate_chunk(self, position, async=True):
         """Generate chunk.
 
         Args:
@@ -507,8 +510,18 @@ class BlockWorld(object):
 
             # create chunk with creator
 
-            self.chunks[position] = self.chunk_type(
-                Point(position[0], 0, position[1]))
+            if async:
+
+                self.chunk_creator.create(self.chunk_type, position)
+
+            else:
+
+                self.chunks[position] = self.chunk_type(
+                    Point(position[0], 0, position[1]))
+
+    def update_chunks(self):
+
+        self.chunk_creator.update()
 
     def chunk_exists(self, position):
         """Return chunk existence on the position.
@@ -598,4 +611,4 @@ class BlockWorld(object):
             for z in range(0, self.depth, self.chunk_size):
 
                 # self.chunks[(x, z)] = self.chunk_type(Point(x, 0, z))
-                self.generate_chunk((x, z))
+                self.generate_chunk((x, z), async=False)

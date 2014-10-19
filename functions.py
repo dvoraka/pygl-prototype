@@ -18,7 +18,7 @@ def generate_chunk_mp(chunk_type, position, width, height):
     return chunk_type, position, blocks
 
 
-@print_time
+# @print_time
 def generate_chunk(width, height):
     """Generate chunk data.
 
