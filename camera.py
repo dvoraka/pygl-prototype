@@ -30,7 +30,7 @@ class FPSCamera(script.Controllable):
         # falling
         self.falling = False
         self.falling_start = None
-        self.falling_mp = 0.0005
+        self.falling_mp = 0.0004
         self.falling_max_speed = 2.5
 
         self.jump_step_height = 0.17
@@ -50,8 +50,8 @@ class FPSCamera(script.Controllable):
         self.v_angle = 0.0
 
         # camera rotating sensitivity multipliers
-        self.h_multiplier = 0.01
-        self.v_multiplier = 0.02
+        self.h_multiplier = 0.005
+        self.v_multiplier = 0.01
 
         self.inverse_horizontal = False
         self.inverse_vertical = False

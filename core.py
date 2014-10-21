@@ -408,7 +408,7 @@ class Renderer(object):
         log.debug("Renderer initializing...")
 
         self.world = world
-        self.visibility = 18
+        self.visibility = 22
         self.chunk_gen_distance = self.visibility * 1.2
 
         # VboData list for vertex buffer objects
