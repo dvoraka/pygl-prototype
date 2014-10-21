@@ -23,6 +23,9 @@ System supports OpenGL 2.1 and above.
 #### Installing dependencies
 ```$ pip install -r requirements.txt```
 
+### Run program
+```$ ./run.py```
+
 
 ### Controls
 ##### Normal controls
