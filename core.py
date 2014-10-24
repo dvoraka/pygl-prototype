@@ -403,7 +403,7 @@ class VboCreator(object):
 class Renderer(object):
     """Render world."""
 
-    def __init__(self, world):
+    def __init__(self, world, configuration=None):
 
         log.debug("Renderer initializing...")
 
@@ -423,6 +423,11 @@ class Renderer(object):
     #
     #     # print(self.world.find_necessary_chunks(point, 10))
     #     pass
+
+    def update_configuration(self):
+        """Update configuration of renderer."""
+
+        pass
 
     def ground_collision(self, point):
         """Return ground collision value as boolean.
