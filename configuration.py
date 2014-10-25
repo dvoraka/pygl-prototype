@@ -8,8 +8,10 @@ from __future__ import print_function
 import os
 import ConfigParser
 
+import interfaces
 
-class Configuration(object):
+
+class EngineConfiguration(interfaces.Configuration):
 
     def __init__(self, filename, user_filename):
 
@@ -39,6 +41,10 @@ class Configuration(object):
         }
 
         return default_values
+
+    def get_values(self):
+
+        return self.values
 
     def load_controls(self, ini_file):
         """Load configuration from file.
@@ -99,5 +105,5 @@ class Configuration(object):
 
 if __name__ == "__main__":
 
-    conf = Configuration("settings.ini", "user.ini")
-    print(conf.values)
+    conf = EngineConfiguration("settings.ini", "user.ini")
+    print(conf.get_values())

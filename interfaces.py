@@ -9,8 +9,20 @@ class Creator(object):
 
     def create(self):
 
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def update(self):
 
-        raise NotImplementedError
+        raise NotImplementedError()
+
+
+class Configuration(object):
+
+    def get_values(self):
+        """Return configuration values.
+
+        Return:
+            dict: configuration values
+        """
+
+        raise NotImplementedError()

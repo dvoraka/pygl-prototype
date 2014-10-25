@@ -9,7 +9,7 @@ import os.path
 
 from pyglet.window import key
 
-from configuration import Configuration
+from configuration import EngineConfiguration
 
 
 class ControlsMapper(object):
@@ -97,7 +97,7 @@ class ControlsMapper(object):
             action (str): action
         """
 
-        new_value = Configuration.config_value(config, section, action)
+        new_value = EngineConfiguration.config_value(config, section, action)
 
         if new_value:
 
