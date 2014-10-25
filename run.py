@@ -5,6 +5,7 @@ import logging
 import core
 import graphics
 import data
+import configuration
 
 
 log = logging.getLogger(__name__)
@@ -20,7 +21,8 @@ def main():
     log.info("Program start.")
 
     cw = data.BlockWorld(data.NormalChunk, 20, 20)
-    renderer = core.Renderer(cw)
+    conf = configuration.EngineConfiguration("settings.ini", "user.ini")
+    renderer = core.Renderer(cw, conf)
     renderer.prepare_world()
 
     window = graphics.GameWindow(renderer)

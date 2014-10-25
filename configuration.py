@@ -67,7 +67,6 @@ class EngineConfiguration(interfaces.Configuration):
             return
 
         section = "Main"
-
         self.set_value(config, section, "visibility")
 
     def set_value(self, config, section, action):

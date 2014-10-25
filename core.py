@@ -416,6 +416,10 @@ class Renderer(object):
 
         self.vbo_creator = VboCreator(self.vbos, workers=2)
 
+        # external configuration
+        self.configuration = configuration.get_values()
+        self.update_configuration()
+
         log.debug("Renderer initialized.")
 
     # def print_info(self, point):
@@ -427,7 +431,10 @@ class Renderer(object):
     def update_configuration(self):
         """Update configuration of renderer."""
 
-        pass
+        if not self.configuration:
+            return
+
+        self.visibility = int(self.configuration["visibility"])
 
     def ground_collision(self, point):
         """Return ground collision value as boolean.
