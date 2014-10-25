@@ -110,7 +110,8 @@ class ChunkCreator(object):
 
     def update(self):
 
-        log.debug("Active ChunkCreator tasks: {}".format(len(self.active_tasks)))
+        log.debug("Active ChunkCreator tasks: {}".format(
+            len(self.active_tasks)))
 
         self.build_ready_chunks()
 
