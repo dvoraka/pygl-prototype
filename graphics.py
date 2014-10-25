@@ -563,10 +563,6 @@ class GameWindow(pyglet.window.Window):
             self.keyboard[key.NUM_3] = False
             self.scripter.start()
 
-        # elif self.keyboard[key.SPACE]:
-        #
-        #     self.camera.jump()
-
         elif self.keyboard[key.R]:
 
             self.keyboard[key.R] = False

@@ -274,7 +274,6 @@ class CommandState(ScriptState):
         while True:
 
             token = context.next_token()
-
             # print("Token: {}".format(token))
 
             if token:
@@ -465,29 +464,9 @@ class Tokenizer(object):
 
 if __name__ == "__main__":
 
-    script = Script("script.txt", DummyObject())
-
-    for token in script.script_tokens:
-
-        print(token)
-
-    # while script.next_action():
+    pass
+    # script = Script("script.txt", DummyObject())
     #
-    #     pass
-
-    # while True:
+    # for token in script.script_tokens:
     #
-    #     val = script.next()
-    #
-    #     if not val:
-    #
-    #         break
-
-    # while True:
-    #
-    #     token = script.next_token()
     #     print(token)
-    #
-    #     if not token:
-    #
-    #         break
