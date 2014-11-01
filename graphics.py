@@ -233,7 +233,7 @@ class GameWindow(pyglet.window.Window):
         # controller for player's input
         self.controller = controls.Controller(self.player, "settings.ini")
 
-        #self.collision_offset = 0.1
+        # self.collision_offset = 0.1
 
         self.update_counter = 0
 
@@ -279,7 +279,7 @@ class GameWindow(pyglet.window.Window):
         print("renderer: {}".format(pyglet.gl.gl_info.get_renderer()))
         print("version: {}".format(pyglet.gl.gl_info.get_version()))
         print("capabilities: {}".format(self.capabilities))
-        #print(self.config)
+        # print(self.config)
         print("+" * 40)
         print("")
 
@@ -420,7 +420,7 @@ class GameWindow(pyglet.window.Window):
     def draw_hud(self):
         """Render HUD."""
 
-        #TODO: add resize changes
+        # TODO: add resize changes
         # glUseProgram(self.hud_shader)
         # temporary solution
         glUseProgram(0)

@@ -471,7 +471,7 @@ class BlockWorld(object):
         """
 
         # temporary solution
-        #TODO: change
+        # TODO: change
         point.z = -point.z
 
         offset = 0.5

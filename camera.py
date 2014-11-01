@@ -411,7 +411,7 @@ class FPSCamera(script.Controllable):
     def view_vec(self):
         """Return view vector."""
 
-        #TODO: implementation
+        # TODO: implementation
         raise NotImplementedError
 
     def horizontal_view_vec(self):

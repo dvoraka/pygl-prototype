@@ -47,7 +47,7 @@ log = logging.getLogger(__name__)
 
 # mpl = mp.log_to_stderr(5)
 
-### multiprocessing infrastructure
+# multiprocessing infrastructure
 ####################################
 
 lock = Lock()
@@ -143,7 +143,7 @@ def generate_vbo_blocks(chunk_data):
 
     return blocks_positions
 
-###### MP end
+# multiprocessing end
 ######################################
 
 
