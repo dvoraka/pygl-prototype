@@ -1,5 +1,6 @@
 Introduction
 ==============
+[![Build Status](https://travis-ci.org/dvoraka/pygl-prototype.svg?branch=master)](https://travis-ci.org/dvoraka/pygl-prototype)
 
 Game engine prototype using Python, PyOpenGL, Pyglet and NumPy. It is mainly a study project.
 
