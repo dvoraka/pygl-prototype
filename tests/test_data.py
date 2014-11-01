@@ -12,11 +12,11 @@ import data
 class TestPoint(unittest.TestCase):
 
     def setUp(self):
-        
+
         pass
 
     def test_test(self):
-        
+
         self.assertEqual(True, True)
 
     def test_chunk_distance(self):
@@ -45,4 +45,3 @@ class TestPoint(unittest.TestCase):
         p2 = data.Point(10, 0, -10)
         result = p1.chunk_distance(p2)
         self.assertAlmostEqual(result, math.sqrt(pow(20, 2) + pow(-20, 2)))
-

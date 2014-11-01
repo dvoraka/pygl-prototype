@@ -10,7 +10,7 @@ import multiprocessing as mp
 
 from math import sqrt
 
-from decorators import print_time
+# from decorators import print_time
 from functions import generate_chunk
 from functions import generate_chunk_mp
 

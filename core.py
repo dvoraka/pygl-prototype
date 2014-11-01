@@ -34,13 +34,13 @@ import multiprocessing as mp
 import time
 import logging
 import os
-import pprint
+# import pprint
 import random
 
 import graphics
 
-from decorators import print_time
-from decorators import print_pid
+# from decorators import print_time
+# from decorators import print_pid
 
 
 log = logging.getLogger(__name__)
@@ -251,6 +251,8 @@ class VboCreator(object):
 
     def check_parts(self):
 
+        # TODO: refactoring
+
         log.debug("Active VboCreator tasks: {}".format(len(self.active_tasks)))
 
         for vbo_id, value in self.vbo_parts.items():
@@ -274,7 +276,7 @@ class VboCreator(object):
                         all_parts.append(False)
 
                     elif (part_name == "vertexes"
-                            and not self.active_subtasks[vbo_id]["gl_vertexes"]):
+                            and not self.active_subtasks[vbo_id]["gl_vertexes"]):  # NOQA
 
                         vertexes = data
                         self.pool.apply_async(
@@ -282,7 +284,7 @@ class VboCreator(object):
                             args=(vbo_id, vertexes),
                             callback=self.gl_vertexes_done
                         )
-                        self.set_subtask_state(vbo_id, "gl_vertexes", "running")
+                        self.set_subtask_state(vbo_id, "gl_vertexes", "running")  # NOQA
 
                         all_parts.append(False)
 

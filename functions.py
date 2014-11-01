@@ -8,7 +8,7 @@ import random
 
 import data
 
-from decorators import print_time
+# from decorators import print_time
 
 
 def generate_chunk_mp(chunk_type, position, width, height):
